@@ -43,7 +43,7 @@ const Praxis =  () => {
             <CRow className={style.card__body__row}>
               <h2 className={style.card__body__value}>{ card.key }</h2>
               <CCol
-              style={!card.result ? {} : card.result.origin == card.key ? {
+              style={!card.result ? {} : card.result.origin === card.key ? {
                 background: '#a9eba94a'
               } : {
                 background: '#efbbbb9e'
@@ -58,7 +58,7 @@ const Praxis =  () => {
                 { card.values.map((doc = {}, index) => {
                   return <CFormCheck key={index} label={doc && doc.translate}
                   // className={style.card__formChek}
-                  defaultChecked={card.result && card.result._id == doc._id}
+                  defaultChecked={card.result && card.result._id === doc._id}
                   disabled={!!card.result}
                   onChange={() => handleCgange(doc)}
                   />

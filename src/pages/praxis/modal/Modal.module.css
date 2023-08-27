@@ -1,0 +1,7 @@
+.modal__card {
+  height: 70vh;
+}
+.flex__container {
+  display: flex;
+  justify-content: end;
+}
