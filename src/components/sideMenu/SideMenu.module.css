@@ -1,0 +1,42 @@
+
+
+.btn_close {
+  justify-content: end;
+  color: white;
+}
+
+
+
+.SideMenu {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 80%;
+  background-color: rgb(24, 24, 71);
+  z-index: 1;
+  min-height: calc(100vh);
+  transition: left 0.5s;
+}
+
+.active {
+  left: 0;
+}
+.menu {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  font-size: 25px;
+}
+.menu__li {
+  padding: 10px;
+}
+.menu__li:hover {
+  background-color: rgb(110, 110, 134);
+}
+
+.activeLink {
+  color: rgb(175, 175, 223);
+}
+
+

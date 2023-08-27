@@ -1,0 +1,28 @@
+.Dictionary {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between; */
+  align-items: center;
+  margin: 0 auto;
+  padding: 30px;
+  width: 100%;
+
+}
+
+
+.ListGroupe {
+  width: 100%;
+
+}
+
+.Scroller {
+  display: flex;
+  overflow: auto;
+  width: 100%;
+}
+
+.Dictionary__header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
