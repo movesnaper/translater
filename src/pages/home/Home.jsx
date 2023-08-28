@@ -1,25 +1,23 @@
 import React, {useRef, useState, useEffect} from "react"
 import style from './Home.module.css'
 import { CRow, CCol, CCard, CCardBody, CCardTitle, CCardText, CButton } from '@coreui/react'
-import axios from 'axios'
 import { NavLink } from "react-router-dom"
+import { db } from '../../db/index.js'
 
-const url = 'http://localhost:5000'
+// const url = 'http://localhost:5000'
 
 const Home =  () => {
   const inpFile = useRef()
-  const [books, setBooks] = useState([])
-
-  const update = async () => {
-    const { data } = await axios.get(url)
-    data && setBooks(data)
-  }
+  const [docs, setDocs] = useState([])
 
   const handleChange =  async ({target}) => {
     const formData = new FormData()
     formData.append('pdfFile', target.files[0])
-    await axios.post(url, formData)
-    update()
+    setDocs([...docs, await db('/').upload(formData)])
+  }
+
+  const update = async () => {
+    setDocs(await db('/').get())
   }
 
   useEffect(() => {
@@ -29,7 +27,7 @@ const Home =  () => {
   return <div className={style.home}>
     <CRow className="gap-5">
       {[
-        ...books,
+        ...docs,
         { title: 'Add', upload: true}
         
       ].map(({_id, text, title, upload}, index) => {
