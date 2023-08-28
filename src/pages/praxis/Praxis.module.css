@@ -1,7 +1,7 @@
 .praxis__header {
-  display: flex;
+  /* display: flex;
   justify-content: space-between;
-  width: 100%;
+  width: 100%; */
 }
 .card__body{
   height: 50vh;

@@ -2,7 +2,7 @@ import style from './Dictionary.module.css'
 import axios from 'axios'
 import React, { useState, useEffect } from "react"
 import { CListGroup, CListGroupItem, CButton } from '@coreui/react'
-import { useParams, NavLink } from 'react-router-dom';
+import { useParams, NavLink } from 'react-router-dom'
 
 const url = 'http://localhost:5000/dictionary'
 

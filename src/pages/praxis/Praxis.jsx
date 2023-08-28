@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from "react"
-import { useParams } from 'react-router-dom'
+import { useParams, NavLink } from 'react-router-dom'
 import style from './Praxis.module.css'
 import { CFormCheck, CCardFooter, CContainer, CRow, CCol, CCard, CCardBody, CCardText, CButton } from '@coreui/react'
 import axios from 'axios'
@@ -31,11 +31,16 @@ const Praxis =  () => {
 
   return <CContainer className={style.Praxis}>
     <Modal visible={modal} setModal={setModal} card={card}/>
-    <CRow>
+    <div className="d-flex justify-content-between">
+      <div className="d-flex justify-content-center align-items-center">
+        <NavLink color="light" to={`/dictionary/${card.id}`}>
+            {card.title}
+        </NavLink>
+      </div>
       <div  className={style.praxis__header}>
         <h1>Total: {card.total}</h1>
       </div>
-    </CRow>
+    </div>
     <CRow >
        <CCol >
         <CCard>
