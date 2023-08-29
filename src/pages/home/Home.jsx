@@ -4,20 +4,32 @@ import { CRow, CCol, CCard, CCardBody, CCardTitle, CCardText, CButton } from '@c
 import { NavLink } from "react-router-dom"
 import { db } from '../../db/index.js'
 
-// const url = 'http://localhost:5000'
 
 const Home =  () => {
   const inpFile = useRef()
   const [docs, setDocs] = useState([])
+  const [loading, setLoading] = useState(false)
 
-  const handleChange =  async ({target}) => {
-    const formData = new FormData()
-    formData.append('pdfFile', target.files[0])
-    setDocs([...docs, await db('/').upload(formData)])
+
+  const onUpload =  async ({target}) => {
+    setLoading(upload)
+    try {
+      const formData = new FormData()
+      formData.append('pdfFile', target.files[0])
+      setDocs([...docs, await db('/').upload(formData)])
+    } catch(e) {
+      console.log(e);
+    } finally {
+      setLoading(false)
+    }
   }
 
   const update = async () => {
-    setDocs(await db('/').get())
+    try {
+      setDocs(await db('/').get())
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   useEffect(() => {
@@ -45,7 +57,7 @@ const Home =  () => {
 
       })}
     </CRow>
-    <input type="file" ref={inpFile} hidden onChange={handleChange}/>
+    <input type="file" ref={inpFile} hidden onChange={onUpload}/>
   </div>
 }
 
