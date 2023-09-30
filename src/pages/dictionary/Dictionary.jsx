@@ -49,8 +49,8 @@ const Dictionary =  () => {
         {dictionary.docs.map((doc, index) => {
           return <CListGroupItem key={index} className={style.ListItem}>
             <div>
-            <div>{doc.origin}</div>
-            <div>{doc.translate}</div>
+            <div>{doc.key}</div>
+            <div>{doc.dst}</div>
             </div>
           </CListGroupItem>
         })}

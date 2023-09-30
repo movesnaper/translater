@@ -4,7 +4,7 @@ import { AiOutlineClose } from "react-icons/ai"
 import { CButton } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import * as coreUi from '@coreui/icons'
-import { NavLink } from "react-router-dom"
+import { NavLink  } from "react-router-dom"
 
 const SideMenu = ({active, hide}) => {
   return  <div className={[style.SideMenu, active && style.active].join(' ')}>

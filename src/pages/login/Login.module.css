@@ -1,0 +1,9 @@
+.login {
+  display: flex;
+  height: 100%;
+}
+
+.login__form {
+  width: 50%;
+  margin: auto;
+}

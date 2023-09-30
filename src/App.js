@@ -1,7 +1,7 @@
 import './App.css';
 
 import { Routes, Route } from "react-router-dom"
-import {Home, Favorit, Dictionary, Praxis, NotFound} from './pages'
+import {Home, Login, Favorit, Dictionary, Praxis, NotFound} from './pages'
 import Layout from './components/Layout'
 
 
@@ -11,6 +11,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout/>}>
         <Route index element={<Home/>}></Route>
+        <Route path="/login" element={<Login/>}></Route>
         <Route path="/favorit" element={<Favorit/>}></Route>
         <Route path="/dictionary/:id?" element={<Dictionary/>}></Route>
         <Route path="/praxis/:id?" element={<Praxis/>}></Route>

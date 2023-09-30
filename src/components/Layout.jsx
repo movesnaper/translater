@@ -1,12 +1,16 @@
 import Header from './header/Header'
 import { Outlet } from "react-router-dom"
+import { UserProvider } from './UserProvider'
 
 const Lauout = () => {
   return <div className="App">
-    <Header></Header>
+    <UserProvider>
+      <Header/>
       <div className='app-content'>
         <Outlet></Outlet>
       </div>
+    </UserProvider>
+    
   </div>
 }
 
