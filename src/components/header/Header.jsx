@@ -5,12 +5,18 @@ import SideMenu from '../sideMenu/SideMenu.jsx'
 import { CButton } from '@coreui/react'
 import User from '../user/User'
 import { UserContext } from "../UserProvider"
-import { NavLink, useLocation } from "react-router-dom"
+import { NavLink, useParams, useNavigate } from "react-router-dom"
 
 const Header = () => {
   const [active, setActive] = useState(false)
-  const user = useContext(UserContext)
-  const { pathname } = useLocation();
+  const [user, setUser] = useContext(UserContext)
+  const {action} = useParams()
+  const navigate = useNavigate()
+  const logout = () => {
+    localStorage.removeItem('user_jwt')
+    setUser()
+    navigate('/auth/login')
+  }
   return <>
     <div className={style.header}>
       <div className={style.header_menu_burger}>
@@ -18,11 +24,10 @@ const Header = () => {
           <AiOutlineMenu size={25}/>
         </CButton>
       </div>
-    { user ? <User user={user}></User>  
-      : pathname !== '/login' && <div className={style.login}>
-          <NavLink to='login'>
-          login
-          </NavLink>
+    { user ? <User user={user} logout={logout}></User>  
+      : <div className={style.auth}>
+          { action === 'login' ? <NavLink to='auth/register'> register </NavLink>
+          : <NavLink to='auth/login'> login </NavLink> }
       </div>
     }
     </div>

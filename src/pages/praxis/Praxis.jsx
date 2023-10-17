@@ -1,85 +1,56 @@
 import React, { useState, useEffect} from "react"
 import { useParams, NavLink } from 'react-router-dom'
 import style from './Praxis.module.css'
-import { CFormCheck, CCardFooter, CContainer, CRow, CCol, CCard, CCardBody, CCardText, CButton } from '@coreui/react'
-import axios from 'axios'
-import Modal from './modal/Modal'
+import { CContainer } from '@coreui/react'
+import { db } from '../../db/index.js'
+// import Modal from './modal/Modal'
+import PraxisCard from './PraxisCard'
 
-const url = 'http://localhost:5000/praxis'
 
 const Praxis =  () => {
-  const [card, setCard] = useState({ docs: [], values: []})
-  const [modal, setModal] = useState(false)
-  const { id } = useParams();
+  const [card, setCard] = useState({ items: [] })
+  const { id } = useParams()
+
+  const setModal = () => {
+    setCard({...card, modal: !card.modal})
+  }
+
+  const setLoading = (loading) => {
+    setCard({...card, loading})
+  }
 
   const update = async () => {
-    const {data} = await axios.get(`${url}/${id || ''}` )
-    setCard(data)
+    try {
+      const doc = await db().get(`/${id}`)
+      setCard(doc)
+    }catch(e) {
+      console.log(e);
+    }finally {
+    }
   }
-  const handleCgange = (result = {}) => {
 
-    setCard({...card, result})
-  }
+
   const edit = (v) => {
     setModal(true)
   }
-
 
   useEffect(() => {
     update()
   }, [])
 
   return <CContainer className={style.Praxis}>
-    <Modal visible={modal} setModal={setModal} card={card}/>
+    {/* // <Modal visible={card.modal} setModal={setModal} card={card}/> */}
     <div className="d-flex justify-content-between">
       <div className="d-flex justify-content-center align-items-center">
-        <NavLink color="light" to={`/dictionary/${card.id}`}>
+        <NavLink color="light" to={`/dictionary/${id}`}>
             {card.title}
         </NavLink>
       </div>
       <div  className={style.praxis__header}>
-        <h1>Total: {card.total}</h1>
+        <h1>Total: {card.items.length}</h1>
       </div>
     </div>
-    <CRow >
-       <CCol >
-        <CCard>
-          <CCardBody className={style.card__body}>
-            <CRow className={style.card__body__row}>
-              <h2 className={style.card__body__value}>{ card.key }</h2>
-              <CCol
-              style={!card.result ? {} : card.result.origin === card.key ? {
-                background: '#a9eba94a'
-              } : {
-                background: '#efbbbb9e'
-              }}
-              className={style.card__body__left}>
-                { card.result && card.docs.map((doc, index) => {
-                  return <CCardText className={style.card__translate}
-                  key={index}>{doc && doc.translate }</CCardText>
-                })}
-              </CCol>
-              <CCol className={style.card__values}>
-                { card.values.map((doc = {}, index) => {
-                  return <CFormCheck key={index} label={doc && doc.translate}
-                  // className={style.card__formChek}
-                  defaultChecked={card.result && card.result._id === doc._id}
-                  disabled={!!card.result}
-                  onChange={() => handleCgange(doc)}
-                  />
-                }) }
-              </CCol>
-            </CRow>
-          </CCardBody>
-          <CCardFooter className={style.card__footer}>
-            <CButton  onClick={edit}>Edit</CButton>
-            <CButton  onClick={update}>Next</CButton>
-          </CCardFooter>
-        </CCard>
-      </CCol>
-
-      
-    </CRow>
+    {card.items.length && <PraxisCard items={card.items} />}
     </CContainer>
 }
 

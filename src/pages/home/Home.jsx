@@ -1,6 +1,6 @@
 import React, {useRef, useState, useEffect} from "react"
 import style from './Home.module.css'
-import { CRow, CCol, CCard, CCardBody, CCardTitle, CCardText, CButton, CSpinner } from '@coreui/react'
+import { CRow, CCol, CCard, CCardBody, CButton, CSpinner } from '@coreui/react'
 import { NavLink } from "react-router-dom"
 import { db } from '../../db/index.js'
 
