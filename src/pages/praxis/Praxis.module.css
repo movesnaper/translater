@@ -35,3 +35,7 @@
 .card__translate > p {
   font-size: 20px;
 }
+.timer_btn {
+  height: 50px;
+  width: 50px
+}

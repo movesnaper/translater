@@ -1,12 +1,21 @@
-import React, { useState, useRef } from 'react'
-import { CButton } from '@coreui/react'
+import React, { useState, useRef, useEffect } from 'react'
+import { cilAvTimer } from '@coreui/icons'
+
+import CIcon from '@coreui/icons-react'
 
 import style from './Praxis.module.css'
 
-const Timer = ({seconds = 5, next, start}) => {
-  const Ref = useRef(this)
+const Timer = ({seconds = 5, next, active}) => {
+  const Ref = useRef(null)
+  
   const [timer, setTimer] = useState('0')
-  const [active, setActive] = useState(false)
+  
+
+  useEffect(() => {
+    console.log(active);
+    if (active) reset()
+    else stop()
+  }, [active])
 
 const getTimeRemaining = (e) => {
   const total = Date.parse(e) - Date.parse(new Date())
@@ -17,7 +26,7 @@ const getTimeRemaining = (e) => {
 const startTimer = (deadline) => {
   const { total, seconds } = getTimeRemaining(deadline)
   if (total >= 0) setTimer(seconds)
-  else next().then(reset)
+  else next()
 }
 
 const getDeadLine = () => {
@@ -27,32 +36,26 @@ const getDeadLine = () => {
 }
 
 const resetTimer = () => {
+  setTimer(seconds)
   const deadline = getDeadLine()
   Ref.current = setInterval(() => {
     startTimer(deadline)
   }, 1000)
 }
 
-const reset = (active = true) => {
-  stop(active)
-  setTimer(seconds)
-  setActive(active)
-  if (active) resetTimer()
+const reset = () => {
+  stop()
+  resetTimer()
 }
 
 const stop = () => {
+  setTimer('timer')
   if (Ref.current) clearInterval(Ref.current)
 }
 
-const onStart = () => {
-  return start(this)
-}
-
-
   return (
     <div className={style.timer}>
-      {/* <CButton onClick={() => reset(!active)}>{timer}</CButton> */}
-      <CButton onClick={onStart}>{timer}</CButton>
+      { timer === 'timer' ? <CIcon icon={cilAvTimer} size="xl"/> : timer}
     </div>
   )
 }

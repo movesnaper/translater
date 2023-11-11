@@ -1,10 +1,8 @@
 import style from './Dictionary.module.css'
-import axios from 'axios'
+import { db } from '../../db/index.js'
 import React, { useState, useEffect } from "react"
 import { CListGroup, CListGroupItem, CButton } from '@coreui/react'
 import { useParams, NavLink } from 'react-router-dom'
-
-const url = 'http://localhost:5000/dictionary'
 
 const Dictionary =  () => {
   const [dictionary, setDictionary] = useState({ docs: [] })
@@ -16,7 +14,7 @@ const Dictionary =  () => {
     try {
       setLoadind(true)
       const params = { bookmark: dictionary.bookmark, limit: 10 }
-      const {data} = await axios.get(`${url}/${id || ''}`, { params })
+      const data = await db('/dictionary').get(`/${id}`, params)
       const docs = [...dictionary.docs, ...data.docs]
       setDictionary({...data, docs, done: !data.docs.length})
     } catch (e) {
@@ -49,7 +47,7 @@ const Dictionary =  () => {
         {dictionary.docs.map((doc, index) => {
           return <CListGroupItem key={index} className={style.ListItem}>
             <div>
-            <div>{doc.key}</div>
+            <div>{doc._id}</div>
             <div>{doc.dst}</div>
             </div>
           </CListGroupItem>

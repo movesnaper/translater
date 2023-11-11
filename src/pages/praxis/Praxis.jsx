@@ -8,7 +8,7 @@ import PraxisCard from './PraxisCard'
 
 
 const Praxis =  () => {
-  const [card, setCard] = useState({ items: [] })
+  const [card, setCard] = useState({ keys: [] })
   const { id } = useParams()
 
   const setModal = () => {
@@ -21,7 +21,7 @@ const Praxis =  () => {
 
   const update = async () => {
     try {
-      const doc = await db().get(`/${id}`)
+      const doc = await db('/documents').get(`/${id}`)
       setCard(doc)
     }catch(e) {
       console.log(e);
@@ -47,10 +47,10 @@ const Praxis =  () => {
         </NavLink>
       </div>
       <div  className={style.praxis__header}>
-        <h1>Total: {card.items.length}</h1>
+        <h1>Total: {card.keys.length}</h1>
       </div>
     </div>
-    {card.items.length && <PraxisCard items={card.items} />}
+    {card.keys.length && <PraxisCard items={card.keys} />}
     </CContainer>
 }
 

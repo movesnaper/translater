@@ -3,8 +3,11 @@ import axios from 'axios'
 import jwt_decode from "jwt-decode"
 
 axios.interceptors.response.use((response) => {
-  const {jwt} = response.headers
-  jwt ? localStorage.setItem('jwt', jwt) : localStorage.removeItem('jwt')
+  // const {user_jwt} = response.headers
+  // user_jwt ? 
+  // localStorage.setItem('user_jwt', user_jwt) 
+  // : localStorage.removeItem('user_jwt')
+
   return response
 }, async (error) => {
   if (error.response && error.response.status === 401) {
@@ -21,7 +24,7 @@ const config = {
   }
 }
 const query = (method, url, params) => {
-  setHeaders('jwt', localStorage.getItem('jwt'))
+  setHeaders('user_jwt', localStorage.getItem('user_jwt'))
   return axios[method](url, params, config)
     .then(res => res.data)
 }
@@ -35,7 +38,7 @@ const setHeaders = (name, value) => {
 
 export const user = {
   get name()  {
-    const token = localStorage.getItem('jwt')
+    const token = localStorage.getItem('user_jwt')
     return token && jwt_decode(token).name
   }
 }
@@ -47,9 +50,6 @@ export const db = (name = '') => {
     get: (url = '', params) => query('get', `${baseUrl}${url}`, {params}),
     post: (url, body) => query('post', `${baseUrl}${url}`, body),
     remove: (url, data) => query('delete', `${baseUrl}${url}`, {data}),
-    upload: async (formData) => {
-      const {data} = await axios.post(baseUrl, formData)
-      return data
-    }
+    upload: async (formData) => (await axios.post(baseUrl, formData)).data
   }
 }

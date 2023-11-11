@@ -1,9 +1,8 @@
 import React, {useRef, useState, useEffect} from "react"
 import style from './Home.module.css'
-import { CRow, CCol, CCard, CCardBody, CButton, CSpinner } from '@coreui/react'
-import { NavLink } from "react-router-dom"
+import { CRow, CCol } from '@coreui/react'
 import { db } from '../../db/index.js'
-
+import DocumentCard from './DocumentCard'
 
 const Home =  () => {
   const inpFile = useRef()
@@ -12,13 +11,13 @@ const Home =  () => {
 
 
   const onUpload =  async ({target}) => {
+    const [file] = target.files
+    if (!file) return
     setLoading('upload')
     try {
       const formData = new FormData()
-      formData.append('pdfFile', target.files[0])
-      const doc = await db('/').upload(formData)
-      setDocs([...docs, doc])
-      translate(doc)
+      formData.append('pdfFile', file)
+      setDocs([...docs, await db('/documents/upload').upload(formData)])
     } catch(e) {
       console.log(e)
       setLoading(false)
@@ -27,21 +26,12 @@ const Home =  () => {
 
   const update = async () => {
     try {
-      setDocs(await db('/').get())
+      setDocs(await db('/documents').get())
     } catch (e) {
       console.log(e);
     }
   }
-  const translate = async ({ _id }) => {
-      setLoading('translate')
-    try {
-      await db('/translate').get(`/${_id}`)
-    } catch (e) {
-      console.log(e);
-    } finally {
-      setLoading(false)
-    }
-  }
+
 
   useEffect(() => {
     update()
@@ -51,22 +41,7 @@ const Home =  () => {
     <CRow className="gap-5">
       {[ ...docs, { title: 'Add', btn: 'upload' } ].map((doc, index) => {
         return <CCol sm={3} key={index}>
-        <CCard>
-          <CCardBody>
-            { doc.btn ? <CButton disabled={ loading === doc.btn}
-              onClick={() => inpFile.current.click()}>
-            { loading === doc.btn && <CSpinner component="span" size="sm" aria-hidden="true"/> }
-            { doc.btn }
-            </CButton> :  loading === 'translate' ?
-              <CSpinner component="span" size="sm" aria-hidden="true"/> :
-              <>
-                <NavLink component="span" to={`/dictionary`}> dictionary </NavLink>
-                <span> / </span>
-                <NavLink component="span" to={`/dictionary/${doc._id}`}> {doc.title} </NavLink>
-              </>
-            }
-          </CCardBody>
-        </CCard>
+        <DocumentCard doc={doc} loading={loading} onClick={() => inpFile.current.click()}/>
       </CCol>
 
       })}
