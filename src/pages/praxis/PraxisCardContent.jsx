@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Timer from "./Timer"
 import style from './Praxis.module.css'
-import { CRow, CCol, CCardText, CButton } from '@coreui/react'
-import CardRandom from './CardRandom'
+import { CRow, CCol, CCardText, CButton, CFormCheck } from '@coreui/react'
+// import CardRandom from './CardRandom'
 
 const PraxisCardContent = ({ card, next }) => {
   const [active, setActive] = useState(false)
@@ -24,7 +24,15 @@ const PraxisCardContent = ({ card, next }) => {
       {card.dst }
     </CCardText> }
  </CCol>
- <CardRandom card={card} next={next}/>
+ <CCol className={ style.card__values }>
+  { card.random.map(({ _id, dst }, i) => {
+    return <CFormCheck key={ i } label={ dst }
+    defaultChecked={ card.result === _id }
+    disabled={ !!card.result }
+    onChange={ () => next(_id) }
+    />
+  }) }
+</CCol>
 </CRow>
 
 }

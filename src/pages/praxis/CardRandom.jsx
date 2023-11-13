@@ -4,11 +4,7 @@ import style from './Praxis.module.css'
 
 const CardRandom = ({ card, next }) => {
 
-  const getValue = (str = '') => {
-    const random = () => 0.5 - Math.random()
-    const [dst] = str.split(/,|;/).sort(random)
-    return dst.trim()
-  }
+
 
   return  <CCol className={ style.card__values }>
   { card.random.map(({ _id, dst }, i) => {

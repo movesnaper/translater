@@ -1,12 +1,11 @@
 import React, {useState, useEffect } from "react"
 import style from './Praxis.module.css'
-import { CCardFooter, CRow, CCol, CCard, CCardBody } from '@coreui/react'
+import { CCardFooter, CRow, CCol, CCard, CCardBody, CButton } from '@coreui/react'
 import PraxisCardContent from './PraxisCardContent'
-// import PraxisCardFooter from './PraxisCardFooter'
 import { db } from '../../db/index.js'
 
 const PraxisCard =  ({items}) => {
-  const [card, setCard] = useState({ })
+  const [card, setCard] = useState({ random: []})
   const [history, setHistory] = useState([])
 
   // const translate = async (key) => {
@@ -19,13 +18,18 @@ const PraxisCard =  ({items}) => {
     if (items.length > 5) items.splice(0, 1)
     setHistory(items.map((v, index) => ({...v, index})))
   }
+  const getValue = (v) => {
+    const random = () => 0.5 - Math.random()
+    const [dst = ''] = v.dst.split(/,|;/).sort(random)
+    return {...v, dst: dst.trim().toLoverCase()}
+  }
 
   const getRandom = async (item) => {
     if (!item._id) return []
     const random = () => 0.5 - Math.random()
     const items = (await db('/dictionary').get(`/random/4`))
       .filter(({_id}) => _id !== item._id)
-    return [...items, item].sort(random)
+    return [...items, item].sort(random).map(getValue)
   }
 
 
