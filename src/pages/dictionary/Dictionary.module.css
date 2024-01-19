@@ -26,3 +26,7 @@
   justify-content: space-between;
   width: 100%;
 }
+
+.dictionary__drop_down__btn {
+  margin-top: -5px;
+}

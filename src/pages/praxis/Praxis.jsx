@@ -1,57 +1,74 @@
-import React, { useState, useEffect} from "react"
-import { useParams, NavLink } from 'react-router-dom'
-import style from './Praxis.module.css'
-import { CContainer } from '@coreui/react'
-import { db } from '../../db/index.js'
-// import Modal from './modal/Modal'
-import PraxisCard from './PraxisCard'
+import React, { useState, useEffect } from "react"
+import style from './style.module.css'
+import { useParams } from 'react-router-dom'
+import Card from './Card'
+import Document from '../Document'
+import Edit from "./Card/CardEdit.jsx"
 
+import { db } from '../../db/index.js'
+
+const api = db(`/documents/`)
 
 const Praxis =  () => {
-  const [card, setCard] = useState({ keys: [] })
   const { id } = useParams()
+  const [card, setCard] = useState({})
+  const [history, setHistory] = useState([])
 
-  const setModal = () => {
-    setCard({...card, modal: !card.modal})
+  const next = async (card) => {
+    setCard(card || await getCard())
   }
 
-  const setLoading = (loading) => {
-    setCard({...card, loading})
+  const random= () => 0.5 - Math.random()
+
+  const getRendom = async (id) => {
+    const items = await api.get(`/random/${5}`)
+    return items.filter((v) => v._id !== id)
   }
 
-  const update = async () => {
-    try {
-      const doc = await db('/documents').get(`/${id}`)
-      setCard(doc)
-    }catch(e) {
-      console.log(e);
-    }finally {
-    }
+  const getDst = ({dst}) => dst.split(/,|;/).sort(random)
+
+  const getCard = async () => {
+    const { key, value } = await api.get(`${id}/card`)
+    const items = value && [...await getRendom(value._id), value]
+     .map((value) => ({...value, dst: getDst(value)[0]})).sort(random)
+    return {key, value, items, edit: !value && { key }}
   }
 
-
-  const edit = (v) => {
-    setModal(true)
+  const addHistory = (card) => {
+    setHistory([card, ...history]
+      .filter((v, index) => index <= 5).reverse()
+        .map((v, index) => ({...v, index})))
   }
 
-  useEffect(() => {
-    update()
-  }, [])
+  useEffect(() => { next() }, [id])
+  
+  return <Document id={id} className={style.Praxis}> 
+    { ({addResult}) => {
+      const setResult = async (card, timeout = 0) => {
+        const { key, value } = card
+        addResult(key, value).then(() => addHistory(card))
+        return new Promise( async (resolve) => {
+          setCard({...card, resolve})
+          setTimeout(resolve, timeout * 1000)
+        }).then(next)
+      }
+      const {edit, key, index = history.length, resolve = next} = card
 
-  return <CContainer className={style.Praxis}>
-    {/* // <Modal visible={card.modal} setModal={setModal} card={card}/> */}
-    <div className="d-flex justify-content-between">
-      <div className="d-flex justify-content-center align-items-center">
-        <NavLink color="light" to={`/dictionary/${id}`}>
-            {card.title}
-        </NavLink>
-      </div>
-      <div  className={style.praxis__header}>
-        <h1>Total: {card.keys.length}</h1>
-      </div>
-    </div>
-    {card.keys.length && <PraxisCard items={card.keys} />}
-    </CContainer>
+      return <Card card={{...card, setResult}} footer={[
+        { title: 'Prev', disabled: !index, action: () => resolve(history[index - 1])},
+        { title: 'Next', action: () => resolve(history[index + 1]), menu: [
+          { title: 'Edit', action: () => resolve({...card, edit: card}) }
+        ] },
+      ]}> <Edit card={{...edit, setCard: (edit) => setCard({...card, edit})}} 
+          schema={[
+          { title: 'Save', action: () => setResult(edit, 3), menu: [
+            { title: 'Remove', action: () => setResult({key, value: undefined}) },
+            { title: 'Exclude', action: () => setResult({key, value: 'exclude'}) }
+          ]}
+        ]}/>
+      </Card>
+    }}
+  </Document>
 }
 
 export default Praxis

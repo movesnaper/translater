@@ -49,7 +49,8 @@ export const db = (name = '') => {
   return {
     get: (url = '', params) => query('get', `${baseUrl}${url}`, {params}),
     post: (url, body) => query('post', `${baseUrl}${url}`, body),
+    update: (url, body) => query('put', `${baseUrl}${url}`, body),
     remove: (url, data) => query('delete', `${baseUrl}${url}`, {data}),
-    upload: async (formData) => (await axios.post(baseUrl, formData)).data
+    upload: async (formData) => (await axios.post(baseUrl, formData)).data,
   }
 }

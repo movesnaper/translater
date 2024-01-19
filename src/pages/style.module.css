@@ -1,0 +1,7 @@
+.ListGroupe {
+  max-height: 200px;
+  overflow: auto;
+}
+.distanation__items__input_col {
+  max-width: fit-content;
+}
