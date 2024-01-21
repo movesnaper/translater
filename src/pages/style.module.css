@@ -5,3 +5,7 @@
 .distanation__items__input_col {
   max-width: fit-content;
 }
+
+.autocomplete__dropdown_menu {
+  /* margin-top: 40px; */
+}

@@ -1,11 +1,12 @@
 import React from "react"
 import Layout from './CardLayout'
-import Items from './CardItems.jsx'
+import Items from './CardItems'
 import Result from "./CardResult"
+import BtnSave from "./CardBtnSave"
 import Title from "./CardTitle"
 import Transcription from "./CardTranscription"
 import Timer from "./CardTimer"
-import Footer from "./CardFooter.jsx"
+import Footer from "./CardFooter"
 
 const Card = ({ card, footer, children  }) => {
   
@@ -26,8 +27,9 @@ const Card = ({ card, footer, children  }) => {
   return Layout({
     header: [
       <Title title={value._id || key} result={value.result} />,
-      <Transcription card={edit || card}/>,
-      <Timer disabled={!!item || !!edit } reset={items} next={() => setResult(-1)}/>
+      <Transcription value={edit ? edit.value : value}/>,
+      edit ? <BtnSave value={edit.value} onClick={() => card.setResult(edit, 3)}/>
+      : <Timer disabled={!!item || !!edit } reset={items} next={() => setResult(-1)}/>
     ],
     left:  item && <Result value={ value } success={item === value._id}/>,
     right: <Items items={items} checked={item}

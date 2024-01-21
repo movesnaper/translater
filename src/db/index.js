@@ -18,11 +18,13 @@ axios.interceptors.response.use((response) => {
   }
   return Promise.reject(error.message)
 })
+
 const config = {
   headers: {
     'Content-Type': 'application/json;charset=utf-8',
   }
 }
+
 const query = (method, url, params) => {
   setHeaders('user_jwt', localStorage.getItem('user_jwt'))
   return axios[method](url, params, config)

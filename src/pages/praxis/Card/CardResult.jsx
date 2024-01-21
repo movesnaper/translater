@@ -1,5 +1,5 @@
 import React from "react";
-import { CRow, CCol, CCardText } from '@coreui/react'
+import { CRow } from '@coreui/react'
 import style from './style.module.css'
 
 const CardResult = ({ value, success }) => {
@@ -8,18 +8,9 @@ const CardResult = ({ value, success }) => {
 
   return <div className={style.card__result}
     style={{ background: green || '#efbbbb9e' }}>
-      <CRow>
-        <CCol><CCardText> { pos } </CCardText></CCol>
-      </CRow>
-      <CRow>
-        <CCol><CCardText> { dst } </CCardText></CCol>
-      </CRow>
-      <CRow card__result__exemple_row>
-      <CCol>
-      <div className={style.card__result__exemple_div}>{exm}</div>
-      </CCol>
-      </CRow>
-    
+    <div className={style.card__result__pos}> {pos} </div>
+    <div className={style.card__result__dst}> <h5>{dst}</h5> </div>
+    <div className={style.card__result__exm}>{exm}</div>
   </div>
 }
 

@@ -16,29 +16,37 @@
   max-width: fit-content;
   padding: 10px;
 }
-.card__timer {
+.card__timer, .card__btn_save {
   display: flex;
   justify-content: end;
 }
 .card__result {
   height: 100%;
-  padding: 15px;
+  padding: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
-.card__result__exemple_row {
-  /* max-height: 300px;
-  overflow: overlay;
-  background-color: #0000001c; */
+
+.card__result__pos {
+  font-size: 12px;
+  font-weight: bold;
+  color: #00000069;
 }
 
-.card__result__exemple_div {
-  max-height: 300px;
-  overflow: overlay;
+.card__result__dst {
+  padding: 10px;
+  margin-top: 5px;
   background-color: #0000001c;
+}
+
+.card__result__exm {
+  font-size: 13px;
+  margin-top: 10px;
+  max-height: 150px;
+  overflow: overlay;
   white-space: pre-wrap;
-  color: #000000ba;
+  color: #0000009c;
 }
 .card__footer {
   display: flex;
@@ -47,11 +55,15 @@
 
 .card__edit__input {
   display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+  flex-direction: column;
+  justify-content: space-between;
 }
 .card__edit__input__btn {
   max-width: fit-content;
+}
+.card__edit___item_pos {
+  font-size: 12px;
+  color: #0000009c;
 }
 .card__items > div {
   padding: 8px;

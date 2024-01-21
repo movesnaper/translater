@@ -1,27 +1,31 @@
-import React, {useState, useEffect} from "react";
-import { CRow, CCol, CListGroup, CListGroupItem } from '@coreui/react'
+import React, { useState, useEffect } from "react";
+import { CSpinner, CListGroup, CListGroupItem } from '@coreui/react'
 import style from './style.module.css'
 
 const TranslateItems = ({ api, url, schema }) => {
   const [items, setItems] = useState([])
+  const [loading, setLoading] = useState(false)
   const update = async () => {
-    setItems(await api.get(url))
+    try {
+      setLoading(true)
+      setItems(await api.get(url))
+    } catch(e) {
+      console.log(e);
+    } finally {
+      setLoading(false)
+    }
   }
   useEffect(() => { update() }, [url])
 
-  return <>
+  return loading ? <CSpinner/> :
  <CListGroup className={style.ListGroupe}>
-  { items && items.map((value, index) => {
-    return <CListGroupItem key={index} className={style.CListGroupItem}>
-      <CRow>
-        { schema.map((item, index) => 
-        <CCol key={index}> { item(value) } </CCol>)}
-      </CRow>
+  { items && items.map((item, index) => 
+    <CListGroupItem key={index} className={style.CListGroupItem}>
+      { schema(item) }
     </CListGroupItem>
-  })}
+  )}
 
 </CListGroup> 
-  </>
 }
 
 export default TranslateItems

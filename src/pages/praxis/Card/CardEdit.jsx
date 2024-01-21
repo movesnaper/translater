@@ -1,29 +1,28 @@
 import React from "react";
-import { CRow, CCol, CFormInput, CFormTextarea, CCardText, CButton } from '@coreui/react'
-import DropDownBtn from '../../DropDownBtn'
+import { CRow, CCol, CFormTextarea, CCardText, CButton } from '@coreui/react'
+import Transcription from "./CardTranscription"
+import Autocomplete from '../../Autocomplete'
 import style from './style.module.css'
 import TranslateItems from '../../TranslateItems.jsx'
 import { db } from '../../../db'
 
-const CardEdit = ({ card, schema }) => {
-  const { key, value = {}, setCard } = card || {}
-
-  const url = value._id ? `id/${value._id}` : `key/${key}`
+const CardEdit = ({ card }) => {
+  const { key, value = {} } = card || {}
+  const api = db(`/documents/translate/`)
 
   const setValue = (value) => {
     const {_id: item} = value
-    return setCard({...card, value, item})
+    return card.setCard({...card, value, item})
   }
 
   return <div className={style.card__edit}>
     <CRow>
       <CCol className={style.card__edit__input}>
-        <CFormInput value={ value._id } 
-          onInput={({target}) => setValue({...value, _id: target.value})}/>
-        <div className={style.card__edit__input__btn}>
-          <DropDownBtn  schema={schema}/>
-        </div>
-
+        <Autocomplete api={api} url={`key/${value._id || key}`}
+        value={value._id || key}
+        setValue={({ value: target, _id }) => setValue({...value, _id: target ||_id })}
+        schema={ (item) => <div className={style.card__edit__autocomplete_item}
+        onClick={() => setValue(item)}> { item._id } { item.dst } </div> }/>
       </CCol>
       <CCol>
         <CFormTextarea rows={2} value={value.dst}
@@ -31,12 +30,22 @@ const CardEdit = ({ card, schema }) => {
       </CCol>
     </CRow>
     <CRow className="mt-2">
-    <TranslateItems api={db(`/documents/translate/`)} url={url} schema={[
-      (value) => <CButton color="link" onClick={() => setValue(value)}> {value._id } </CButton>,
-      ({pos}) => pos && <CCardText> { pos } </CCardText>,
-      ({trc}) => trc && <CCardText> { trc } </CCardText>,
-      (value) => <CCardText> { value.dst } </CCardText>
-    ]}/>
+      <CCol>
+        {<TranslateItems api={api} url={`id/${value._id || key}`} 
+        schema={ (item) => <CRow>
+          <CCol xs={2}>
+            <CButton color="link" onClick={() => setValue(item)}> {item._id } </CButton>
+          </CCol>
+          <CCol xs={2} className={style.card__edit___item_pos}>
+            <span>{ item.pos}</span> 
+            <Transcription value={item}/>
+          </CCol>
+          <CCol>
+            <CCardText> { item.dst } </CCardText>
+          </CCol>
+        </CRow>
+          }/>}
+      </CCol>
     </CRow>
   </div>
 }

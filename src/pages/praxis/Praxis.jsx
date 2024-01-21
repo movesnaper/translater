@@ -4,7 +4,6 @@ import { useParams } from 'react-router-dom'
 import Card from './Card'
 import Document from '../Document'
 import Edit from "./Card/CardEdit.jsx"
-
 import { db } from '../../db/index.js'
 
 const api = db(`/documents/`)
@@ -25,7 +24,9 @@ const Praxis =  () => {
     return items.filter((v) => v._id !== id)
   }
 
-  const getDst = ({dst}) => dst.split(/,|;/).sort(random)
+  const getDst = ({dst}) => dst ? dst.split(/,|;/).sort(random) : []
+
+
 
   const getCard = async () => {
     const { key, value } = await api.get(`${id}/card`)
@@ -57,15 +58,14 @@ const Praxis =  () => {
       return <Card card={{...card, setResult}} footer={[
         { title: 'Prev', disabled: !index, action: () => resolve(history[index - 1])},
         { title: 'Next', action: () => resolve(history[index + 1]), menu: [
-          { title: 'Edit', action: () => resolve({...card, edit: card}) }
+          { title: 'Edit', action: () => resolve({...card, edit: card}) },
+          { title: 'Remove', action: () => setResult({key, value: undefined}) },
+          { title: 'Exclude', action: () => setResult({key, value: 'exclude'})}
         ] },
-      ]}> <Edit card={{...edit, setCard: (edit) => setCard({...card, edit})}} 
-          schema={[
-          { title: 'Save', action: () => setResult(edit, 3), menu: [
-            { title: 'Remove', action: () => setResult({key, value: undefined}) },
-            { title: 'Exclude', action: () => setResult({key, value: 'exclude'}) }
-          ]}
-        ]}/>
+      ]}> <Edit card={{...edit, 
+            setCard: (edit) => setCard({...card, edit}),
+            setResult: () => setResult(edit, 3)
+          }} />
       </Card>
     }}
   </Document>
