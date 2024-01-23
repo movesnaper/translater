@@ -78,3 +78,6 @@
   font-size: 16px;
   color: #1d9bf5;
 }
+.card__transcription_btn {
+  padding: 0;
+}

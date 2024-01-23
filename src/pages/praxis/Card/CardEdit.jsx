@@ -1,5 +1,5 @@
 import React from "react";
-import { CRow, CCol, CFormTextarea, CCardText, CButton } from '@coreui/react'
+import { CRow, CCol, CFormTextarea, CButton } from '@coreui/react'
 import Transcription from "./CardTranscription"
 import Autocomplete from '../../Autocomplete'
 import style from './style.module.css'
@@ -7,12 +7,12 @@ import TranslateItems from '../../TranslateItems.jsx'
 import { db } from '../../../db'
 
 const CardEdit = ({ card }) => {
-  const { key, value = {} } = card || {}
+  const { key, value = {}, setCard } = card || {}
   const api = db(`/documents/translate/`)
 
   const setValue = (value) => {
     const {_id: item} = value
-    return card.setCard({...card, value, item})
+    return setCard({...card, value, item})
   }
 
   return <div className={style.card__edit}>
@@ -31,20 +31,17 @@ const CardEdit = ({ card }) => {
     </CRow>
     <CRow className="mt-2">
       <CCol>
-        {<TranslateItems api={api} url={`id/${value._id || key}`} 
-        schema={ (item) => <CRow>
-          <CCol xs={2}>
+        <TranslateItems api={api} url={`id/${value._id || key}`} schema={ (item) => <CRow>
+          <CCol xs={3}>
             <CButton color="link" onClick={() => setValue(item)}> {item._id } </CButton>
           </CCol>
-          <CCol xs={2} className={style.card__edit___item_pos}>
+          <CCol xs={4} className={style.card__edit___item_pos}>
             <span>{ item.pos}</span> 
             <Transcription value={item}/>
           </CCol>
-          <CCol>
-            <CCardText> { item.dst } </CCardText>
-          </CCol>
+          <CCol> { item.dst } </CCol>
         </CRow>
-          }/>}
+          }/>
       </CCol>
     </CRow>
   </div>

@@ -1,27 +1,35 @@
-import React from "react"
+import React, { useState } from "react"
 import CIcon from '@coreui/icons-react'
-import { CButton } from '@coreui/react'
+import { CButton, CSpinner  } from '@coreui/react'
 import { cilVolumeHigh } from '@coreui/icons'
 
 import style from './style.module.css'
 
   const CardTranscription = ({ value }) => {
+    const [loading, setLoading] = useState(false)
     const { trc, snd } = value || {}
 
     const play = () => {
       try {
+        setLoading(true)
         const audio = new Audio(snd)
         audio.type = 'audio/wav'
         audio.play()
-      } catch(e) {}
+      } catch(e) {
+        console.log(e);
+      } finally {
+        setLoading(false)
+      }
     }
 
-  return trc && <h5 className={ style.card__transcription }> { `[${trc}]` }
-    { snd && <CButton className={style.transcriptionr_btn}
+  return trc && <div>
+    <span className={ style.card__transcription }> { `[ ${trc} ]` } </span>
+    { snd && <CButton className={style.card__transcription_btn}
     variant="ghost" onClick={play}>
-        <CIcon icon={cilVolumeHigh} />
+        {loading ? <CSpinner/> : <CIcon icon={cilVolumeHigh} />}
     </CButton>  }
-    </h5>
+  </div>
+
 
   
 }

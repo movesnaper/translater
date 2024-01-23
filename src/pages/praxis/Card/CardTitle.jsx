@@ -2,7 +2,10 @@ import React from "react";
 import { CBadge } from '@coreui/react'
 import style from './style.module.css'
 
-  const CardTitle = ({ title, result }) => {
+  const CardTitle = ({ value }) => {
+    const { _id, key, result } = value || {}
+    
+    const title = _id || key
 
   const info = result < 10 && 'info'
 

@@ -5,6 +5,7 @@ import Result from "./CardResult"
 import BtnSave from "./CardBtnSave"
 import Title from "./CardTitle"
 import Transcription from "./CardTranscription"
+import Header from "./CardHeader"
 import Timer from "./CardTimer"
 import Footer from "./CardFooter"
 
@@ -25,12 +26,12 @@ const Card = ({ card, footer, children  }) => {
   }
 
   return Layout({
-    header: [
-      <Title title={value._id || key} result={value.result} />,
+    header: <Header schema={[
+      <Title value={{...value, key}}/>,
       <Transcription value={edit ? edit.value : value}/>,
       edit ? <BtnSave value={edit.value} onClick={() => card.setResult(edit, 3)}/>
       : <Timer disabled={!!item || !!edit } reset={items} next={() => setResult(-1)}/>
-    ],
+    ]}/>,
     left:  item && <Result value={ value } success={item === value._id}/>,
     right: <Items items={items} checked={item}
      addResult={(item) => setResult(item)}/>,

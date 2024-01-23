@@ -2,7 +2,7 @@ import React from "react";
 import { CButton, CFormCheck, CDropdown, CDropdownToggle, CDropdownMenu, CDropdownItem } from '@coreui/react'
 import style from './Dictionary.module.css'
 
-const DictionaryTableDropDownBtn = ({ value, addResult }) => {
+const DropDownBtn = ({ value, addResult }) => {
   const exclude = () => {
     addResult(value);
   }
@@ -25,4 +25,4 @@ const DictionaryTableDropDownBtn = ({ value, addResult }) => {
 
 }
 
-export default DictionaryTableDropDownBtn
+export default DropDownBtn

@@ -3,8 +3,8 @@ import style from './style.module.css'
 import { useParams } from 'react-router-dom'
 import Card from './Card'
 import Document from '../Document'
-import Edit from "./Card/CardEdit.jsx"
-import { db } from '../../db/index.js'
+import Edit from './Card/CardEdit'
+import { db } from '../../db'
 
 const api = db(`/documents/`)
 
@@ -26,8 +26,6 @@ const Praxis =  () => {
 
   const getDst = ({dst}) => dst ? dst.split(/,|;/).sort(random) : []
 
-
-
   const getCard = async () => {
     const { key, value } = await api.get(`${id}/card`)
     const items = value && [...await getRendom(value._id), value]
@@ -43,7 +41,7 @@ const Praxis =  () => {
 
   useEffect(() => { next() }, [id])
   
-  return <Document id={id} className={style.Praxis}> 
+  return <Document id={id}> 
     { ({addResult}) => {
       const setResult = async (card, timeout = 0) => {
         const { key, value } = card

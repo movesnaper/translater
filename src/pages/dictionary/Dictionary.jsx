@@ -47,25 +47,7 @@ const Dictionary =  () => {
     }
   }
 
-  const tableSchema = (update) => {
 
-    const setResult = (key, value) => (evt) => {
-      evt.stopPropagation()
-      const result = value.result < 10 ? 10 : 0
-      addResult(key, {...value, result }).then((value) => update({ key, value }))
-    }
-    return [
-      { title: '#', key: 'index', getValue: ({index}) => index + 1 },
-      { title: 'Id', key: 'id', getValue: ({key, value }) => value?._id || key },
-      { title: 'Distanation', key: 'dst', getValue: ({ value }) => value?.dst },
-      { title: 'Result', key: 'rst', getValue: ({ key, value, index }) => 
-        !!value?._id && <div onClick={ setResult(key, value, index) }>
-      <CFormCheck button={{ color: 'primary', variant: 'outline' }} 
-      label={ (value.result || 0).toString() } 
-      defaultChecked={ value.result >= 10 }/>      
-      </div>}
-    ]
-  }
 
   const btnSchema = (value, update) => {
     const items = [

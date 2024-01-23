@@ -10,9 +10,7 @@ const CardLayout = ({ header, right, left, edit, footer }) => {
     <CCard>
       <CCardBody className={style.card__body}>
         <CRow className={style.card__body__row}>
-          <CRow className={style.card__body__value}> 
-            {header.map((value, index) => <CCol key={index}>{value}</CCol>)}
-          </CRow>
+          { header }
           { edit || <CRow>
             { <CCol className={style.card__body__left}> { left } </CCol>}
             { <CCol> { right } </CCol> }
