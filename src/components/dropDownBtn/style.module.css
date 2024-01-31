@@ -1,0 +1,12 @@
+
+.dropDownBtn__group {
+  display: flex;
+  align-items: center;
+}
+.dropDownBtn__toggle {
+  color: inherit;
+  max-width: fit-content;
+}
+.dropDownBtn__group__btn {
+  border: none;
+}

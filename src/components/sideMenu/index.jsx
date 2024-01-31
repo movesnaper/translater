@@ -1,5 +1,5 @@
 import React from "react";
-import style from './SideMenu.module.css'
+import style from './style.module.css'
 import { AiOutlineClose } from "react-icons/ai"
 import { CButton } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
@@ -17,11 +17,11 @@ const SideMenu = ({active, hide}) => {
 
     {[
       { to: '/', text: 'Ru-En словарь'}, 
-      { to: '/favorit', text: 'Избранное', icon: 'cibApacheSpark'}, 
-      { to: '/dictionary', text: 'словарь', icon: 'cibApacheSpark'}, 
-      { to: '/story', text: 'история', icon: 'cilHistory'}, 
-      { to: '/praxis', text: 'упражнения', icon: 'cibGooglesCholar'}, 
-      { to: '/settings', text: 'настройки', icon: 'cilCog'}, 
+      { to: '/excludes', text: 'Excludes', icon: 'cibApacheSpark'}, 
+      { to: '/dictionary', text: 'Dictionary', icon: 'cibApacheSpark'}, 
+      { to: '/story', text: 'History', icon: 'cilHistory'}, 
+      { to: '/praxis', text: 'Praxis', icon: 'cibGooglesCholar'}, 
+      { to: '/settings', text: 'Settings', icon: 'cilCog'}, 
 
       
     ].map(({ to, text, icon, color}, i) => {

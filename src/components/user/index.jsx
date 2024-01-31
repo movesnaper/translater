@@ -1,6 +1,6 @@
 import React from 'react'
 import { CAvatar } from '@coreui/react'
-import style from './User.module.css'
+import style from './style.module.css'
 import { CButton } from '@coreui/react'
 import { AiOutlineLogout } from "react-icons/ai"
 

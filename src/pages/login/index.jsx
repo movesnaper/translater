@@ -1,11 +1,11 @@
 import React, { useState, useContext } from "react"
 import { CForm, CFormInput, CButton } from '@coreui/react'
 import { useParams } from "react-router-dom"
-import style from './Login.module.css'
+import style from './style.module.css'
 import { useNavigate } from "react-router-dom"
 import { AiOutlineClose } from "react-icons/ai"
 import { db } from '../../db/index.js'
-import { UserContext } from "../../components/UserProvider"
+import { UserContext } from "../../components/UserProvider.jsx"
 
  const Login = () => {
   const [user, setUser] = useContext(UserContext)

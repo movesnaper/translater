@@ -1,32 +1,23 @@
-import React, { useState, useEffect} from "react"
+import React from "react"
 import style from './style.module.css'
 import { CContainer } from '@coreui/react'
 import { db } from '../db/index.js'
-import DocumentHeader from './DocumentHeader.jsx'
+const api = db(`/documents`)
 
-const Document =  ({ id, children }) => {
-  
-  const [document, setDocument] = useState({})
+const Document =  ({ children }) => {
 
-  const update = async () => {
-    setDocument(await db(`/documents`).get(`/${id}`))
-  }
-
-  const addResult = async (key, value) => {
+  const setResult = async (items) => {
     try {
-      await db(`/documents/${id}`).post(`/result/${key}`, {value})
-      update()
+    const results = items.reduce((cur, { doc_id, key, value }) => {
+      return {...cur, [doc_id]: [...cur[doc_id] || [], {key, value}]}
+    }, {})
+      await api.post(`/results`, results)
     } catch(e) {
       console.log(e);
     }
   }
 
-  useEffect(() => { !!id && update() }, [id])
-
-  return <CContainer className={style.Praxis}>
-    <DocumentHeader document={document}/>
-    {children({...document, addResult })}
-  </CContainer>
+  return <CContainer className={style.Praxis}>{children(setResult)}</CContainer>
 }
 
 export default Document

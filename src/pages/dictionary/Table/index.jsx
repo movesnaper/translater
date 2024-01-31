@@ -1,56 +1,43 @@
-import React, { useState, useEffect } from "react";
-import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell } from '@coreui/react'
+import React, { useState } from 'react'
+import Table from '../../../components/table'
+import DropDownBtn from '../../../components/dropDownBtn'
+import { header, checkInputs } from './schema'
+import Modal from './TableModal'
 import style from './style.module.css'
 
-
-const DictionaryTable = ({ api, url, limit, height, schema, rowClick }) => {
-  const [data, setData] = useState({ skip: 0, loading: false })
+const DictionaryTable = ({ api, setItems }) => {
+  const [modal, setModal] = useState(false)
   const [values, setValues] = useState([])
-  const { loading, skip } = data || {}
 
-  const handelScroll = ({target}) => {
-    target.scrollHeight - target.scrollTop <= height + 1  && update(data)
-  }
-
-  const updateValues = (index) => (value) => {
-    value ? values.splice(index, 1, value) : values.splice(index, 1)
+  const update = (items) => {
+    items.map((item) => values.splice(item.index, 1, item))
     setValues([...values])
+    setModal(false)
   }
 
-  const update = async (data) => {
-    if (loading) return
-    try {
-      setData({...data, loading: true})
-      const { values: docs, offset } = await api.get(url, { limit, skip })
-      setData({...data, skip: offset + limit, loading: false})
-      setValues([...values, ...docs])
-    } catch (e) {
-      console.log(e);
-    }
-  }
+  const modalFooter = <DropDownBtn schema={
+    [{}, { title: 'Save', action: () => setItems([modal]).then(update) }]}/> 
+  const items = values.map((item, index) => ({...item, index }))
+  const checked = items.filter(({checked}) => !!checked)
 
-  useEffect(() => { url && update(data) }, [url])
+  const setValue = (value) => setItems(checked.map((item) => ({...item, value})))
+    .then(() => setValues(items.filter(({checked}) => !checked)))
 
-  const {items, row, header } = schema(values)
-
-  return <div className={style.dictionary__table} style={{ height }} onScroll={handelScroll}>
-  <CTable hover small style={{ width: '100%'}}>
-  <CTableHead style={{ position: "sticky", top: 0 }}>
-    <CTableRow> { header.map(({title}, key) => 
-      <CTableHeaderCell key={key}>{title}</CTableHeaderCell>)}
-    </CTableRow>
-  </CTableHead>
-  <CTableBody>{ items.map((value, index) => {
-    // const update = updateValues(index)
-    return <CTableRow key={index} 
-      onClick={() => row.onClick(value, index)}>
-      { header.map(({getValue}, key) => 
-      <CTableDataCell key={key}>{ getValue(value, index) }</CTableDataCell>)}
-  </CTableRow>
-  })}
-  </CTableBody>
-</CTable>
-</div>  
+  return <div className={style.dictionary__table}>
+    <Modal modal={modal} setModal={setModal} footer={modalFooter}/>
+    <Table api={api} height={400} limit={10}
+      setItems={(items) => setValues([...values, ...items])}
+      schema={{ items, onClick: setModal, header: [ 
+        ...header((items) => setItems(items).then(update)), 
+        {...checkInputs(update), title: <DropDownBtn schema={[
+          { value: checked.length, menu: [
+            { title: 'Remove', action: () => setValue(undefined) },
+            { title: 'Exclude', action: () => setValue('exclude') }           
+          ] }
+        ]}/> } 
+        ]
+      }}/>
+  </div>
 }
 
 export default DictionaryTable

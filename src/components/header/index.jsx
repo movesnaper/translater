@@ -1,10 +1,10 @@
 import React, { useState, useContext  } from 'react'
-import style from './Header.module.css'
+import style from './style.module.css'
 import { AiOutlineMenu } from "react-icons/ai"
-import SideMenu from '../sideMenu/SideMenu.jsx'
+import SideMenu from '../sideMenu'
 import { CButton } from '@coreui/react'
-import User from '../user/User'
-import { UserContext } from "../UserProvider"
+import User from '../user'
+import { UserContext } from "../UserProvider.jsx"
 import { NavLink, useParams, useNavigate } from "react-router-dom"
 
 const Header = () => {

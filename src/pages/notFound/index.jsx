@@ -1,5 +1,5 @@
 import React from "react";
-import style from './NotFound.module.css'
+import style from './style.module.css'
 
 const NotFound =  () => {
   return <div className={style.NotFound}>NotFound</div>

@@ -1,4 +1,4 @@
-import Header from './header/Header'
+import Header from './header'
 import { Outlet } from "react-router-dom"
 import { UserProvider } from './UserProvider'
 

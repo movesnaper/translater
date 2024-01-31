@@ -1,14 +1,14 @@
-import Home from './home/Home.jsx'
-import Login from './login/Login.jsx'
-import Favorit from './favorit/Favorit.jsx'
-import NotFound from './notFound/NotFound.jsx'
+import Home from './home'
+import Login from './login'
+import Excludes from './excludes'
+import NotFound from './notFound'
 import Dictionary from './dictionary'
 import Praxis from './praxis'
 
 export  {
   Home,
   Login,
-  Favorit,
+  Excludes,
   Dictionary,
   Praxis,
   NotFound

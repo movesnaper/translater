@@ -6,6 +6,7 @@
   text-align: center;
   justify-content: space-between;
   padding: 0 30px;
+  align-items: center;
 }
 
 .App-header {
@@ -20,16 +21,16 @@
 }
 
 .header_menu_burger {
-  display: flex;
+  /* display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: center; */
 }
 
 .auth {
   color: white;
-  display: flex;
+  /* display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: center; */
 }
 
 

@@ -7,7 +7,7 @@ import Title from "./CardTitle"
 import Transcription from "./CardTranscription"
 import Header from "./CardHeader"
 import Timer from "./CardTimer"
-import Footer from "./CardFooter"
+import DropDownBtn from '../../../components/dropDownBtn'
 
 const Card = ({ card, footer, children  }) => {
   
@@ -27,16 +27,16 @@ const Card = ({ card, footer, children  }) => {
 
   return Layout({
     header: <Header schema={[
-      <Title value={{...value, key}}/>,
-      <Transcription value={edit ? edit.value : value}/>,
-      edit ? <BtnSave value={edit.value} onClick={() => card.setResult(edit, 3)}/>
-      : <Timer disabled={!!item || !!edit } reset={items} next={() => setResult(-1)}/>
+      { component: <Title value={{...value, key}}/> },
+      { component: <Transcription value={edit ? edit.value : value}/> },
+      { component: edit ? <BtnSave value={edit.value} onClick={() => card.setResult(edit, 3)}/>
+      : <Timer disabled={!!item || !!edit } reset={items} next={() => setResult(-1)}/>}
     ]}/>,
     left:  item && <Result value={ value } success={item === value._id}/>,
     right: <Items items={items} checked={item}
      addResult={(item) => setResult(item)}/>,
     edit: edit && children,
-    footer: <Footer card={card} schema={footer}/>
+    footer: <DropDownBtn card={card} schema={footer}/>
 
   })
 }
