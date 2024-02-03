@@ -4,6 +4,7 @@ import Excludes from './excludes'
 import NotFound from './notFound'
 import Dictionary from './dictionary'
 import Praxis from './praxis'
+import Text from './text'
 
 export  {
   Home,
@@ -11,5 +12,6 @@ export  {
   Excludes,
   Dictionary,
   Praxis,
-  NotFound
+  NotFound,
+  Text
 }

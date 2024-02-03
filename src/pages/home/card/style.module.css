@@ -1,0 +1,15 @@
+.document__card__title {
+  color: #0000ffb5;
+  color: #000000ad;
+  font-weight: 700;
+  border-bottom: 1px solid;
+}
+.document__card__title:hover {
+  color: #0000ffb5;
+}
+.card__info {
+  font-size: 13px;
+}
+.card__info__value {
+  color: #0000ffb5;
+}

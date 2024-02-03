@@ -1,10 +1,13 @@
-import React, {useRef, useState, useEffect} from "react"
+import React, {useRef, useState, useEffect, useContext} from "react"
 import style from './style.module.css'
 import { CRow, CCol } from '@coreui/react'
 import { db } from '../../db/index.js'
-import DocumentCard from './DocumentCard.jsx'
+import DocumentCard from './card/index.jsx'
+import { UserContext } from "../../components/UserProvider.jsx"
+import Info from './info'
 
 const Home =  () => {
+  const [user] = useContext(UserContext)
   const inpFile = useRef()
   const [docs, setDocs] = useState([])
   const [loading, setLoading] = useState(false)
@@ -13,9 +16,11 @@ const Home =  () => {
   const upload =  async ({target}) => {
     const [file] = target.files
     if (!file) return
-    setLoading(true)
     try {
-      setDocs([...docs, {file}])
+      setLoading(true)
+      const formData = new FormData()
+      formData.append('pdfFile', file)
+      setDocs([...docs, await db('/documents/upload').upload(formData)])
     } catch(e) {
       console.log(e)
     } finally {
@@ -34,12 +39,10 @@ const Home =  () => {
     }
   }
 
-  const save = (file) => {
+  const save = ({ title, results }) => {
     try {
-      const formData = new FormData()
-      formData.append('pdfFile', file)
       setLoading(true)
-      db('/documents/upload').upload(formData).then(update)      
+      db('/documents').post('/', { title, results }).then(update)
     } catch (e) {
       console.log(e);
     } finally {
@@ -48,19 +51,21 @@ const Home =  () => {
   }
 
 
-  useEffect(() => { update() }, [])
+  useEffect(() => { user && update() }, [user])
 
-  return <div className={style.home}>
-    <CRow className="gap-5">
-      {[ ...docs, { btn: 'Add' } ].map((doc, index) => {
+
+  const cards = user &&  <CRow className="gap-5">
+      {[ ...docs, { upload: () => inpFile.current.click() } ].map((doc, index) => {
         return <CCol sm={3} key={index}>
-        <DocumentCard doc={doc} loading={loading} save={save}
-        upload={() => inpFile.current.click()}/>
+        <DocumentCard doc={{...doc, save }} loading={loading}/>
       </CCol>
 
       })}
     </CRow>
+  return <div className={style.home}>
+    { cards || <Info/> }
     <input type="file" ref={inpFile} hidden onChange={upload}/>
+
   </div>
 }
 

@@ -19,7 +19,7 @@ const SideMenu = ({active, hide}) => {
       { to: '/', text: 'Ru-En словарь'}, 
       { to: '/excludes', text: 'Excludes', icon: 'cibApacheSpark'}, 
       { to: '/dictionary', text: 'Dictionary', icon: 'cibApacheSpark'}, 
-      { to: '/story', text: 'History', icon: 'cilHistory'}, 
+      { to: '/text', text: 'Text', icon: 'cilHistory'}, 
       { to: '/praxis', text: 'Praxis', icon: 'cibGooglesCholar'}, 
       { to: '/settings', text: 'Settings', icon: 'cilCog'}, 
 

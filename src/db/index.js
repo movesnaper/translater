@@ -1,17 +1,16 @@
 import axios from 'axios'
-// import { router } from '@/setup'
 import jwt_decode from "jwt-decode"
 
 axios.interceptors.response.use((response) => {
-  // const {user_jwt} = response.headers
-  // user_jwt ? 
-  // localStorage.setItem('user_jwt', user_jwt) 
-  // : localStorage.removeItem('user_jwt')
+  const {user_jwt} = response.headers
+  user_jwt ? 
+  localStorage.setItem('user_jwt', user_jwt) 
+  : localStorage.removeItem('user_jwt')
 
   return response
 }, async (error) => {
   if (error.response && error.response.status === 401) {
-    // router.push('/logout')
+    window.location = '/auth/login';
   }
   if (error.response && error.response.data) {
     return Promise.reject(error.response.data)

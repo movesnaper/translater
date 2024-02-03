@@ -1,0 +1,12 @@
+.pages__text {
+  white-space: pre;
+  padding-left: 20px;
+  font-size: 17px;
+}
+.pages__item {
+  position: absolute;
+  background-color: black;
+  padding: 20px;
+  z-index: 10;
+  max-width: min-content;
+}

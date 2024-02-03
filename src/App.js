@@ -1,6 +1,6 @@
 import './App.css'
 import { Routes, Route } from "react-router-dom"
-import {Home, Login, Excludes, Dictionary, Praxis, NotFound} from './pages'
+import {Home, Login, Text, Excludes, Dictionary, Praxis, NotFound} from './pages'
 import Layout from './components/Layout'
 
 
@@ -11,6 +11,7 @@ function App() {
         <Route path="/auth/:action?" element={<Login/>}></Route>
         <Route path="/excludes/:id?" element={<Excludes/>}></Route>
         <Route path="/dictionary/:id?" element={<Dictionary/>}></Route>
+        <Route path="/text/:id?" element={<Text/>}></Route>
         <Route path="/praxis/:id?" element={<Praxis/>}></Route>
         <Route path="*" element={<NotFound/>}></Route>
         </Route>

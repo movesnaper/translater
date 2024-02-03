@@ -11,3 +11,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.translate {
+  position: relative;
+}
+.translate:hover {
+  color: #e9b8b8;
+  cursor: pointer;
+}
