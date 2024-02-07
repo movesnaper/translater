@@ -6,12 +6,11 @@ import DocumentCard from './card/index.jsx'
 import { UserContext } from "../../components/UserProvider.jsx"
 import Info from './info'
 
-const Home =  () => {
+const HomePage =  () => {
   const [user] = useContext(UserContext)
   const inpFile = useRef()
   const [docs, setDocs] = useState([])
   const [loading, setLoading] = useState(false)
-
 
   const upload =  async ({target}) => {
     const [file] = target.files
@@ -39,10 +38,10 @@ const Home =  () => {
     }
   }
 
-  const save = ({ title, results }) => {
+  const save = ({ title }) => {
     try {
       setLoading(true)
-      db('/documents').post('/', { title, results }).then(update)
+      db('/documents').post('/', { title }).then(update)
     } catch (e) {
       console.log(e);
     } finally {
@@ -50,9 +49,7 @@ const Home =  () => {
     }
   }
 
-
   useEffect(() => { user && update() }, [user])
-
 
   const cards = user &&  <CRow className="gap-5">
       {[ ...docs, { upload: () => inpFile.current.click() } ].map((doc, index) => {
@@ -62,11 +59,10 @@ const Home =  () => {
 
       })}
     </CRow>
-  return <div className={style.home}>
-    { cards || <Info/> }
-    <input type="file" ref={inpFile} hidden onChange={upload}/>
 
+  return <div className={style.home__page}>{cards || <Info/>}
+    <input type="file" ref={inpFile} hidden onChange={upload}/>
   </div>
 }
 
-export default Home
+export default HomePage

@@ -10,12 +10,12 @@ a {
   margin: 0 auto;
 }
 .app-content {
-  min-height: calc(100vh - 100px);
+  /* min-height: calc(100vh - 100px); */
   background-color: rgb(12, 11, 11);
   color: white;
   flex-grow: 1;
-  overflow: auto;
-  min-height: calc(100% + 120px);  
+  /* overflow: auto; */
+  /* min-height: calc(100% + 120px);   */
 }
 .items-center {
   align-items: center;
@@ -25,11 +25,9 @@ a {
   width: 100%;
   height: 100vh;
   display: grid;
-  grid-template-rows: 120px 1fr 120px;
+  /* grid-template-rows: 120px 1fr 120px; */
 }
-/* span .translate {
-  color: red
-} */
+
 
 
 

@@ -1,7 +1,7 @@
-import React from "react";
+// import React from "react";
 
-const Info = () => {
-  return 'Info'
+const PageInfo = () => {
+  return 'PageInfo'
 }
 
-export default Info
+export default PageInfo

@@ -1,50 +1,46 @@
-import React, { useEffect, useState } from "react"
-import style from './style.module.css'
+import React, { useState } from "react"
 import Modal from '../../dictionary/table/TableModal'
 import DropDownBtn from '../../../components/dropDownBtn'
+import TextHtml from "./TextHtml"
 
+const Text = ({ api, setItem }) => {
+  const [state, setState] = useState({})
+  const [values, setValues] = useState([])
 
-const Text = ({ value, setItems}) => {
-  const {text, results} = value || {}
-  const [item, setItem] = useState(null)
-  const [modal, setModal] = useState(false)
-  const { dst, offset } = item || {}
+  const { modal, loading } = state || {}
 
-  const showItem = (item, { x, y }) => {
-    setItem({...item, offset: {x, y}})
+  const setModal = (modal) => setState({...state, modal })
+
+  const setLoading = (loading) => setState({...state, loading })
+
+  const update = ({ key, value }) => {
+    values.filter((v) => v.key === key).forEach((v) => {
+      values.splice(v.index, 1, {...v, value})
+    })
+    
   }
-
-  const hideItem = () => {
-    let timeout = window.setTimeout(setItem, 3000)
-    while (timeout--) { window.clearTimeout(timeout) }
+  const setValue = async (value) => {
+    try {
+      setLoading(true)
+      await setItem({...modal, value}).then(update)
+    } catch (e){ console.log(e);}
+    finally{ setState({}) }
   }
-
-  const edit = (v) => {
-    setModal(v)
-  }
-
-  const addAction = (node) => {
-    const { textContent: key } = node || {}
-    const { _id, dst } = results[key] || {}
-      node.onclick = (evt) => showItem({ key, _id, dst }, evt)
-      node.ondblclick = () => edit({key, value: {_id, dst}})
-  }
-  
-  useEffect(() => { item && hideItem() }, [item])
-
-  useEffect(() => {
-    Array.from(document.getElementsByClassName('translate')).forEach(addAction)
-  }, [results])
-
-  const modalFooter = <DropDownBtn schema={
-    [{}, { title: 'Save', action: () => setItems([modal]).then(setModal)}]}/> 
+  const saveBtn = { title: 'Save', loading, action: () => setValue(modal.value),
+  menu: [
+    { title: 'Exclude', action: () => setValue('exclude')},
+    { title: 'Remove', action: () => setValue(undefined)}
+  ]}
   
 return <>
-  <Modal modal={modal} setModal={setModal} footer={modalFooter}/>
-  { dst && <span style={{ top: `${offset.y - 40}px`, left: `${offset.x + 10}px`}} 
-  className={style.pages__item}>{dst}</span>}
-  <div className={style.pages__text} dangerouslySetInnerHTML={{ __html: text}}
-></div>
+  <Modal modal={modal} setModal={setModal}
+   footer={<DropDownBtn schema={[ {}, saveBtn ]}/>}
+   />
+  <TextHtml api={api} height={400}
+  schema={{ items: values, onClick: setModal, setItems: (items) => {
+    setValues([...values, ...items])
+  }}}/>
+  
 </>
 }
 

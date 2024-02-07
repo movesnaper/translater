@@ -1,6 +1,4 @@
 import React from "react"
-import style from './style.module.css'
-import { CContainer } from '@coreui/react'
 import { db } from '../db/index.js'
 const api = db(`/documents`)
 
@@ -17,7 +15,7 @@ const Document =  ({ children }) => {
     }
   }
 
-  return <CContainer className={style.Praxis}>{children(setResult)}</CContainer>
+  return <div>{children(setResult)}</div>
 }
 
 export default Document

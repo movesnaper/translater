@@ -7,12 +7,10 @@ import DropDownBtn from '../dropDownBtn'
 
 export const dropDowvNavs = ({ id, xs, url, title }, ...menu) => {
   return { xs, value: <DropDownBtn schema={[
-    { value: <div>
-      { title }
-      <NavLink color='white' to={`${url}/${id}`}>{url}</NavLink>
-    </div>,
+    { value: title },
+    { value: <NavLink color='white' to={`${url}/${id}`}>{url}</NavLink>,
       menu: menu.map((url) => 
-      ({ value: <NavLink to={`${url}/${id}`}>{url}</NavLink>}))
+      ({ title: url, href: `${url}/${id}`}))
     }
     ]}/>
   }

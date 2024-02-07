@@ -7,7 +7,7 @@ import Statistic, { dropDowvNavs } from '../../components/statistic'
 import { useParams } from 'react-router-dom'
 
 
-const Excludes =  () => {
+const ExcludesPage =  () => {
   const { id = '' } = useParams()
   const url = '/dictionary/excludes'
   
@@ -29,4 +29,4 @@ const Excludes =  () => {
     }</Document>
 }
 
-export default Excludes
+export default ExcludesPage

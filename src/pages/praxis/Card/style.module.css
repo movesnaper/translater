@@ -9,7 +9,7 @@
 }
 .card__timer, .card__btn_save {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 }
 .card__result {
   height: 100%;

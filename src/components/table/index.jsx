@@ -3,13 +3,13 @@ import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableData
 import style from './style.module.css'
 
 
-const Table = ({ api, limit, height, schema, setItems }) => {
+const Table = ({ api, limit, height, schema }) => {
   const [mark, setMark] = useState({})
-  const { items, header, onClick } = schema || {}
+  const { items, setItems, header, onClick } = schema || {}
 
   const handelScroll = ({target}) => {
     const { scrollHeight, scrollTop} = target
-    scrollHeight - scrollTop <= height - 21  && update()
+    scrollHeight - scrollTop < height   && update()
   }
 
   const update = async () => {

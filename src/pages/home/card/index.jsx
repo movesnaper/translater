@@ -5,7 +5,6 @@ import { NavLink } from "react-router-dom"
 import CardBtn from './CardBtn'
 import CardInfo from './CardInfo'
 import style from './style.module.css'
-{/*  */}
 
 const DocumentCard =  ({ doc, loading }) => {
   const [title, setTitle] = useState('')

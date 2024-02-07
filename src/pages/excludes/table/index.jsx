@@ -20,9 +20,9 @@ const ExcludesTable = ({ api, setItems }) => {
     .then(() => setValues(items.filter(({checked}) => !checked)))
 
   return <div className={style.excludes__table}>
-    <Table api={api} height={400} limit={10} 
-    setItems={(items) => setValues([...values, ...items])}
-    schema={{ items, header: [
+    <Table api={api} height={400} limit={10}
+    schema={{ items, setItems: (items) => setValues([...values, ...items]),
+      header: [
       { title: '#', getValue: ({ index }) => index + 1 },
       { title: 'Id', getValue: ({ key, value }) => value?._id || key },
       {...checkInputs(update), title: <DropDownBtn schema={[

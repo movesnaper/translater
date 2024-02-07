@@ -5,16 +5,26 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-.translate {
+._t {
   position: relative;
 }
-.translate:hover {
+._t:hover {
   color: #e9b8b8;
   cursor: pointer;
+}
+.span_tooltip {
+  color: beige;
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  z-index: 10;
+  padding: 10px;
+  background-color: black;
 }

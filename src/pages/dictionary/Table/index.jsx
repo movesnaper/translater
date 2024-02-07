@@ -26,8 +26,9 @@ const DictionaryTable = ({ api, setItems }) => {
   return <div className={style.dictionary__table}>
     <Modal modal={modal} setModal={setModal} footer={modalFooter}/>
     <Table api={api} height={400} limit={10}
-      setItems={(items) => setValues([...values, ...items])}
-      schema={{ items, onClick: setModal, header: [ 
+      schema={{ items, onClick: setModal, 
+        setItems: (items) => setValues([...values, ...items]),
+        header: [ 
         ...header((items) => setItems(items).then(update)), 
         {...checkInputs(update), title: <DropDownBtn schema={[
           { value: checked.length, menu: [

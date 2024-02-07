@@ -1,11 +1,13 @@
-.home {
+.home__page {
   padding: 30px;
+  overflow: auto;
+  height: calc(100vh - 100px);
 }
 
-.card__text {
+/* .card__text {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-}
+} */
