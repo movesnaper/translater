@@ -1,46 +1,45 @@
 import React, {useState, useEffect} from "react"
-import { NavLink } from 'react-router-dom'
 import style from './style.module.css'
 import { CRow, CCol } from '@coreui/react'
 import { CProgress, CProgressStacked } from '@coreui/react'
 import DropDownBtn from '../dropDownBtn'
 
-export const dropDowvNavs = ({ id, xs, url, title }, ...menu) => {
+export const dropDowvNavs = ({ id, xs, title }, ...menu) => {
   return { xs, value: <DropDownBtn schema={[
-    { value: title },
-    { value: <NavLink color='white' to={`${url}/${id}`}>{url}</NavLink>,
-      menu: menu.map((url) => 
-      ({ title: url, href: `${url}/${id}`}))
+    { value: <span style={{fontSize: '13px'}}>{title}</span> },
+    { menu: menu.map((url) => 
+      ({ title: url, href: `/${url}/${id}`}))
     }
     ]}/>
   }
 }
 
-export const schema = ({ keys, results, total }) => {
+export const schema = ({ total }) => {
   const info = total < 75 && 'info'
   return [
+    // { progress: [
+    //   { color: 'primary', value: 1, label: `keys ${keys}`}
+    // ]},
     { progress: [
-      { color: 'secondary', value: 50, label: `keys ${keys}`},
-      { color: 'primary', value: 50, label: `results ${results}`}
-    ]},
-    { progress: [
-      { color: info || 'success', min: 15, value: + total, label: `${total} %`}
+      { color: info || 'success', min: 25, value: + total, label: `${total} %`}
     ]}
   ]
 }
 
 const Statistic = ({ api, schema, children }) => {
-  const [value, setValue] = useState({})
+  const [value, setValue] = useState(null)
 
   const update = async () => {
-    setValue(await api.get())
+    setValue(await api())
   }
 
-  useEffect(() => { api && update() }, [api])
+  useEffect(() => { 
+    api && update()
+   }, [])
 
   return <>
     <CRow className={style.statistic}>
-        { schema(value).map((item, index) => {
+        { value && schema(value).map((item, index) => {
           const { xs, progress, value } = item || {}
           return <CCol xs={xs} key={index}>
           { !progress ? value : <CProgressStacked>
@@ -55,7 +54,7 @@ const Statistic = ({ api, schema, children }) => {
         </CCol>
         })}
     </CRow>
-    { children(update) }
+    { children(value, update) }
   </>
 }
 

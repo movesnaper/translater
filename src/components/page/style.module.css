@@ -1,0 +1,5 @@
+
+.component__page {
+  height: 100vh;
+  overflow: auto;
+}

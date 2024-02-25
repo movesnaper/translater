@@ -3,11 +3,11 @@ import style from './style.module.css'
 import { CRow, CCol } from '@coreui/react'
 import { db } from '../../db/index.js'
 import DocumentCard from './card/index.jsx'
-import { UserContext } from "../../components/UserProvider.jsx"
+import { Context } from "../../components/Provider"
 import Info from './info'
 
 const HomePage =  () => {
-  const [user] = useContext(UserContext)
+  const [{user}] = useContext(Context)
   const inpFile = useRef()
   const [docs, setDocs] = useState([])
   const [loading, setLoading] = useState(false)

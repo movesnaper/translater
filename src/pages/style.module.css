@@ -1,6 +1,10 @@
 .ListGroupe {
-  max-height: 200px;
+  max-height: 150px;
   overflow: auto;
+}
+.ListGroupe > li {
+  padding: 0;
+  margin: 0;
 }
 .distanation__items__input_col {
   max-width: fit-content;

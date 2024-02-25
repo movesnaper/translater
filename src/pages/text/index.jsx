@@ -1,33 +1,36 @@
 import React from "react"
 import { useParams } from 'react-router-dom'
-import Document from '../Document'
+import Page from '../../components/page'
 import Layout from './layout'
 import Statistic, { schema, dropDowvNavs } from '../../components/statistic'
 import { db } from '../../db'
+const api = db(`/documents`)
 
-const DictionaryPage =  () => {
+const TextPage =  () => {
   const { id = '' } = useParams()
-  const api = db(`/documents/${id}`)
+  const setResult = (value) => {
+    try {
+      return api.post(`/text`, value)
+    } catch(e) {
+      console.log(e);
+    }    
+  }
 
-  return <Document>{
-    (setResult) => <Statistic api={db(`/dictionary/info/${id}`)} 
-      schema={(value) => {
-        const {title} = value || {}
-        const xs = title && 3
+  return <Page>{
+    () => <Statistic api={() => api.get(`/info/${id}`)} 
+      schema={({ title, keys, total }) => {
+        const info = total < 75 && 'info'
         return [
-          dropDowvNavs({ xs: xs || 2, id, url: '/dictionary', title }, '/praxis', '/excludes'), 
-          ...schema(value)
+          dropDowvNavs({ id, title }, 'praxis', 'dictionary'),
+          { xs: 2, value: `keys: ${keys}`},
+          { xs: 4, progress: [
+            { color: info || 'success', min: 25, value: + total, label: `${total} %`}
+          ]}
         ]
-      }}>{ (update) => {
-
-          const setItem = async (item) => {
-            await setResult([{...item, doc_id: id}]).then(update)
-            return item
-          }
-
-        return <Layout api={api} setItem={setItem}/>
-      }}</Statistic>
-  }</Document>
+      }}>{ (info, update) => info && <Layout api={api} id={id} 
+          setItem={ (value) => setResult(value).then(update) }/>
+      }</Statistic>
+  }</Page>
 }
 
-export default DictionaryPage
+export default TextPage

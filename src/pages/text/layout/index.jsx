@@ -1,47 +1,50 @@
-import React, { useState } from "react"
-import Modal from '../../dictionary/table/TableModal'
-import DropDownBtn from '../../../components/dropDownBtn'
-import TextHtml from "./TextHtml"
+import React, { useState, useEffect, useContext } from "react";
+import HtmlText from './HtmlText'
+import { Context } from "../../../components/Provider"
 
-const Text = ({ api, setItem }) => {
-  const [state, setState] = useState({})
+const TextLayout = ({ id, api, setItem }) => {
+  const [{ pageText }, { pageText: updatePage }] = useContext(Context)
+  const { limit = 100, mark: pageMark = 0 } = pageText ? (pageText[id] || {}) : {}
   const [values, setValues] = useState([])
 
-  const { modal, loading } = state || {}
-
-  const setModal = (modal) => setState({...state, modal })
-
-  const setLoading = (loading) => setState({...state, loading })
-
-  const update = ({ key, value }) => {
-    values.filter((v) => v.key === key).forEach((v) => {
-      values.splice(v.index, 1, {...v, value})
-    })
-    
+  const setPage = (mark) => {
+    updatePage({...pageText, [id]: { mark }})
   }
-  const setValue = async (value) => {
-    try {
-      setLoading(true)
-      await setItem({...modal, value}).then(update)
-    } catch (e){ console.log(e);}
-    finally{ setState({}) }
-  }
-  const saveBtn = { title: 'Save', loading, action: () => setValue(modal.value),
-  menu: [
-    { title: 'Exclude', action: () => setValue('exclude')},
-    { title: 'Remove', action: () => setValue(undefined)}
-  ]}
-  
-return <>
-  <Modal modal={modal} setModal={setModal}
-   footer={<DropDownBtn schema={[ {}, saveBtn ]}/>}
-   />
-  <TextHtml api={api} height={400}
-  schema={{ items: values, onClick: setModal, setItems: (items) => {
-    setValues([...values, ...items])
-  }}}/>
-  
-</>
+
+ const update = async (mark = pageMark) => {
+  try {
+    const { values } = await api.get(`/text/${id}`, { limit, mark })
+    setValues(values)
+    return values
+  } catch (e) { console.log(e) }
+ }
+
+  useEffect(() => { pageText && update() }, [pageText])
+
+  return <HtmlText schema={({ modal, setModal }) => {
+    const { index, key } = modal || {}
+    const setValue = (value) => {
+      setItem({...modal, value})
+      .then(() => update())
+      setModal(false)
+    }
+
+    return {
+      values,
+      footer: [
+        { xs: 2, title: 'Prev', action: () => setPage(pageMark - limit) },
+          {},
+        { xs: 2, title: 'Next', action: () => setPage(pageMark + limit) },
+      ],
+      modalSchema: [ {},
+        { title: 'Save', action: () => setValue(modal.value),
+        menu: [
+          { title: 'Exclude', action: () => setValue({ _id: key, exclude: true })},
+          { title: 'Remove', action: () => setValue(undefined)}
+        ]}]
+    }
+  }}/>
+
 }
 
-export default Text
+export default TextLayout

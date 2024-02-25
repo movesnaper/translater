@@ -8,37 +8,43 @@ import Transcription from "./CardTranscription"
 import Header from "./CardHeader"
 import Timer from "./CardTimer"
 import DropDownBtn from '../../../components/dropDownBtn'
+import style from './style.module.css'
 
 const Card = ({ card, footer, children  }) => {
   
-  const { key, value = {}, edit, item, items } = card || {}
+  const { key, value, edit, item, items } = card || {}
+
+  const { _id, result = 0 } = value || {}
 
   const  inRange = (x, min, max) => x >= min &&  x <= max
 
   const getResult = (item) => {
-    const result = (value.result || 0) + (value._id === item || -1)
-    return {...value, result: inRange(result, 0, 10) ? result : value.result  }
+    const sum = (result || 0) + (_id === item || -1)
+    return {...value, result: inRange(sum, 0, 10) ? sum : result  }
   }
 
   const setResult = async (item) => {
     const value = getResult(item)
-    return card.setResult({...card, item, value}, 3)
+    return card.setResult({...card, item, value})
   }
 
-  return Layout({
-    header: <Header schema={[
-      { component: <Title value={{...value, key}}/> },
-      { component: <Transcription value={edit ? edit.value : value}/> },
-      { component: edit ? <BtnSave value={edit.value} onClick={() => card.setResult(edit, 3)}/>
-      : <Timer disabled={!!item || !!edit } reset={items} next={() => setResult(-1)}/>}
-    ]}/>,
-    left:  item && <Result value={ value } success={item === value._id}/>,
-    right: <Items items={items} checked={item}
-     addResult={(item) => setResult(item)}/>,
-    edit: edit && children,
-    footer: <DropDownBtn card={card} schema={footer}/>
+  return <div className={style.praxis__card}>{
+    Layout({
+      header: <Header schema={[
+        { component: <Title value={{ result, key: edit ? key : _id }}/> },
+        { component: <Transcription value={edit ? edit.value : value}/> },
+        { component: edit ? <BtnSave value={edit.value} onClick={() => card.setResult(edit, 3)}/>
+        : <Timer disabled={!!item || !!edit } reset={items} next={() => setResult(-1)}/>}
+      ]}/>,
+      left:  item && <Result value={ value } success={item === _id}/>,
+      right: <Items items={items} checked={item}
+       addResult={(item) => setResult(item)}/>,
+      edit: edit && children,
+      footer: <DropDownBtn schema={footer}/>
+  
+    })    
+  }</div>
 
-  })
 }
 
 

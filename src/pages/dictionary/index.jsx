@@ -1,33 +1,37 @@
 import React from "react"
 import { useParams } from 'react-router-dom'
-import Document from '../Document'
+import Page from '../../components/page'
 import Table from './table'
-import style from './style.module.css'
+// import style from './style.module.css'
 import Statistic, { schema, dropDowvNavs } from '../../components/statistic'
 import { db } from '../../db'
+const api = db(`/documents`)
 
 const Dictionary =  () => {
   const { id = '' } = useParams()
 
-  return <Document>{
-    (setResult) => <Statistic api={db(`/dictionary/info/${id}`)} 
-      schema={(value) => {
-        const {title} = value || {}
-        const xs = title && 3
+  return <Page>{
+    (setResult) => <Statistic api={() => api.get(`/info/${id}`)} 
+      schema={({ title, keys, total }) => {
+        const info = total < 75 && 'info'
         return [
-          dropDowvNavs({ xs: xs || 2, id, url: '/dictionary', title }, '/praxis', '/excludes'), 
-          ...schema(value)
+          dropDowvNavs({ id, title }, 'praxis', 'dictionary'),
+          { xs: 2, value: `keys: ${keys}`},
+          { xs: 4, progress: [
+            { color: info || 'success', min: 25, value: + total, label: `${total} %`}
+          ]}
         ]
-      }}>{ (update) => {
+      }}>{ (value, update) => {
 
-          const setItems = async (items) => {
-            await setResult(items).then(update)
-            return items
+          const setItems = async (value) => {
+            setResult(value).then(update)
+            return value
           }
 
-        return <Table api={db(`/dictionary/${id}`)} setItems={setItems}/>
+        return value && <Table setItems={setItems}
+          api={(skip) => api.get(`/dictionary/${id}`, { skip, limit: 20 })}/>
       }}</Statistic>
-  }</Document>
+  }</Page>
 }
 
 export default Dictionary

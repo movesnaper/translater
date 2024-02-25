@@ -1,4 +1,5 @@
 
 .dictionary__table {
+  /* padding: 0 20px; */
   overflow: auto;
 }

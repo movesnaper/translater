@@ -1,5 +1,5 @@
 import React from "react"
-import Document from '../Document'
+import Page from '../../components/page'
 import Table from './table'
 import style from './style.module.css'
 import { db } from '../../db'
@@ -11,7 +11,7 @@ const ExcludesPage =  () => {
   const { id = '' } = useParams()
   const url = '/dictionary/excludes'
   
-  return <Document>{ 
+  return <Page>{ 
     (setResult) => <Statistic api={db(`${url}/length`)} schema={(total) => [
       dropDowvNavs({ xs: 2, id, url: '/excludes'}, '/dictionary', '/praxis'),
       {},
@@ -26,7 +26,7 @@ const ExcludesPage =  () => {
 
       return <Table api={db(url)} setItems={setItems}/>
       }}</Statistic>
-    }</Document>
+    }</Page>
 }
 
 export default ExcludesPage

@@ -5,17 +5,16 @@ import style from './style.module.css'
 import { useNavigate } from "react-router-dom"
 import { AiOutlineClose } from "react-icons/ai"
 import { db } from '../../db/index.js'
-import { UserContext } from "../../components/UserProvider.jsx"
+import { Context } from "../../components/Provider"
 
  const Login = () => {
-  const [user, setUser] = useContext(UserContext)
+  const [{}, { user: setUser }] = useContext(Context)
   const {action = 'login'} = useParams()
   const navigate  = useNavigate()
   const [data, setData] = useState({})
   const login = async () => {
     try {
-      const jwt = await db('/auth').post(`/${action}`, data)
-      setUser(jwt)
+      setUser(await db('/auth').post(`/${action}`, data))
     } catch(e) {
       console.log(e);
     }

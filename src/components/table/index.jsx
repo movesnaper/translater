@@ -3,20 +3,21 @@ import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableData
 import style from './style.module.css'
 
 
-const Table = ({ api, limit, height, schema }) => {
+const Table = ({ api, height, schema }) => {
   const [mark, setMark] = useState({})
-  const { items, setItems, header, onClick } = schema || {}
+  const { items, setItems, header } = schema || {}
 
   const handelScroll = ({target}) => {
     const { scrollHeight, scrollTop} = target
-    scrollHeight - scrollTop < height   && update()
+    scrollHeight - scrollTop < height + 10   &&  update()
   }
 
   const update = async () => {
+    // if(!mark) return
     try {
-      const { values } = await api.get('', { limit, mark })
-      const [{key} = {}] = values.splice(limit - 1, 1)
-      setMark(key || {})
+      const { values, skip } = await api(mark)
+      // const { values, bookmark } = await api.get('', { limit, mark })
+      setMark(skip)
       setItems(values)
     } catch (e) {
       console.log(e);
@@ -28,15 +29,16 @@ const Table = ({ api, limit, height, schema }) => {
   return <div className={style.table__scroll} style={{ height }} onScroll={handelScroll}>
     <CTable hover small style={{ width: '100%'}}>
     <CTableHead style={{ position: "sticky", top: 0 }}>
-      <CTableRow>{header.map(({title, style }, key) => 
-        <CTableHeaderCell style={style} key={key}>{title}</CTableHeaderCell>)}
+      <CTableRow>{header.map((item = {}, index) => 
+        <CTableHeaderCell style={item.style} key={index}>{
+          item.value || item
+        }</CTableHeaderCell>)}
       </CTableRow>
     </CTableHead>
-    <CTableBody>{ items.map((item, index) => {
-      return <CTableRow key={index} style={{ height: '50px'}}
-        onClick={() => onClick && onClick(item)}>
-        { header.map(({getValue}, key) => 
-        <CTableDataCell key={key}>{getValue(item)}</CTableDataCell>)}
+    <CTableBody>{ items.map(({onClick, height = '50px', cells = []}, index) => {
+      return <CTableRow key={index} style={{ height }} onClick={onClick}>
+        { cells.map(({ style, value }, index) => 
+        <CTableDataCell style={style} key={index}>{value}</CTableDataCell>)}
     </CTableRow>
     })}
     </CTableBody>

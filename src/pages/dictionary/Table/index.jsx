@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import Table from '../../../components/table'
 import DropDownBtn from '../../../components/dropDownBtn'
-import { header, checkInputs } from './schema'
+// import { header } from './schema'
+import Result from './TableResult'
+
 import Modal from './TableModal'
 import style from './style.module.css'
 
@@ -9,34 +11,38 @@ const DictionaryTable = ({ api, setItems }) => {
   const [modal, setModal] = useState(false)
   const [values, setValues] = useState([])
 
-  const update = (items) => {
-    items.map((item) => values.splice(item.index, 1, item))
+  const update = (value, index = modal) => {
+    values.splice(index, 1, value)
     setValues([...values])
     setModal(false)
   }
 
   const modalFooter = <DropDownBtn schema={
-    [{}, { title: 'Save', action: () => setItems([modal]).then(update) }]}/> 
-  const items = values.map((item, index) => ({...item, index }))
-  const checked = items.filter(({checked}) => !!checked)
-
-  const setValue = (value) => setItems(checked.map((item) => ({...item, value})))
-    .then(() => setValues(items.filter(({checked}) => !checked)))
+    [{}, { title: 'Save', action: () => setItems(values[modal]).then(update), menu: [
+      { title: 'remove',  action: () => setItems({...values[modal], value: null}).then(update)}
+    ] }]}/> 
 
   return <div className={style.dictionary__table}>
-    <Modal modal={modal} setModal={setModal} footer={modalFooter}/>
-    <Table api={api} height={400} limit={10}
-      schema={{ items, onClick: setModal, 
+    <Modal modal={values[modal]} setModal={setModal} footer={modalFooter}/>
+    <Table api={api} height={350}
+      schema={{
         setItems: (items) => setValues([...values, ...items]),
-        header: [ 
-        ...header((items) => setItems(items).then(update)), 
-        {...checkInputs(update), title: <DropDownBtn schema={[
-          { value: checked.length, menu: [
-            { title: 'Remove', action: () => setValue(undefined) },
-            { title: 'Exclude', action: () => setValue('exclude') }           
-          ] }
-        ]}/> } 
-        ]
+        header: ['#', 'id', 'Distanation', 'Result'],
+        items: values.filter(({value}) => !!value).map(({ key, value }, index) => {
+          const { _id = key, dst } = value || {}
+
+          const setValue = (value) => {
+            setItems({...values[index], value})
+            .then((value) => update(value, index))
+          }
+        return { onClick: () => setModal(index), cells: [
+          { value: index + 1},
+          { value: _id},
+          { value: dst},
+          { value: dst && <Result value={value} 
+            addResult={setValue}/>}
+        ] }
+      })
       }}/>
   </div>
 }
