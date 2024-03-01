@@ -5,7 +5,7 @@ import { Context } from "../../../components/Provider"
 const TextLayout = ({ id, api, setItem }) => {
   const [{ pageText }, { pageText: updatePage }] = useContext(Context)
   const { limit = 100, mark: pageMark = 0 } = pageText ? (pageText[id] || {}) : {}
-  const [values, setValues] = useState([])
+  const [{values = [], obj = {}}, setValues] = useState({})
 
   const setPage = (mark) => {
     updatePage({...pageText, [id]: { mark }})
@@ -13,10 +13,10 @@ const TextLayout = ({ id, api, setItem }) => {
 
  const update = async (mark = pageMark) => {
   try {
-    const { values } = await api.get(`/text/${id}`, { limit, mark })
+    const values = await api.get(`/text/${id}`, { limit, mark })
     setValues(values)
-    return values
-  } catch (e) { console.log(e) }
+    // return values
+  } catch (e) { console.error(e) }
  }
 
   useEffect(() => { pageText && update() }, [pageText])
@@ -30,7 +30,7 @@ const TextLayout = ({ id, api, setItem }) => {
     }
 
     return {
-      values,
+      values: values.map((item) => ({...item, value: obj[item.key]})),
       footer: [
         { xs: 2, title: 'Prev', action: () => setPage(pageMark - limit) },
           {},

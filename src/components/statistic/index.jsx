@@ -28,9 +28,18 @@ export const schema = ({ total }) => {
 
 const Statistic = ({ api, schema, children }) => {
   const [value, setValue] = useState(null)
+  const [loading, setLoading] = useState(false)
 
   const update = async () => {
-    setValue(await api())
+    if (loading) return
+    try {
+      setLoading(true)
+      const info = await api()
+      setValue(info)
+    }catch (e) {}
+    finally {
+      setLoading(false)
+    }
   }
 
   useEffect(() => { 

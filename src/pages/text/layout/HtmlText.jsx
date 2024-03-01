@@ -7,11 +7,13 @@ import TooltipSpan from './TooltipSpan'
 
 const TextFooter = ({ schema }) => {
   const [modal, setModal] = useState(null)
+  const [mark, setMark] = useState(null)
 
   const { values, footer, modalSchema } = schema({ modal, setModal })
 
   const edit = (item, index) => {
     values.splice(index, 1, {...item, loading: true})
+    setMark(index)
     setModal(item)
   }
 
@@ -19,7 +21,7 @@ const TextFooter = ({ schema }) => {
   return <>
     <div className={style.text__html__body}>{
       values.map((item, index) => {
-        return <TooltipSpan key={index} item={item} 
+        return <TooltipSpan key={index} item={{...item, mark: mark === index}} 
         onClick={() => edit(item, index)}/>
       })
     }</div>

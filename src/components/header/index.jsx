@@ -10,7 +10,7 @@ import { NavLink, useParams, useNavigate } from "react-router-dom"
 const Header = () => {
   const [active, setActive] = useState(false)
   const [{user}, {user: setUser}] = useContext(Context)
-  const {action} = useParams()
+  // const {action} = useParams()
   const navigate = useNavigate()
 
   const logout = () => {
@@ -27,7 +27,8 @@ const Header = () => {
           <AiOutlineMenu size={25}/>
         </CButton>
       </div>
-    { <User user={user || {}} logout={logout}></User>  
+    { user ? <User user={user} logout={logout}></User> :
+    <NavLink to='auth/login'>login</NavLink> 
       // : <div className={style.auth}>
       //     { action === 'login' ? <NavLink to='auth/register'> register </NavLink>
       //     : <NavLink to='auth/login'> login </NavLink> }

@@ -7,6 +7,7 @@
   justify-content: space-between;
   padding: 0 30px;
   align-items: center;
+  color: white;
 }
 
 .App-header {
@@ -20,11 +21,7 @@
   color: white;
 }
 
-.header_menu_burger {
-  /* display: flex;
-  flex-direction: column;
-  justify-content: center; */
-}
+
 
 .auth {
   color: white;

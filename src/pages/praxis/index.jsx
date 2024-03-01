@@ -43,13 +43,6 @@ const PraxisPage =  () => {
 
       const {edit, index = history.length, resolve = next} = card
 
-      // const cardTimeout = (card) => async (resolve) => {
-      //   setCard({...card, resolve})
-      //   setTimeout(resolve, 2000)
-      //   return card
-      // }
-
-
       return <Statistic api={() => api.get(`/info/${id}`)} 
       schema={(value) => {
         const {title} = value || {}

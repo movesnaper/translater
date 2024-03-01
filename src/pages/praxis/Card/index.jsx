@@ -14,17 +14,19 @@ const Card = ({ card, footer, children  }) => {
   
   const { key, value, edit, item, items } = card || {}
 
-  const { _id, result = 0 } = value || {}
+  const { _id, result } = value || {}
 
   const  inRange = (x, min, max) => x >= min &&  x <= max
 
-  const getResult = (item) => {
-    const sum = (result || 0) + (_id === item || -1)
-    return {...value, result: inRange(sum, 0, 10) ? sum : result  }
+  const getResult = (v) => {
+    if (v && result === undefined) return {...value, result: 5}
+    if (!v && result === 10) return {...value, result: 5}
+    const sum = (result || 0) + (v || -1)
+    return {...value, result: inRange(sum, 0, 10) ? sum : (result || 0)  }
   }
 
   const setResult = async (item) => {
-    const value = getResult(item)
+    const value = getResult(_id === item )
     return card.setResult({...card, item, value})
   }
 

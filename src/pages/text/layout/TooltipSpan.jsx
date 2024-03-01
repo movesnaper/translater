@@ -3,12 +3,12 @@ import { CTooltip, CLink } from '@coreui/react'
 import style from './style.module.css'
 const dst = (cur, {dst = ''}) => cur += (dst + ' ')
 const TooltipSpan = ({ item, onClick }) => {
-    const { str, key, value, index, loading } = item
+    const { str, key, value, index, mark } = item
       const tooltip = value?.reduce && <CTooltip content={ value.reduce(dst, '') }>
         <CLink>{str}</CLink>
       </CTooltip>
 
-      const bookMarkStyle = loading && style.text__book_mark
+      const bookMarkStyle = mark && style.text__book_mark
 
       return key && <span key={index} 
       className={[style.text__tooltip, bookMarkStyle].join(' ')}
