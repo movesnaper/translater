@@ -6,10 +6,10 @@ import Transcription from '../../praxis/Card/CardTranscription'
 import Modal from '../../../components/modal'
 
 const TableModal = ({modal, footer, setModal}) => {
-
+console.log(modal);
   const {key, value } = modal || {}
 
-  return <Modal visible={!!key} close={() => setModal(false)} 
+  return <Modal visible={key || value} close={() => setModal(false)} 
   header={ <Header schema={[
     { xs: 5, component: <Title value={{...value, key}}/>},
     { component: <Transcription value={value}/>}

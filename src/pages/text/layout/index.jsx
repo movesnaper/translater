@@ -4,18 +4,17 @@ import { Context } from "../../../components/Provider"
 
 const TextLayout = ({ id, api, setItem }) => {
   const [{ pageText }, { pageText: updatePage }] = useContext(Context)
-  const { limit = 100, mark: pageMark = 0 } = pageText ? (pageText[id] || {}) : {}
-  const [{values = [], obj = {}}, setValues] = useState({})
+  const { limit = 100, mark = 0 } = pageText ? (pageText[id] || {}) : {}
+  const [{ values = [], obj = {} }, setValues] = useState({})
 
   const setPage = (mark) => {
     updatePage({...pageText, [id]: { mark }})
   }
 
- const update = async (mark = pageMark) => {
+ const update = async (skip = mark) => {
   try {
-    const values = await api.get(`/text/${id}`, { limit, mark })
+    const values = await api.get(`/text/${id}`, { limit, skip })
     setValues(values)
-    // return values
   } catch (e) { console.error(e) }
  }
 
@@ -32,9 +31,9 @@ const TextLayout = ({ id, api, setItem }) => {
     return {
       values: values.map((item) => ({...item, value: obj[item.key]})),
       footer: [
-        { xs: 2, title: 'Prev', action: () => setPage(pageMark - limit) },
+        { xs: 2, title: 'Prev', action: () => setPage(mark - limit) },
           {},
-        { xs: 2, title: 'Next', action: () => setPage(pageMark + limit) },
+        { xs: 2, title: 'Next', action: () => setPage(mark + limit) },
       ],
       modalSchema: [ {},
         { title: 'Save', action: () => setValue(modal.value),
