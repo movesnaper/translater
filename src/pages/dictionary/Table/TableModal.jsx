@@ -1,21 +1,18 @@
 import React from "react"
-import Edit from '../../praxis/Card/CardEdit'
+import Edit from '../../../components/edit/CardEdit'
 import Header from '../../praxis/Card/CardHeader'
 import Title from '../../praxis/Card/CardTitle'
 import Transcription from '../../praxis/Card/CardTranscription'
 import Modal from '../../../components/modal'
 
-const TableModal = ({modal, footer, setModal}) => {
-console.log(modal);
-  const {key, value } = modal || {}
-
-  return <Modal visible={key || value} close={() => setModal(false)} 
+const TableModal = ({value, footer, setValue}) => {
+  return <Modal visible={!!value} close={() => setValue(false)} 
   header={ <Header schema={[
-    { xs: 5, component: <Title value={{...value, key}}/>},
+    { xs: 5, component: <Title value={value}/>},
     { component: <Transcription value={value}/>}
   ]}/>} 
   footer={footer}>
-    { key && <Edit card={{ ...modal, setCard: setModal }} /> }
+    { value && <Edit value={value} setValue={setValue}/> }
   </Modal>
 }
 

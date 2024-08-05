@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import CIcon from '@coreui/icons-react'
-import { CButton, CSpinner  } from '@coreui/react'
+import { CSpinner  } from '@coreui/react'
 import { cilVolumeHigh } from '@coreui/icons'
 
 import style from './style.module.css'
@@ -9,7 +9,8 @@ import style from './style.module.css'
     const [loading, setLoading] = useState(false)
     const { trc, snd } = value || {}
 
-    const play = () => {
+    const play = (evt) => {
+      evt.stopPropagation()
       try {
         setLoading(true)
         const audio = new Audio(snd)
@@ -24,10 +25,12 @@ import style from './style.module.css'
 
   return trc && <div>
     <span className={ style.card__transcription }> { `[ ${trc} ]` } </span>
-    { snd && <CButton className={style.card__transcription_btn}
+    { snd && loading ? <CSpinner/> : <CIcon className={style.card__transcription_btn}
+    variant="ghost" icon={cilVolumeHigh} onClick={play}/>  }
+    {/* { snd && <CButton className={style.card__transcription_btn}
     variant="ghost" onClick={play}>
         {loading ? <CSpinner/> : <CIcon icon={cilVolumeHigh} />}
-    </CButton>  }
+    </CButton>  } */}
   </div>
 
 

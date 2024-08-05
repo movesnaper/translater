@@ -1,44 +1,40 @@
 import React, {useState} from "react"
-import { useParams } from 'react-router-dom'
+// import { useParams } from 'react-router-dom'
 import Page from '../../components/page'
 import Table from './table'
-import Modal from './table/TableModal'
-import DropDownBtn from '../../components/dropDownBtn'
+// import Modal from './table/TableModal'
+import Modal from '../modal'
+// import DropDownBtn from '../../components/dropDownBtn'
 import Result from './table/TableResult'
 
 // import style from './style.module.css'
-import Statistic, { dropDowvNavs } from '../../components/statistic'
+import { dropDowvNavs } from '../../components/statistic'
 import { db } from '../../db'
 const api = db(`/documents`)
-
+const statistic = ({ id, title, keys, total, color, min }) => [
+  dropDowvNavs({ title, id }, 'text', 'praxis'),
+  { xs: 2, value: `keys: ${keys}`},
+  { xs: 4, progress: [
+    { color, min, value: + total, label: `${total} %`}
+  ]}
+]
 const Dictionary =  () => {
-  const { id = '' } = useParams()
-  const [modal, setModal] = useState(false)
-console.log(modal);
-  return <Page>{
-    (setResult) => <Statistic api={() => api.get(`/info/${id}`)} 
-      schema={({ title, keys, total }) => {
-        const info = total < 75 && 'info'
-        return [
-          dropDowvNavs({ id, title }, 'praxis', 'dictionary'),
-          { xs: 2, value: `keys: ${keys}`},
-          { xs: 4, progress: [
-            { color: info || 'success', min: 25, value: + total, label: `${total} %`}
-          ]}
-        ]
-      }}>{ (info, update) => {
+  return <Page schema={Modal} statistic={statistic}>{ ({setResult, setModal, id}) => {
 
           const setItems = async (value) => {
-            setResult(value).then(update)
-            return value
+            setResult(value)
+            // .then(update)
+            // return value
           }
 
-        return info && <Table setItems={setItems}
+        return <Table setItems={setItems}
           api={(skip) => api.get(`/dictionary/${id}`, { skip, limit: 20 })}
           schema={({key, value, index}, update) => {
             const { _id = key, dst } = value || {}
             return { 
-              onClick: () => setModal(index), 
+              onClick: () => setModal({key, value, save: (v) => {
+                console.log('save', v);
+              }}), 
               cells: [
               { value: index + 1},
               { value: _id},
@@ -46,16 +42,15 @@ console.log(modal);
               { value: dst && <Result value={value} addResult={update}/>}
             ] }
           }}>
-            {(values) => {
+            {/* {(values) => {
               const modalFooter = <DropDownBtn schema={
-              [{}, { title: 'Save', action: () => setItems(values[modal]).then(update), menu: [
-              { title: 'remove',  action: () => setItems({...values[modal], value: null}).then(update)}
+              [{}, { title: 'Save', action: () => setItems(values[modal]), menu: [
+              { title: 'remove',  action: () => setItems({...values[modal], value: null})}
               ]}]}/> 
               return <Modal modal={values[modal]} setModal={setModal} footer={modalFooter}/>
-            }}
+            }} */}
         </Table>
-      }}</Statistic>
-  }</Page>
+      }}</Page>
 }
 
 export default Dictionary

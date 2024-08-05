@@ -1,10 +1,15 @@
 
 .praxis__card {
   padding: 20px;
-  
+}
+.praxis__card > div {
+  max-width: 70%;
+  margin: 0 auto;
 }
 .card__body__left {
   border-right: 2px solid #00000029;
+  overflow: hidden;
+    height: 100%;
 }
 .card__body{
   height: calc(100vh - 250px);

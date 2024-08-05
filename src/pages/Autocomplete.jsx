@@ -3,16 +3,16 @@ import style from './style.module.css'
 
 import { CFormInput, CDropdownItem, CDropdown, CDropdownMenu, CDropdownToggle, CInputGroup } from '@coreui/react'
 
-const Autocomplete  = ({ api, url, value = '', setValue, schema, name }) => {
-  const [items, setItems] = useState([])
+const Autocomplete  = ({ api, value = '', setValue, schema, name }) => {
+  const [items = [], setItems] = useState([])
   const update = async () => {
     try {
-      setItems(await api.get(url))
+      value && setItems(await api.get(value) )
     } catch(e) {
       console.log(e);
     }
   }
-  useEffect(() => { update() }, [url])
+  useEffect(() => { update() }, [])
 
   return <CInputGroup>
     <CFormInput name={name} value={ value } onInput={({target}) => setValue(target)}/>

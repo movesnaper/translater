@@ -26,7 +26,7 @@ export const schema = ({ total }) => {
   ]
 }
 
-const Statistic = ({ api, schema, children }) => {
+const Statistic = ({ id, api, schema, children }) => {
   const [value, setValue] = useState(null)
   const [loading, setLoading] = useState(false)
 
@@ -34,17 +34,14 @@ const Statistic = ({ api, schema, children }) => {
     if (loading) return
     try {
       setLoading(true)
-      const info = await api()
-      setValue(info)
+      setValue({...await api.get(`/info/${id}`), min: 25, id })
     }catch (e) {}
     finally {
       setLoading(false)
     }
   }
 
-  useEffect(() => { 
-    api && update()
-   }, [])
+  useEffect(() => { update() }, [])
 
   return <>
     <CRow className={style.statistic}>

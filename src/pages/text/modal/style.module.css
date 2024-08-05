@@ -1,0 +1,4 @@
+.items__list {
+  height: 50vh;
+  overflow: auto;
+}

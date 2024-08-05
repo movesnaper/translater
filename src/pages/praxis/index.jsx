@@ -1,51 +1,49 @@
-import React, { useState, useEffect } from "react"
-import { useParams } from 'react-router-dom'
+import React, { useState } from "react"
 import Card from './Card'
 import Page from '../../components/page'
-import Statistic, { schema, dropDowvNavs } from '../../components/statistic'
-
+import { dropDowvNavs } from '../../components/statistic'
+import DropDownBtn from '../../components/dropDownBtn'
+import Modal from '../modal'
 import { db } from '../../db'
 
 const api = db(`/documents`)
 
 const PraxisPage =  () => {
-  const { id = '' } = useParams()
   const [history, setHistory] = useState([])
-
   const addHistory = (card) => {
     setHistory([card, ...history]
       .filter((v, index) => index <= 5).reverse()
-        .map((v, index) => ({...v, index})))
+        .map((v, index) => ({...v, history: index})))
   }
+  const statistic = ({ id, title, keys, total, color, min }) => [
+    dropDowvNavs({ title, id }, 'text', 'dictionary'),
+    { xs: 2, value: `keys: ${keys}`},
+    { xs: 4, progress: [
+      { color, min, value: + total, label: `${total} %`}
+    ]}
+  ]
 
-
-  
-  return <Page> 
-    { (setResult) => {
-
-      // const { index = history.length, resolve = next } = card
-
-      return <Statistic api={() => api.get(`/info/${id}`)} 
-      schema={(value) => {
-        const {title} = value || {}
-        return [
-          dropDowvNavs({ xs: 3, id, title }, 'dictionary', 'text'),
-          ...schema(value)
-        ]
-      }}>{
-        (info, update) => {
+  return <Page schema={Modal} statistic={statistic}> 
+    { ({setResult, setModal, id}) => {
           const addResult = async (card) => {
-            setResult(card).then(update)
-            addHistory(card)
+            setResult(card).then(() => addHistory(card))
           }          
 
-        return info && <Card api={() => api.get(`/card/${id}`)} addResult={addResult} 
-          footer={[
-          // { xs: 2, title: 'Prev', disabled: !index, action: () => resolve(history[index - 1])},
-          {},
-          // { xs: 2, title: 'Next', action: () => resolve(history[index + 1]) }
-        ]}/>     
-      }}</Statistic>
+        return <Card api={() => api.get(`/card/${id}`)} addResult={addResult}
+          footer= {(card) => {
+            const { history: index = history.length, resolve } = card
+            return <DropDownBtn schema={[
+              { xs: 2, title: 'Prev', disabled: !index, action: () => resolve(history[index - 1])},
+              {},
+              { xs: 2, title: 'Next', action: () => resolve(history[index + 1]), menu: [
+                { title: 'edit',  action: () => {
+                  setModal({...card, save: () => setResult(card)})
+                }},
+                { title: 'remove',  action: () => addResult({...card, value: ''}).then(resolve)},
+              ] }
+            ]}/>
+            
+          }}/>
     }}
   </Page>
 }
