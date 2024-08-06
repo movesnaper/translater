@@ -12,6 +12,7 @@ const ComponentPage =  ({ children, statistic, schema }) => {
   const [modal, setModal] = useState(false)
   const setResult = async ({ index, value }) => {
     try {
+      // console.log(index, value );
       await api.post(`/results/${id}`, { index, value })
       setModal(false)
     } catch(e) {

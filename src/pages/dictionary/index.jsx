@@ -19,27 +19,29 @@ const statistic = ({ id, title, keys, total, color, min }) => [
   ]}
 ]
 const Dictionary =  () => {
-  return <Page schema={Modal} statistic={statistic}>{ ({setResult, setModal, id}) => {
+  return <Page schema={Modal} statistic={statistic}>{ ({id, setModal, setResult}) => {
 
-          const setItems = async (value) => {
-            setResult(value)
-            // .then(update)
-            // return value
-          }
+          // const setItems = async (value) => {
+          //   setResult(value)
+          //   .then(update)
+          //   return value
+          // }
 
-        return <Table setItems={setItems}
+        return <Table 
+        // setItems={setItems}
           api={(skip) => api.get(`/dictionary/${id}`, { skip, limit: 20 })}
-          schema={({key, value, index}, update) => {
-            const { _id = key, dst } = value || {}
+          schema={(card, index, update) => {
+            const { _id, dst } = card?.value || {}
             return { 
-              onClick: () => setModal({key, value, save: (v) => {
-                console.log('save', v);
+              onClick: () => setModal({...card, save: (value) => {
+                // console.log(index, value);
+                setResult({...value, key: _id}).then(() => update(index, value))
               }}), 
               cells: [
               { value: index + 1},
               { value: _id},
               { value: dst},
-              { value: dst && <Result value={value} addResult={update}/>}
+              { value: dst && <Result value={card.value} addResult={update}/>}
             ] }
           }}>
             {/* {(values) => {

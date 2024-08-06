@@ -6,11 +6,11 @@ import style from './style.module.css'
 const DictionaryTable = ({ api, setItems, schema }) => {
   const [values, setValues] = useState([])
 
-  const update = (value, index) => {
-    values.splice(index, 1, value)
-    setValues([...values])
-    // setModal(false)
-  }
+  // const update = (value, index) => {
+  //   values.splice(index, 1, value)
+  //   setValues([...values])
+  //   setModal(false)
+  // }
 
   return <div className={style.dictionary__table}>
     <Table api={api} height={350}
@@ -20,11 +20,13 @@ const DictionaryTable = ({ api, setItems, schema }) => {
         items: values.filter(({value}) => !!value)
         .map((value, index) => {
 
-          const update = (value) => {
-            setItems({...values[index], value})
-            .then((value) => update(value, index))
+          const update = (index, value) => {
+            values.splice(index, 1, value)
+            setValues(values)
+            // setItems({...values[index], value})
+            // .then((value) => update(value, index))
           }
-        return schema({...value, index }, update)
+        return schema(value, index, update)
       })
       }}/>
   </div>
