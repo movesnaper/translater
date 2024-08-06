@@ -21,7 +21,7 @@ const Card = ({ api, footer, addResult }) => {
 
   const getCard = async () => {
     const { card, random } = await api()
-    const items = [...random, card.value].map((value) =>
+    const items = [...random, card].map((value) =>
       ({...value, dst: getDst(value)[0]}))
     return {...card, items: items.sort(() => 0.5 - Math.random()) }
   }

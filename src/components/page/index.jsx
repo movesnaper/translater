@@ -4,16 +4,15 @@ import { db } from '../../db/index.js'
 import style from './style.module.css'
 import Modal from '../modal'
 import Statistic from '../statistic'
-
 const api = db(`/documents`)
 
 const ComponentPage =  ({ children, statistic, schema }) => {
   const { id = '' } = useParams()
   const [modal, setModal] = useState(false)
-  const setResult = async ({ index, value }) => {
+  const setResult = async (value) => {
+    console.log(value);
     try {
-      // console.log(index, value );
-      await api.post(`/results/${id}`, { index, value })
+      // await api.post(`/results/${id}`, {value})
       setModal(false)
     } catch(e) {
       console.log(e);
