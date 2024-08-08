@@ -23,7 +23,7 @@ const Card = ({ api, footer, addResult }) => {
     const { card, random } = await api()
     const items = [...random, card].map((value) =>
       ({...value, dst: getDst(value)[0]}))
-    return {...card, items: items.sort(() => 0.5 - Math.random()) }
+    return { value: card, items: items.sort(() => 0.5 - Math.random()) }
   }
 
   const next = async (card) => {
@@ -65,8 +65,6 @@ const Card = ({ api, footer, addResult }) => {
   
     })}
   </div>
-
 }
-
 
 export default Card

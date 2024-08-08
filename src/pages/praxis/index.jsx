@@ -26,8 +26,8 @@ const PraxisPage =  () => {
   return <Page schema={Modal} statistic={statistic}> 
     { ({setResult, setModal, id}) => {
           const addResult = async (card) => {
-            setResult(card).then(() => addHistory(card))
-          }          
+            setResult(card.value).then(() => addHistory(card))
+          }
 
         return <Card api={() => api.get(`/card/${id}`)} addResult={addResult}
           footer= {(card) => {
@@ -37,9 +37,9 @@ const PraxisPage =  () => {
               {},
               { xs: 2, title: 'Next', action: () => resolve(history[index + 1]), menu: [
                 { title: 'edit',  action: () => {
-                  setModal({...card, save: () => setResult(card)})
+                  setModal({...card, save: () => setResult(card) })
                 }},
-                { title: 'remove',  action: () => addResult({...card, value: ''}).then(resolve)},
+                {title: 'remove', action: () => setResult({...card.value, _id: false}).then(resolve)}
               ] }
             ]}/>
             

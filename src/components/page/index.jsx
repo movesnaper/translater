@@ -10,9 +10,8 @@ const ComponentPage =  ({ children, statistic, schema }) => {
   const { id = '' } = useParams()
   const [modal, setModal] = useState(false)
   const setResult = async (value) => {
-    console.log(value);
     try {
-      // await api.post(`/results/${id}`, {value})
+      await api.post(`/results/${id}`, {value})
       setModal(false)
     } catch(e) {
       console.log(e);

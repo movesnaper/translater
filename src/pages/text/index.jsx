@@ -11,16 +11,7 @@ const api = db(`/documents`)
 const TextPage =  () => {
   const [state, setState ] = useState({ values: [], obj: {}, mark: null })
 
-  const setResult = async({key, value}, ref, mark) => {
-    const values = value.filter(({_id}) => !!_id) 
-    try {
-      await api.post(`/text`, { key, ref, values })
-      const obj = {...state.obj, [key]: values, [ref]: values}
-      setState({...state, obj, mark})
-    } catch(e) {
-      console.log(e);
-    }    
-  }
+
   const statistic = ({ id, title, keys, total, color, min }) => [
     dropDowvNavs({ title, id }, 'praxis', 'dictionary'),
     { xs: 2, value: `keys: ${keys}`},
@@ -31,6 +22,16 @@ const TextPage =  () => {
 
   return <Page schema={Modal} statistic={statistic}>{
     ({id, setModal, update}) => {
+      const setResult = async({key, value}, ref, mark) => {
+        const values = value.filter(({_id}) => !!_id)
+        try {
+          await api.post(`/text/${id}`, { key, ref, values })
+          const obj = {...state.obj, [key]: values, [ref]: values}
+          setState({...state, obj, mark})
+        } catch(e) {
+          console.log(e);
+        }    
+      }
       return <Layout 
       id={id}
       values={state.values.map((item, index) => {

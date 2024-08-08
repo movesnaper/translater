@@ -5,7 +5,7 @@ import ItemHeader from './ItemHeader'
 import style from './style.module.css'
 
 const ItemsList = (value, setModal) => {
-  const { value: values} = value || {}
+  const { key, value: values} = value || {}
 
   const setValue = (index) => (v) => {
     values.splice(index, 1, v)
@@ -17,7 +17,8 @@ const ItemsList = (value, setModal) => {
       return <CAccordionItem  key={index}>
         <CAccordionHeader>
           <ItemHeader value={value} setValue={(active) => {
-            setValue(index)({...value, _id: active })
+            console.log(key);
+            setValue(index)({...value, _id: active ? key : active })
           }}/>
         </CAccordionHeader>
         <CAccordionBody>
