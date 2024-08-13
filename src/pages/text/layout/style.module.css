@@ -9,11 +9,12 @@
   color: red;
 }
 .text__html__body {
-  height: calc(100vh - 200px);
-  line-height: 30px;
-  padding: 5%;
+  height: 75%;
+  /* line-height: 25px; */
+  padding: 2%;
   white-space: pre;
   overflow: auto;
+  font-size: 14px;
 }
 .text__book_mark {
   color: blue;

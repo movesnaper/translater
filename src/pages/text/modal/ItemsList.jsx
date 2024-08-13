@@ -17,7 +17,6 @@ const ItemsList = (value, setModal) => {
       return <CAccordionItem  key={index}>
         <CAccordionHeader>
           <ItemHeader value={value} setValue={(active) => {
-            console.log(key);
             setValue(index)({...value, _id: active ? key : active })
           }}/>
         </CAccordionHeader>

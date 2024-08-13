@@ -30,10 +30,7 @@ import Translate from './Translate'
         },
         footer: ({key, index, value, save}) => <DropDownBtn schema={
           [ {},
-            { title: 'Save', action: () => save({key, index, value}), menu: [
-                // { title: 'remove',  action: () => remove(value) },
-
-            ] }
+            { title: 'Save', action: () => save({key, index, value}) }
           ]
         }/>
     }
