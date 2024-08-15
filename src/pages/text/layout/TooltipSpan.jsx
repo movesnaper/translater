@@ -10,7 +10,7 @@ const TooltipSpan = ({ item, onClick, mark }) => {
 
       return key && <span key={index} 
       className={[style.text__tooltip, mark && style.text__book_mark].join(' ')}
-      onClick={onClick}>{ tooltip || str}</span> || str
+      onDoubleClick={onClick}>{ tooltip || str}</span> || str
 
 }
 
