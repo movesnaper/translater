@@ -3,20 +3,18 @@ import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableData
 import style from './style.module.css'
 
 
-const Table = ({ api, height, schema }) => {
+const Table = ({ api, schema }) => {
   const [mark, setMark] = useState({})
   const { items, setItems, header } = schema || {}
 
   const handelScroll = ({target}) => {
-    const { scrollHeight, scrollTop} = target
-    scrollHeight - scrollTop < height + 10   &&  update()
+    const { scrollHeight, scrollTop } = target
+    scrollHeight * 79 / 100 < scrollTop   &&  update()
   }
 
   const update = async () => {
-    // if(!mark) return
     try {
-      const { values, skip } = await api(mark)
-      // const { values, bookmark } = await api.get('', { limit, mark })
+      const { values, skip } = await api({mark})
       setMark(skip)
       setItems(values)
     } catch (e) {
@@ -26,7 +24,7 @@ const Table = ({ api, height, schema }) => {
 
   useEffect(() => { api && update() }, [])
 
-  return <div className={style.table__scroll} style={{ height }} onScroll={handelScroll}>
+  return <div className={style.table__scroll} style={{ height: `80vh` }} onScroll={handelScroll}>
     <CTable hover small style={{ width: '100%'}}>
     <CTableHead style={{ position: "sticky", top: 0 }}>
       <CTableRow>{header.map((item = {}, index) => 

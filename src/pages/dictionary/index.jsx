@@ -16,7 +16,7 @@ const statistic = ({ id, title, keys, total, color, min }) => [
 const Dictionary =  () => {
   return <Page schema={Modal} statistic={statistic}>{ ({id, setModal, setResult}) => {
         return <Table 
-          api={(skip) => api.get(`/dictionary/${id}`, { skip, limit: 20 })}
+          api={({skip, limit = 100}) => api.get(`/dictionary/${id}`, { skip, limit })}
           schema={(value, index, update) => {
             const { _id, dst } = value || {}
             return { 

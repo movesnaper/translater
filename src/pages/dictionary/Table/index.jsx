@@ -5,7 +5,7 @@ import style from './style.module.css'
 const DictionaryTable = ({ api, schema }) => {
   const [values, setValues] = useState([])
   return <div className={style.dictionary__table}>
-    <Table api={api} height={350}
+    <Table api={api}
       schema={{
         setItems: (items) => setValues([...values, ...items]),
         header: ['#', 'id', 'Distanation', 'Result'],
