@@ -43,21 +43,6 @@ const TextPage =  () => {
           updateState({mark: index})
         }}/>)
       }}
-      // values={state.values.map((item, index) => {
-      //   const value = {...item, value: state.obj[item.key]}
-      //   const save = ({value}) => setResult(value, item.key, index).then(update)
-      //   return <TooltipSpan  item={value} key={index} mark={index === state.mark}
-      //   onClick={() => {
-      //     setModal({ index, value, save })
-      //     setState({...state, mark: index})
-      //   }}/>
-        
-      // })}
-      // update={async (limit, skip) => {
-      //   try {
-      //     setState(await api.get(`/text/${id}`, { limit, skip }))
-      //   } catch (e) { console.error(e) }
-      // }}
       />
     }
   }</Page>

@@ -16,7 +16,11 @@ const statistic = ({ id, title, keys, total, color, min }) => [
 const Dictionary =  () => {
   return <Page schema={Modal} statistic={statistic}>{ ({id, setModal, setResult}) => {
         return <Table 
-          api={({skip, limit = 100}) => api.get(`/dictionary/${id}`, { skip, limit })}
+          api={({skip = 0, limit = 100}) => {
+            console.log(skip, limit);
+            
+            return api.get(`/dictionary/${id}`, { skip, limit })
+          }}
           schema={(value, index, update) => {
             const { _id, dst } = value || {}
             return { 

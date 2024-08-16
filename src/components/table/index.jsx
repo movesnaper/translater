@@ -14,7 +14,7 @@ const Table = ({ api, schema }) => {
 
   const update = async () => {
     try {
-      const { values, skip } = await api({mark})
+      const { values, skip } = await api({skip: mark})
       setMark(skip)
       setItems(values)
     } catch (e) {

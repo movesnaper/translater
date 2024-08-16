@@ -19,3 +19,10 @@
 .text__book_mark {
   color: blue;
 }
+.text__html__range {
+  width: 50%;
+}
+.text__html__range_layout {
+  display: flex;
+  justify-content: flex-end;
+}
