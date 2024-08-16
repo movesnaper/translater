@@ -92,10 +92,6 @@
   display: flex;
   gap: 20px;
   flex-direction: column;
-  /* heig1ht: 100%;
-  display: flex;
-  flex-direction: column; */
-  /* justify-content: space-between; */
 }
 .card__items > div {
   padding: 4px;
@@ -120,10 +116,9 @@
 .card__header > div {
   padding: 0;
 }
-.card__body__content {
-  /* height: calc(100vh - 325px); */
-  /* overflow: auto; */
+.card__random__values__form_check {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 20%;
 }
-.card__body__content > div {
-  /* min-height: 40vh; */
-}
+
