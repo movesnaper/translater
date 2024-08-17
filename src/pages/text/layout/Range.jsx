@@ -8,7 +8,7 @@ const ComponentRange = ({values, setValues}) => {
       label="Select your value"
       step={0.1}
       min={10}
-      max={30}
+      max={50}
       values={values}
       onChange={(values) => {
         setValues(values)

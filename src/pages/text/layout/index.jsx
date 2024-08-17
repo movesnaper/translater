@@ -29,12 +29,14 @@ const TextLayout = ({ id, api, schema }) => {
       {schema({...state, values }, (value) => {
       setState(Object.assign(state, value))
     })}</div>
-    <DropDownBtn schema={[
-      { xs: 2, title: 'Prev', action: () => setPage({mark: mark - limit, font}) },
+    <div className={style.text__html__footer}>
+    <DropDownBtn  schema={[
+      { title: 'Prev', action: () => setPage({mark: mark - limit, font}) },
       { title: `Current ${Math.floor(mark / limit) + 1}`, action: () => {}},
       { title: `Total ${Math.floor(state.total / limit) + 1}`, action: () => {}},
-      { xs: 2, title: 'Next', action: () => setPage({mark: mark + limit, font}) },
+      { title: 'Next', action: () => setPage({mark: mark + limit, font}) },
     ]}/>
+    </div>
   </>
 
 }
