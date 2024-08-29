@@ -12,4 +12,5 @@
 }
 .dropDownBtn__group__btn {
   border: none;
+  color: inherit;
 }

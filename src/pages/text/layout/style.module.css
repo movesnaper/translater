@@ -9,8 +9,7 @@
   color: red;
 }
 .text__html__body {
-  height: 75%;
-  /* line-height: 25px; */
+  height: 90%;
   padding: 2%;
   white-space: break-spaces;
   overflow: auto;
@@ -19,14 +18,16 @@
 .text__book_mark {
   color: blue;
 }
-.text__html__range {
-  width: 50%;
-}
-.text__html__range_layout {
+
+.text__html__header {
   display: flex;
   justify-content: flex-end;
+  padding: 10px;
 }
 .text__html__footer {
-  max-width: 50%;
-  /* margin: 0 auto; */
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  background-color: black;
 }

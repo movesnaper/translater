@@ -1,0 +1,5 @@
+.praxis__layout__header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px;
+}

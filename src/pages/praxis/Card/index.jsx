@@ -17,7 +17,7 @@ const Card = ({ api, footer, addResult }) => {
 
   const mathRandom= () => 0.5 - Math.random()
 
-  const getDst = ({dst}) => dst ? dst.split(/,|;/).sort(mathRandom) : []
+  const getDst = ({dst} = {}) => dst ? dst.split(/,|;/).sort(mathRandom) : []
 
   const getCard = async () => {
     const { card, random } = await api()
@@ -61,7 +61,7 @@ const Card = ({ api, footer, addResult }) => {
       left:  item && <Result value={ value } success={item === _id}/>,
       right: <Items items={items} checked={item}
        addResult={(item) => setResult(item).then(next)}/>,
-      footer: footer({...card, resolve: card.resolve || next })
+      footer: footer({card: {...card, resolve: card.resolve || next }})
   
     })}
   </div>

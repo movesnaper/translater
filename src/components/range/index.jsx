@@ -2,13 +2,14 @@ import React from "react";
 import style from './style.module.css'
 import { Range } from "react-range";
 
-const ComponentRange = ({values, setValues}) => {
+const ComponentRange = ({values, setValues, settings}) => {
+  const {label = '', step, min, max} = settings
   return <div className={style.text__html__range}>
 <Range
-      label="Select your value"
-      step={0.1}
-      min={10}
-      max={50}
+      label={label}
+      step={step}
+      min={min}
+      max={max}
       values={values}
       onChange={(values) => {
         setValues(values)

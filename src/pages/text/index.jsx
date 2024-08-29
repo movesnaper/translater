@@ -29,8 +29,7 @@ const TextPage =  () => {
           console.log(e);
         }    
       }
-      return <Layout 
-      id={id}
+      return <Layout id={id}
       api={(props) => api.get(`/text/${id}`, props)}
       schema={({values, obj, mark}, updateState) => {
         return values.map((item, index) => <TooltipSpan
