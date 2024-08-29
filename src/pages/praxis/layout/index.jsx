@@ -6,16 +6,20 @@ import style from './style.module.css'
 const PraxisLayout =  ({schema, id}) => {
   const [history, setHistory] = useState([])
   const [{ pagePraxis }, { pagePraxis: updatePage }] = useContext(Context)
-  const { result = 10 } = pagePraxis ? (pagePraxis[id] || {}) : {}
+  const { result = 10, historyLn = 3 } = pagePraxis ? (pagePraxis[id] || {}) : {}
 
   const setPage = async(result) => {
     updatePage({...pagePraxis, [id]: { result }})
     return {result}
   }
-  const addHistory = (card) => {
-    setHistory([card, ...history]
-      .filter((v, index) => index <= 5).reverse()
-        .map((v, index) => ({...v, history: index})))
+  const addHistory = (card, index) => {
+    const {length} = history
+    history.splice(index >=0 || length + 1, 1, card)
+    const items = history
+      .filter((v, index) => length - index < historyLn)
+        .map((v, index) => ({...v, history: index}))
+    setHistory(items)
+    return card
   }
 
 

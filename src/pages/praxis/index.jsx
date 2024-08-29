@@ -1,4 +1,3 @@
-import React, { useState, useContext } from "react"
 import Page from '../../components/page'
 import { dropDowvNavs } from '../../components/statistic'
 import Modal from '../modal'
@@ -22,9 +21,6 @@ const PraxisPage =  () => {
 
   return <Page schema={Modal} statistic={statistic}> 
     { ({setResult, setModal, id}) => {
-          // const addResult = async (card) => {
-          //   setResult(card.value).then(() => addHistory(card))
-          // }
           return <Layout id={id}
           api={() => api.get(`/card/${id}`)}
           setResult = {setResult}
@@ -41,11 +37,14 @@ const PraxisPage =  () => {
               footer={({card = {}}) => {
                 const { history: index = history.length, resolve = () => {} } = card
                 return <DropDownBtn schema={[
-                  { xs: 2, title: 'Prev', disabled: !index, action: () => resolve(history[index - 1])},
+                  { xs: 2, disabled: !index,
+                    title: 'Prev', disabled: !index, action: () => resolve(history[index - 1])},
                   {},
                   { xs: 2, title: 'Next', action: () => resolve(history[index + 1]), menu: [
                     { title: 'edit',  action: () => {
-                      setModal({...card, save: () => setResult(card) })
+                      setModal({...card, save: ({value}) => {
+                        setResult(value).then(() => resolve(addHistory({...card, value}, index)))
+                      } })
                     }},
                     {title: 'remove', action: () => setResult({...card.value, _id: false}).then(resolve)}
                   ] }

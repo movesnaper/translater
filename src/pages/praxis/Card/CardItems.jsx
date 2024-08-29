@@ -2,7 +2,7 @@ import React from "react";
 import style from './style.module.css'
 import { CFormCheck } from '@coreui/react'
 
-const CardItems = ({ checked, items, addResult }) => {
+const CardItems = ({ checked, items, addResult, disabled }) => {
 
   const schema = ({ _id, dst }) => {
     return {
@@ -19,7 +19,7 @@ const CardItems = ({ checked, items, addResult }) => {
       {<CFormCheck id={`form_check_${index}`} label={label} 
       className={ style.card__random__values__form_check }
       defaultChecked={checked }
-      disabled={!!checked}/>}
+      disabled={disabled || !!checked}/>}
     </div>
   })    }
   </div>

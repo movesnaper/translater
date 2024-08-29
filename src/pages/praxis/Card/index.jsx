@@ -11,7 +11,7 @@ import style from './style.module.css'
 const Card = ({ api, footer, addResult }) => {
   const [card, setCard] = useState({})
   
-  const { value, item, items } = card || {}
+  const { value, item, items, history } = card || {}
 
   const { _id, result } = value || {}
 
@@ -59,7 +59,7 @@ const Card = ({ api, footer, addResult }) => {
         { xs: 1, component: <Timer disabled={!!item} reset={items} next={() => setResult(-1)}/>}
       ]}/>,
       left:  item && <Result value={ value } success={item === _id}/>,
-      right: <Items items={items} checked={item}
+      right: <Items items={items} checked={item} disabled={history >=0}
        addResult={(item) => setResult(item).then(next)}/>,
       footer: footer({card: {...card, resolve: card.resolve || next }})
   
