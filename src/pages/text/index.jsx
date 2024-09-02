@@ -36,8 +36,10 @@ const TextPage =  () => {
         key={index} mark={mark === index} item={item}
         onClick={() => {
           setModal({ index, value: item, 
-            save: ({value: modal}) => setResult(modal, item.key)
+            save: ({value: modal}) => {
+              setResult(modal, item.key)
               .then((value) => updateState({obj: Object.assign(obj, value)}))
+            }
           })
           updateState({mark: index})
         }}/>)

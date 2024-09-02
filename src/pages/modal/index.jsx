@@ -2,10 +2,11 @@ import React from "react"
 import { CFormTextarea } from '@coreui/react'
 import Content from './Content'
 import CardHeader from '../../components/cardHeader'
-import DropDownBtn from '../../components/dropDownBtn'
+import { CButton, CSpinner } from '@coreui/react'
 import Tabs from '../../components/tabs/index.jsx'
 import Example from './Example'
 import Translate from './Translate'
+import style from './style.module.css'
 
   const Modal = { 
         header: ({value}) => CardHeader({value}),
@@ -29,11 +30,14 @@ import Translate from './Translate'
             })}
           ]})
         },
-        footer: ({key, index, value, save}) => <DropDownBtn schema={
-          [ {},
-            { title: 'Save', action: () => save({key, index, value}) }
-          ]
-        }/>
+        footer: ({key, index, value, save}) => {
+          return <div className={style.card__modal__footer}>
+          <CButton variant='ghost' onClick={() => save({key, index, value})}>{
+          // loading ? <CSpinner component="span" size="sm" aria-hidden="true"/> : 
+          'Save'
+        }</CButton>
+        </div>
+        }
     }
 
 export default Modal

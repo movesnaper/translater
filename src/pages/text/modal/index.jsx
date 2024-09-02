@@ -14,10 +14,6 @@ const ModalText = {...Modal,
       setModal({...card, value })
     }
     return Header({value, setValue})
-    // <Header schema={[
-    //   { xs: 5, component: AutocompleteTitle({ value, setValue })},
-    //   { component: <Transcription value={value}/>}
-    // ]}/>
   },
   content: (card, setModal) => {
     const { value = {} } = card
