@@ -1,0 +1,37 @@
+
+
+.card__header__left {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 5%;
+}
+
+.card__title {
+  width: auto;
+  position: relative;
+}
+.card__title > span {
+  position: absolute;
+  top: -15px;
+  right: -25px;
+}
+.card__transcription {
+  font-size: 16px;
+  color: #1d9bf5;
+}
+.card__transcription_btn {
+  padding: 0;
+}
+
+@media (min-width : 320px) {  
+  .card__header__left {
+    flex-direction: column;
+  }
+}
+@media (min-width:600px) {
+  .card__header__left {
+    flex-direction: initial;
+  }
+}
+

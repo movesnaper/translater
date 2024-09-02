@@ -1,7 +1,7 @@
 import React from "react";
 import { CFormCheck } from '@coreui/react'
 import Content from '../../modal/Content'
-import Transcription from '../../praxis/Card/CardTranscription'
+import Transcription from '../../../components/cardHeader/CardTranscription'
 
 const ItemHeader = ({value, setValue}) => {
   const {_id, dst} = value || {}

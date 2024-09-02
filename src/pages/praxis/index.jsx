@@ -2,7 +2,6 @@ import Page from '../../components/page'
 import { dropDowvNavs } from '../../components/statistic'
 import Modal from '../modal'
 import { db } from '../../db'
-import DropDownBtn from '../../components/dropDownBtn'
 import Range from '../../components/range'
 import Card from './Card'
 import Layout from './layout'
@@ -36,19 +35,17 @@ const PraxisPage =  () => {
               addResult={(card) => setResult(card.value).then(() => addHistory(card))}
               footer={({card = {}}) => {
                 const { history: index = history.length, resolve = () => {} } = card
-                return <DropDownBtn schema={[
-                  { xs: 2, disabled: !index,
-                    title: 'Prev', disabled: !index, action: () => resolve(history[index - 1])},
-                  {},
-                  { xs: 2, title: 'Next', action: () => resolve(history[index + 1]), menu: [
-                    { title: 'edit',  action: () => {
-                      setModal({...card, save: ({value}) => {
-                        setResult(value).then(() => resolve(addHistory({...card, value}, index)))
-                      } })
-                    }},
-                    {title: 'remove', action: () => setResult({...card.value, _id: false}).then(resolve)}
-                  ] }
-                ]}/>
+                return [
+                    {title: 'Prev', disabled: !index, action: () => resolve(history[index - 1])},
+                    {title: 'Next', action: () => resolve(history[index + 1]), schema: [
+                      { title: 'edit',  action: () => {
+                        setModal({...card, save: ({value}) => {
+                          setResult(value).then(() => resolve(addHistory({...card, value}, index)))
+                        } })
+                      }},
+                      {title: 'remove', action: () => setResult({...card.value, _id: false}).then(resolve)}
+                    ]}
+                ]
               }}
               />
           }}

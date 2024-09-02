@@ -17,9 +17,6 @@ export const dropDowvNavs = ({ id, xs, title }, ...menu) => {
 export const schema = ({ total }) => {
   const info = total < 75 && 'info'
   return [
-    // { progress: [
-    //   { color: 'primary', value: 1, label: `keys ${keys}`}
-    // ]},
     { progress: [
       { color: info || 'success', min: 25, value: + total, label: `${total} %`}
     ]}

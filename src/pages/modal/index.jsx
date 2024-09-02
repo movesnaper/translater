@@ -1,15 +1,14 @@
 import React from "react"
 import { CFormTextarea } from '@coreui/react'
-
 import Content from './Content'
-import Title from '../praxis/Card/CardTitle'
+import CardHeader from '../../components/cardHeader'
 import DropDownBtn from '../../components/dropDownBtn'
-import Tabs from './Tabs.jsx'
+import Tabs from '../../components/tabs/index.jsx'
 import Example from './Example'
 import Translate from './Translate'
 
   const Modal = { 
-        header: (value) => Title(value),
+        header: ({value}) => CardHeader({value}),
         content: (card, setValue) => {
           const {value} = card
           return Content({schema: [
@@ -17,14 +16,16 @@ import Translate from './Translate'
             onInput={({target}) => {
               setValue({...card, value: {...value, dst: target.value}})
             }}/>},
-            { component: Tabs({ value, setValue: (value) => {
-              setValue({...card, value})
-            },
-              schema: [
-                { title: 'Example', component: Example },
-                { title: 'lingvo', component: Translate('lingvo')},
-                { title: 'yandex', component: Translate('yandex')}
-              ]
+            { component: Tabs({ schema: ({active}) => {
+                const props = {value, setValue: (value) => {
+                  setValue({...card, value})
+                }}
+                return [
+                  { title: 'Example', component: () => Example(props) },
+                  { title: 'lingvo', component: () => active ===1 && Translate('lingvo')(props)},
+                  // { title: 'yandex', component: () => Translate('yandex')}
+                ]
+              }
             })}
           ]})
         },

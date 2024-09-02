@@ -1,18 +1,17 @@
 import React, { useState, useEffect} from "react"
+import {CButton} from '@coreui/react'
+import DropDownBtn from '../../../components/dropDownBtn'
 import Layout from './CardLayout'
+import Tabs from '../../../components/tabs/index.jsx'
 import Items from './CardItems'
 import Result from "./CardResult"
-import Title from "./CardTitle"
-import Transcription from "./CardTranscription"
-import Header from "./CardHeader"
+import CardHeader from "../../../components/cardHeader"
 import Timer from "./CardTimer"
 import style from './style.module.css'
 
 const Card = ({ api, footer, addResult }) => {
   const [card, setCard] = useState({})
-  
   const { value, item, items, history } = card || {}
-
   const { _id, result } = value || {}
 
   const mathRandom= () => 0.5 - Math.random()
@@ -53,16 +52,33 @@ const Card = ({ api, footer, addResult }) => {
 
   return <div className={style.praxis__card}>
     {Layout({
-      header: <Header schema={[
-        { component: <Title value={{ result, key: _id }}/> },
-        { component: <Transcription value={value}/> },
-        { xs: 1, component: <Timer disabled={!!item} reset={items} next={() => setResult(-1)}/>}
-      ]}/>,
-      left:  item && <Result value={ value } success={item === _id}/>,
-      right: <Items items={items} checked={item} disabled={history >=0}
-       addResult={(item) => setResult(item).then(next)}/>,
-      footer: footer({card: {...card, resolve: card.resolve || next }})
-  
+      header: <div className={style.card__header}>
+        {value && <CardHeader value={value}/>}
+        <Timer disabled={!!item} reset={items} next={() => setResult(-1)}/>
+      </div>,
+      body: () => {
+        const ResultComponent = <Result value={ value } success={item === _id}/>
+        const ItemsComponent = <Items items={items} checked={item} disabled={history >=0}
+        addResult = {(item) => setResult(item).then(next)}/>
+        return !item ? ItemsComponent : history >=0 ? 
+        <Tabs schema={()=>[
+          {title: '<', component: () => ResultComponent},
+          {title: '>', component: () => ItemsComponent}
+        ]}/> : ResultComponent 
+      },
+      footer: <div className={style.card__footer}>
+        {footer({card: {...card, resolve: card.resolve || next }}).map(({title, action, disabled, schema}) => {
+        return <div key={title} >
+          <CButton variant='ghost'  disabled={disabled} onClick={action}>
+          {title}
+        </CButton>
+        {schema && <DropDownBtn schema={[
+          { value: <span ></span> },
+          { menu: schema}
+        ]}/>}
+        </div>
+      })}
+      </div>
     })}
   </div>
 }

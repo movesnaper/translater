@@ -11,15 +11,6 @@
   overflow: hidden;
     height: 100%;
 }
-.card__body{
-  /* height: calc(100vh - 250px); */
-
-}
-.card__title {
-  position: relative;
-  max-width: fit-content;
-  padding: 10px;
-}
 .card__timer, .card__btn_save {
   display: flex;
   justify-content: flex-end;
@@ -102,23 +93,23 @@
 .card__items > div:hover {
   background-color: rgb(37 37 78 / 7%);
 }
-.card__transcription {
-  font-size: 16px;
-  color: #1d9bf5;
-}
-.card__transcription_btn {
-  padding: 0;
-}
 .card__header {
   width: 100%;
   align-items: center;
+  display: flex;
+  justify-content: space-between;
 }
-.card__header > div {
-  padding: 0;
+.card__footer {
+  display: flex;
+  justify-content: space-between;
+}
+.card__footer > div {
+  display: flex;
 }
 .card__random__values__form_check {
   display: flex;
   flex-direction: row-reverse;
   gap: 20%;
 }
+
 

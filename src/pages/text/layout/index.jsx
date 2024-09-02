@@ -7,7 +7,7 @@ import style from './style.module.css'
 const TextLayout = ({ id, api, schema }) => {
   const [state, setState ] = useState({ values: [], obj: {}, mark: null, total: 0})
   const [{ pageText }, { pageText: updatePage }] = useContext(Context)
-  const { limit = 150, mark = 0, font = 14  } = pageText ? (pageText[id] || {}) : {}
+  const { limit = 200, mark = 0, font = 14  } = pageText ? (pageText[id] || {}) : {}
 
   const setPage = async({mark, font}) => {
     updatePage({...pageText, [id]: { mark, font }})

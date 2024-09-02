@@ -1,6 +1,4 @@
-import Header from '../../praxis/Card/CardHeader'
-import Transcription from '../../praxis/Card/CardTranscription'
-import AutocompleteTitle from '../../../pages/modal/AutocompleteTitle.jsx'
+import Header from '../../../components/cardHeader'
 import Modal from '../../modal'
 import Content from '../../modal/Content'
 import ItemsList from './ItemsList.jsx'
@@ -15,10 +13,11 @@ const ModalText = {...Modal,
       const value = { key: _id, value: res.length ? res : [{  dst }]}
       setModal({...card, value })
     }
-    return <Header schema={[
-      { xs: 5, component: AutocompleteTitle({ value, setValue })},
-      { component: <Transcription value={value}/>}
-    ]}/>
+    return Header({value, setValue})
+    // <Header schema={[
+    //   { xs: 5, component: AutocompleteTitle({ value, setValue })},
+    //   { component: <Transcription value={value}/>}
+    // ]}/>
   },
   content: (card, setModal) => {
     const { value = {} } = card

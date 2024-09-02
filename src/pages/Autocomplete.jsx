@@ -3,7 +3,7 @@ import style from './style.module.css'
 
 import { CFormInput, CDropdownItem, CDropdown, CDropdownMenu, CDropdownToggle, CInputGroup } from '@coreui/react'
 
-const Autocomplete  = ({ api, value = '', setValue, schema, name }) => {
+const Autocomplete  = ({ api, value = '', setValue, schema, name, footer }) => {
   const [items = [], setItems] = useState([])
   const update = async () => {
     try {
@@ -24,6 +24,7 @@ const Autocomplete  = ({ api, value = '', setValue, schema, name }) => {
         })}
       </CDropdownMenu>
   </CDropdown>
+  {/* {footer} */}
 </CInputGroup>
 }
 

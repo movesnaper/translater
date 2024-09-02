@@ -5,8 +5,8 @@ const Tabs = ({ value, setValue, schema }) => {
 
   return  <>
     <CNav variant="tabs">
-        { schema.map(({title}, index) => {
-          return   <CNavItem key={index}>
+        { schema({active, setActive}).map(({title}, index) => {
+          return  title && <CNavItem key={index}>
           <CNavLink href="#" active={active === index} onClick={() => setActive(index)}>
             {title}
           </CNavLink>
@@ -14,14 +14,9 @@ const Tabs = ({ value, setValue, schema }) => {
         })}
     </CNav>
     <CTabContent>
-      { schema.map(({component}, index) => {
-        const update = (value) => {
-          setValue(value)
-          setActive(0)
-        }
-        const visible = active === index
-        return <CTabPane role="tabpanel" key={index} visible={visible}>
-          {component({value, setValue: update, visible})}
+      { schema({active, setActive}).map(({component}, index) => {
+        return component && <CTabPane role="tabpanel" key={index} visible={active === index}>
+          {component() }
         </CTabPane>
       })}
     </CTabContent>

@@ -9,7 +9,6 @@
   color: red;
 }
 .text__html__body {
-  height: 90%;
   padding: 2%;
   white-space: break-spaces;
   overflow: auto;
@@ -31,3 +30,19 @@
   display: flex;
   background-color: black;
 }
+@media (min-width : 320px) {  
+  .text__html__body {
+    height: 75%;
+  }
+}
+@media (min-width:600px) {
+  .text__html__body {
+    height: 65%;
+  }
+}
+@media (min-width:1025px) {
+  .text__html__body {
+    height: 85%;
+  }
+}
+
