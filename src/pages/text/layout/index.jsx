@@ -1,11 +1,12 @@
 import React, { useEffect, useContext, useState } from "react";
-import DropDownBtn from '../../../components/dropDownBtn'
+// import DropDownBtn from '../../../components/dropDownBtn'
+import { CButton } from '@coreui/react'
 import { Context } from "../../../components/Provider"
 import Range from '../../../components/range'
 import style from './style.module.css'
 
-const TextLayout = ({ id, api, schema }) => {
-  const [state, setState ] = useState({ values: [], obj: {}, mark: null, total: 0})
+const TextLayout = ({ id, api, schema, footer }) => {
+  const [state, setState ] = useState({ values: [], obj: {}, total: 0})
   const [{ pageText }, { pageText: updatePage }] = useContext(Context)
   const { limit = 200, mark = 0, font = 14  } = pageText ? (pageText[id] || {}) : {}
 
@@ -33,14 +34,15 @@ const TextLayout = ({ id, api, schema }) => {
     <div className={style.text__html__body} style={{fontSize: font}}>
       {schema({...state, values }, (value) => {
       setState(Object.assign(state, value))
-    })}</div>
+    })}
+    </div>
     <div className={style.text__html__footer}>
-    <DropDownBtn className={style.text__html__footer__btns}  schema={[
-      { title: 'Prev', action: () => setPage({mark: mark - limit, font}).then(update) },
-      { title: `Current ${Math.floor(mark / limit) + 1}`, action: () => {}},
-      { title: `Total ${Math.floor(state.total / limit) + 1}`, action: () => {}},
-      { title: 'Next', action: () => setPage({mark: mark + limit, font}).then(update) },
-    ]}/>
+      {footer({...state, mark, limit}, (mark) => setPage({mark, font}).then(update))
+      .map(({title, action}) => {
+        return <div key={title}>
+        <CButton variant='ghost' onClick={action}>{title}</CButton>
+        </div>
+      })}
     </div>
   </>
 

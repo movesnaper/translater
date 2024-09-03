@@ -1,6 +1,6 @@
 import React, {useState} from "react"
 import { CNav, CNavItem, CNavLink, CTabContent, CTabPane } from '@coreui/react'
-const Tabs = ({ value, setValue, schema }) => {
+const Tabs = ({ schema }) => {
   const [active, setActive] = useState(0)
 
   return  <>

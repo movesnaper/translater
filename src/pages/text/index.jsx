@@ -44,6 +44,18 @@ const TextPage =  () => {
           updateState({mark: index})
         }}/>)
       }}
+      footer={({total, mark, limit}, updatePage) => {
+        return [
+          { title: 'Prev', action: () => updatePage(mark - limit)},
+          { title: `Current ${Math.floor(mark / limit) + 1}`},
+          { title: `Total ${Math.floor(total / limit) + 1}`},
+          { title: 'Next', action: () => {
+            console.log(total, mark, limit);
+            
+            updatePage(mark + limit)
+          }},
+        ]
+      }}
       />
     }
   }</Page>

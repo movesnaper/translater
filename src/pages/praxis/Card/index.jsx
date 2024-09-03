@@ -1,8 +1,8 @@
 import React, { useState, useEffect} from "react"
 import {CButton} from '@coreui/react'
 import DropDownBtn from '../../../components/dropDownBtn'
+import CardHistory from './CardHistory'
 import Layout from './CardLayout'
-import Tabs from '../../../components/tabs/index.jsx'
 import Items from './CardItems'
 import Result from "./CardResult"
 import CardHeader from "../../../components/cardHeader"
@@ -13,9 +13,8 @@ const Card = ({ api, footer, addResult }) => {
   const [card, setCard] = useState({})
   const { value, item, items, history } = card || {}
   const { _id, result } = value || {}
-
+  
   const mathRandom= () => 0.5 - Math.random()
-
   const getDst = ({dst} = {}) => dst ? dst.split(/,|;/).sort(mathRandom) : []
 
   const getCard = async () => {
@@ -60,11 +59,13 @@ const Card = ({ api, footer, addResult }) => {
         const ResultComponent = <Result value={ value } success={item === _id}/>
         const ItemsComponent = <Items items={items} checked={item} disabled={history >=0}
         addResult = {(item) => setResult(item).then(next)}/>
-        return !item ? ItemsComponent : history >=0 ? 
-        <Tabs schema={()=>[
+        return <div className={style.card__body}>
+          {!item ? ItemsComponent : history >=0 ? 
+        CardHistory({schema:() => [
           {title: '<', component: () => ResultComponent},
-          {title: '>', component: () => ItemsComponent}
-        ]}/> : ResultComponent 
+          {title: '>', component: () => ItemsComponent}          
+        ]}) : ResultComponent }
+        </div>
       },
       footer: <div className={style.card__footer}>
         {footer({card: {...card, resolve: card.resolve || next }}).map(({title, action, disabled, schema}) => {
@@ -78,6 +79,9 @@ const Card = ({ api, footer, addResult }) => {
         ]}/>}
         </div>
       })}
+
+
+
       </div>
     })}
   </div>

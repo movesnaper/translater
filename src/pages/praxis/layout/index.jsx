@@ -23,15 +23,14 @@ const PraxisLayout =  ({schema, id}) => {
   }
 
 
-  return <>
+  return <div className={style.praxis__layout}>
   <div className={style.praxis__layout__header}>
     {schema.header({result, setPage})}
   </div>
-  <div className={style.text__html__content}>
+  <div className={style.praxis__layout__content}>
     {schema.content({history, addHistory, mark: result})}
   </div>
-  
-  </>
+  </div>
 }
 
 export default PraxisLayout

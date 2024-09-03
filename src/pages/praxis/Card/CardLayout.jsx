@@ -4,8 +4,8 @@ import style from './style.module.css'
 
 const CardLayout = ({ header, body, footer }) => {
 
-  return <CCard className={style.card__layout}>
-    <CCardBody className={style.card__body}>
+  return <CCard>
+    <CCardBody >
         {header}
         {body()}
     </CCardBody>

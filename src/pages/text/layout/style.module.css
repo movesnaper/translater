@@ -29,8 +29,13 @@
   width: 100%;
   display: flex;
   background-color: black;
+  display: flex;
+  justify-content: space-around;
 }
-@media (min-width : 320px) {  
+.text__html__footer > div > button {
+  color: white;
+}
+@media (min-width : 200px) {  
   .text__html__body {
     height: 75%;
   }
