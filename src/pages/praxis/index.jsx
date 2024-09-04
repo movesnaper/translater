@@ -1,5 +1,5 @@
 import Page from '../../components/page'
-import { dropDowvNavs } from '../../components/statistic'
+import DocTitle from '../../components/docTitle'
 import Modal from '../modal'
 import { db } from '../../db'
 import Range from '../../components/range'
@@ -10,12 +10,11 @@ const api = db(`/documents`)
 
 const PraxisPage =  () => {
 
-  const statistic = ({ id, title, keys, total, color, min }) => [
-    dropDowvNavs({ title, id }, 'text', 'dictionary'),
-    { xs: 2, value: `keys: ${keys}`},
-    { xs: 4, progress: [
-      { color, min, value: + total, label: `${total} %`}
-    ]}
+  const statistic = ({ id, title }) => [
+    { value: DocTitle({title, menu: [
+      {title: 'text', href: `/text/${id}`},
+      {title: 'dictionary', href: `/dictionary/${id}`}
+    ]})}
   ]
 
   return <Page schema={Modal} statistic={statistic}> 
@@ -50,7 +49,6 @@ const PraxisPage =  () => {
               />
           }}
           />
-
     }}
   </Page>
 }

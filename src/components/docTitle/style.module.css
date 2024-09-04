@@ -1,0 +1,6 @@
+
+.components__doc__title {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+}

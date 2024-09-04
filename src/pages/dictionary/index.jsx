@@ -3,16 +3,17 @@ import Page from '../../components/page'
 import Table from './table'
 import Modal from './modal'
 import Result from './table/TableResult'
-import { dropDowvNavs } from '../../components/statistic'
+import DocTitle from '../../components/docTitle'
 import { db } from '../../db'
 const api = db(`/documents`)
-const statistic = ({ id, title, keys, total, color, min }) => [
-  dropDowvNavs({ title, id }, 'text', 'praxis'),
-  { xs: 2, value: `keys: ${keys}`},
-  { xs: 4, progress: [
-    { color, min, value: + total, label: `${total} %`}
-  ]}
+
+const statistic = ({ id, title }) => [
+  { value: DocTitle({title, menu: [
+    {title: 'text', href: `/text/${id}`},
+    {title: 'praxis', href: `/praxis/${id}`}
+  ]})}
 ]
+
 const Dictionary =  () => {
   return <Page schema={Modal} statistic={statistic}>{ ({id, setModal, setResult}) => {
         return <Table 

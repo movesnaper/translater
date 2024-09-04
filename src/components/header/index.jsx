@@ -5,12 +5,11 @@ import SideMenu from '../sideMenu'
 import { CButton } from '@coreui/react'
 import User from '../user'
 import { Context } from "../Provider"
-import { NavLink, useParams, useNavigate } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
 
 const Header = () => {
   const [active, setActive] = useState(false)
   const [{user}, {user: setUser}] = useContext(Context)
-  // const {action} = useParams()
   const navigate = useNavigate()
 
   const logout = () => {
@@ -18,7 +17,6 @@ const Header = () => {
     setUser()
     navigate('/auth/login')
   }
-
 
   return <>
     <div className={style.header}>
@@ -29,10 +27,6 @@ const Header = () => {
       </div>
     { user ? <User user={user} logout={logout}></User> :
     <NavLink to='auth/login'>login</NavLink> 
-      // : <div className={style.auth}>
-      //     { action === 'login' ? <NavLink to='auth/register'> register </NavLink>
-      //     : <NavLink to='auth/login'> login </NavLink> }
-      // </div>
     }
     </div>
     <SideMenu active={active} hide={() => setActive(false)}></SideMenu>

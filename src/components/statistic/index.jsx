@@ -1,15 +1,13 @@
 import React, {useState, useEffect} from "react"
 import style from './style.module.css'
 import { CRow, CCol } from '@coreui/react'
-import { CProgress, CProgressStacked } from '@coreui/react'
 import DropDownBtn from '../dropDownBtn'
+import StatisticProgress from "./StatisticProgress"
 
 export const dropDowvNavs = ({ id, xs, title }, ...menu) => {
   return { xs, value: <DropDownBtn schema={[
     { value: <span style={{fontSize: '13px'}}>{title}</span> },
-    { menu: menu.map((url) => 
-      ({ title: url, href: `/${url}/${id}`}))
-    }
+    { xs: 1, menu: menu.map((url) => ({ title: url, href: `/${url}/${id}`})) }
     ]}/>
   }
 }
@@ -31,7 +29,8 @@ const Statistic = ({ id, api, schema, children }) => {
     if (loading) return
     try {
       setLoading(true)
-      setValue({...await api.get(`/info/${id}`), min: 25, id })
+      const info = await api.get(`/info/${id}`)
+      setValue({...info, min: 25, id })
     }catch (e) {}
     finally {
       setLoading(false)
@@ -39,21 +38,21 @@ const Statistic = ({ id, api, schema, children }) => {
   }
 
   useEffect(() => { update() }, [])
+  const render = ({id, title, keys, color, total}) => [
+    ...schema({ id, title }),
+    { xs: 2, value: `keys: ${keys}`},
+    { xs: 4, value: StatisticProgress({schema: [
+      { color, value: + total || 25, label: `${total} %`}
+    ]})}
+  ]
+
 
   return <>
     <CRow className={style.statistic}>
-        { value && schema(value).map((item, index) => {
-          const { xs, progress, value } = item || {}
+        { value && render(value).map((item, index) => {
+          const { xs, value } = item || {}
           return <CCol xs={xs} key={index}>
-          { !progress ? value : <CProgressStacked>
-            { progress.map(({ min, value, label, color, className }, index) => {
-              return <CProgress
-              key={index}
-              className={className} 
-              color={color} 
-              value={ min > value ? min : value }>{label}</CProgress>
-            })}
-        </CProgressStacked>}
+            {value}
         </CCol>
         })}
     </CRow>

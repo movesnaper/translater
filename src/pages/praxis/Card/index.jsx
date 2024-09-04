@@ -53,7 +53,7 @@ const Card = ({ api, footer, addResult }) => {
     {Layout({
       header: <div className={style.card__header}>
         {value && <CardHeader value={value}/>}
-        <Timer disabled={!!item} reset={items} next={() => setResult(-1)}/>
+        <Timer disabled={!!item} reset={items} next={() => setResult(-1).then(next)}/>
       </div>,
       body: () => {
         const ResultComponent = <Result value={ value } success={item === _id}/>

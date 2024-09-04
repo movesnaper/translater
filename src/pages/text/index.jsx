@@ -1,21 +1,20 @@
 import React from "react"
 import Page from '../../components/page'
 import Layout from './layout'
-import { dropDowvNavs } from '../../components/statistic'
 import Modal from './modal'
 import TooltipSpan from './layout/TooltipSpan'
+import DocTitle from '../../components/docTitle'
 
 import { db } from '../../db'
 const api = db(`/documents`)
 
 const TextPage =  () => {
 
-  const statistic = ({ id, title, keys, total, color, min }) => [
-    dropDowvNavs({ title, id }, 'praxis', 'dictionary'),
-    { xs: 2, value: `keys: ${keys}`},
-    { xs: 4, progress: [
-      { color, min, value: + total, label: `${total} %`}
-    ]}
+  const statistic = ({ id, title }) => [
+    { value: DocTitle({title, menu: [
+      {title: 'praxis', href: `/praxis/${id}`},
+      {title: 'dictionary', href: `/dictionary/${id}`}
+    ]})}
   ]
 
   return <Page schema={Modal} statistic={statistic}>{
