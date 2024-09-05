@@ -2,7 +2,6 @@ import Page from '../../components/page'
 import DocTitle from '../../components/docTitle'
 import Modal from '../modal'
 import { db } from '../../db'
-// import Range from '../../components/range'
 import Card from './Card'
 import Layout from './layout'
 
@@ -19,16 +18,8 @@ const PraxisPage =  () => {
 
   return <Page schema={Modal} statistic={statistic}> 
     { ({setResult, setModal, id}) => {
-          return <Layout 
-          // id={id}
-          schema={{
-              // header: ({result, setPage}) => 
-              //   Range({
-              //     setValues: setPage,
-              //     values: [result], 
-              //     settings: {step: 1, min: 0, max: 10}
-              //   }),
-              content: ({history = [], addHistory}) => <Card 
+          return <Layout schema={{
+            content: ({history = [], addHistory}) => <Card
               api={(mark) => api.get(`/card/${id}/${mark}`)} 
               addResult={(card) => setResult(card.value).then(() => addHistory(card))}
               footer={({card = {}}) => {

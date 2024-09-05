@@ -18,3 +18,7 @@
   top: -35px;
   right: -55px;
 }
+.pages__auth__footer {
+  display: flex;
+  justify-content: end;
+}

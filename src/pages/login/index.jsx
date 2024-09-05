@@ -1,12 +1,11 @@
-import React, { useState, useContext } from "react"
-import { CForm, CFormInput, CButton, CRow, CCol } from '@coreui/react'
+import React, { useState, useContext, useEffect } from "react"
+import { CForm, CFormInput, CButton } from '@coreui/react'
 import { useParams } from "react-router-dom"
-import style from './style.module.css'
 import { useNavigate } from "react-router-dom"
 import { AiOutlineClose } from "react-icons/ai"
 import { db } from '../../db/index.js'
 import { Context } from "../../components/Provider"
-import { NavLink } from "react-router-dom"
+import style from './style.module.css'
 
  const Login = () => {
   const [{}, { user: setUser }] = useContext(Context)
@@ -21,9 +20,18 @@ import { NavLink } from "react-router-dom"
       console.log(e);
     }
   }
-  const register = action === 'login' && 'register'
 
-  return <div className={style.login}>
+  const logout = () => {
+    localStorage.removeItem('user_jwt')
+    setUser()
+    navigate('/')
+  }
+
+  useEffect(() => {
+    action === 'logout' && logout()
+  }, [action])
+
+  return  <div className={style.login}>
   <CForm className={style.login__form} >
   <div className={style.close_btn}>
     <CButton  color="dark" onClick={() => navigate('/')}>
@@ -51,15 +59,12 @@ import { NavLink } from "react-router-dom"
     type="password"
     onInput={({target}) => setData({...data, confirm: target.value})}/>}
 
-  <CRow>
-    <CCol>
-      <NavLink to={`/auth/${register || 'login'}`}>{register || 'login'}</NavLink>
-    </CCol>
-    <CCol>
+  <div className={style.pages__auth__footer}>
+    <div>
       <CButton disabled={!data.email || !data.password}
         onClick={() => login().then(() => navigate('/'))}>{ action }</CButton>      
-    </CCol>
-  </CRow>
+    </div>
+  </div>
 </CForm>
 </div>
 

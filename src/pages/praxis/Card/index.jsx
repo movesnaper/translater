@@ -19,10 +19,10 @@ const Card = ({ api, footer, addResult }) => {
 
   const getCard = async (cardMark) => {
     const { card, random, mark } = await api(cardMark)
-    // .filter(({dst}) => dst && dst !== card.dst)
-    const items = [...random, card].map((value) =>
-      ({...value, dst: getDst(value)[0]}))
-    return { value: card, items: items.sort(() => 0.5 - Math.random()), mark }
+    const itemsDst = random.map((value) => ({...value, dst: getDst(value)[0]}))
+    .filter(({dst}) => dst && dst !== card.dst)
+    const items = [...itemsDst, {...card, dst: getDst(card)[0]}]
+    return { value: card, items: items.sort(mathRandom), mark }
   }
 
   const next = async (card) => {

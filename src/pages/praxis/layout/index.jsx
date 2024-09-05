@@ -24,9 +24,6 @@ const PraxisLayout =  ({schema}) => {
 
 
   return <div className={style.praxis__layout}>
-  {/* <div className={style.praxis__layout__header}>
-    {schema.header({result, setPage})}
-  </div> */}
   <div className={style.praxis__layout__content}>
     {schema.content({history, addHistory})}
   </div>

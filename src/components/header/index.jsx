@@ -1,35 +1,30 @@
-import React, { useState, useContext  } from 'react'
+import React, { useContext  } from 'react'
 import style from './style.module.css'
-import { AiOutlineMenu } from "react-icons/ai"
-import SideMenu from '../sideMenu'
-import { CButton } from '@coreui/react'
-import User from '../user'
+import { AiFillHome } from "react-icons/ai"
+import DocTitle from '../docTitle'
 import { Context } from "../Provider"
-import { NavLink, useNavigate } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 
 const Header = () => {
-  const [active, setActive] = useState(false)
-  const [{user}, {user: setUser}] = useContext(Context)
-  const navigate = useNavigate()
+  const [{user}] = useContext(Context)
 
-  const logout = () => {
-    localStorage.removeItem('user_jwt')
-    setUser()
-    navigate('/auth/login')
+  const userTitle = () => {
+    return user ? user.email : <NavLink to='auth/login'>login</NavLink> 
   }
 
   return <>
     <div className={style.header}>
       <div className={style.header_menu_burger}>
-        <CButton  color="light" variant="outline" onClick={() => setActive(true)}>
-          <AiOutlineMenu size={25}/>
-        </CButton>
+      <NavLink to='/'>
+        <AiFillHome size={25}/>
+      </NavLink> 
       </div>
-    { user ? <User user={user} logout={logout}></User> :
-    <NavLink to='auth/login'>login</NavLink> 
-    }
+      {DocTitle({title: userTitle(), menu: [
+      user ? {title: 'logout', href: `/auth/logout`} : 
+      {title: 'register', href: `/auth/register`}
+    ]})}
+
     </div>
-    <SideMenu active={active} hide={() => setActive(false)}></SideMenu>
   </>
 }
 

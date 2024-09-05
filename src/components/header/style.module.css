@@ -1,7 +1,6 @@
 .header {
   flex-shrink: 0;
   background-color: rgb(24, 24, 71);
-  /* height: 100%; */
   display: flex;
   text-align: center;
   justify-content: space-between;
