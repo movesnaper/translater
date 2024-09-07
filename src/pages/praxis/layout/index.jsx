@@ -1,17 +1,9 @@
-import React, { useState, useContext } from "react"
-import { Context } from "../../../components/Provider"
+import React, { useState } from "react"
 import style from './style.module.css'
 
 
 const PraxisLayout =  ({schema}) => {
   const [history, setHistory] = useState([])
-  // const [{ pagePraxis }, { pagePraxis: updatePage }] = useContext(Context)
-  // const { result = 10, historyLn = 3 } = pagePraxis ? (pagePraxis[id] || {}) : {}
-
-  // const setPage = async(result) => {
-  //   updatePage({...pagePraxis, [id]: { result }})
-  //   return {result}
-  // }
   const addHistory = (card, index) => {
     const {length} = history
     history.splice(index >=0 || length + 1, 1, card)

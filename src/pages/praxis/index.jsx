@@ -20,7 +20,7 @@ const PraxisPage =  () => {
     { ({setResult, setModal, id}) => {
           return <Layout schema={{
             content: ({history = [], addHistory}) => <Card
-              api={(mark) => api.get(`/card/${id}/${mark}`)} 
+              api={() => api.get(`/card/${id}`)} 
               addResult={(card) => setResult(card.value).then(() => addHistory(card))}
               footer={({card = {}}) => {
                 const { history: index = history.length, resolve = () => {} } = card

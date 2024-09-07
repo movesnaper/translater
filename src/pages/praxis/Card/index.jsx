@@ -11,22 +11,22 @@ import style from './style.module.css'
 
 const Card = ({ api, footer, addResult }) => {
   const [card, setCard] = useState({})
-  const { value, item, items, history, mark = 0 } = card || {}
+  const { value, item, items, history } = card || {}
   const { _id, result } = value || {}
   
   const mathRandom= () => 0.5 - Math.random()
   const getDst = ({dst} = {}) => dst ? dst.split(/,|;/).sort(mathRandom) : []
 
-  const getCard = async (cardMark) => {
-    const { card, random, mark } = await api(cardMark)
+  const getCard = async () => {
+    const { card, random } = await api()
     const itemsDst = random.map((value) => ({...value, dst: getDst(value)[0]}))
     .filter(({dst}) => dst && dst !== card.dst)
     const items = [...itemsDst, {...card, dst: getDst(card)[0]}]
-    return { value: card, items: items.sort(mathRandom), mark }
+    return { value: card, items: items.sort(mathRandom) }
   }
 
   const next = async (card) => {
-    setCard(card || await getCard(mark))
+    setCard(card || await getCard())
   }
 
   const inRange = (x, min, max) => x >= min &&  x <= max
