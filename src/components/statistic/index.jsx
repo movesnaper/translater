@@ -38,7 +38,7 @@ const Statistic = ({ api, schema, children }) => {
   const render = ({id, title, keys, color, total}) => [
     ...schema({ id, title }),
     { xs: 2, value: `keys: ${keys}`},
-    { xs: 4, value: StatisticProgress({schema: [
+    {value: StatisticProgress({schema: [
       { color, value: + total || 25, label: `${total} %`}
     ]})}
   ]

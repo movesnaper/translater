@@ -22,10 +22,10 @@ const PraxisLayout =  ({schema}) => {
     if (value) {
       if (result === undefined) return 5
       if (result === 5) return 8
-      if (result === 8) return 10
     }
     if (!value) {
-      if (result === 8 || 10) return 6
+      if (result === 5) return 2
+      if (inRange(result, 8, 10)) return 6
     }
     const sum = (result || 0) + (value || -1)
     return inRange(sum, 0, 10) ? sum : (result || 0)

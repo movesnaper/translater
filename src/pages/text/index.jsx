@@ -31,6 +31,7 @@ const TextPage =  () => {
       }
 
       return <Layout
+      id={id}
       api={(props) => api.get(`/text/${id}`, props)}
       schema={({obj, mark, total, limit, font, setModal}) => {
         return {

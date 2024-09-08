@@ -24,8 +24,8 @@
   padding: 10px;
 }
 .text__html__footer {
-  position: absolute;
-  bottom: 0;
+  /* position: absolute;
+  bottom: 0; */
   width: 100%;
   display: flex;
   background-color: black;
@@ -37,17 +37,17 @@
 }
 @media (min-width : 200px) {  
   .text__html__body {
-    height: 75%;
+    height: 70vh;
   }
 }
 @media (min-width:600px) {
   .text__html__body {
-    height: 65%;
+    height: 75vh;
   }
 }
 @media (min-width:1025px) {
   .text__html__body {
-    height: 85%;
+    height: 80vh;
   }
 }
 
