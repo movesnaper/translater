@@ -29,21 +29,9 @@ const Card = ({ api, footer, addResult }) => {
     setCard(card || await getCard())
   }
 
-  const inRange = (x, min, max) => x >= min &&  x <= max
-
-  const getResult = (v) => {
-    if (v && result === undefined) return {...value, result: 5}
-    if (!v && result === 10) return {...value, result: 5}
-    const sum = (result || 0) + (v || -1)
-    return {...value, result: inRange(sum, 0, 10) ? sum : (result || 0)  }
-  }
-
   const setResult = async (item) => {
-    const value = getResult(_id === item )
-    const cardValue = {...card, item, value }
-    addResult(cardValue)
-    return new Promise((resolve) => {
-      setCard({...cardValue, resolve})
+    return new Promise(async (resolve) => {
+      setCard({...await addResult({...card, item }), resolve})
       setTimeout(resolve, 3000)
     })
   }
@@ -80,9 +68,6 @@ const Card = ({ api, footer, addResult }) => {
         ]}/>}
         </div>
       })}
-
-
-
       </div>
     })}
   </div>

@@ -4,6 +4,7 @@ import Layout from './layout'
 import Modal from './modal'
 import TooltipSpan from './layout/TooltipSpan'
 import DocTitle from '../../components/docTitle'
+import Range from '../../components/range'
 
 import { db } from '../../db'
 const api = db(`/documents`)
@@ -17,8 +18,8 @@ const TextPage =  () => {
     ]})}
   ]
 
-  return <Page schema={Modal} statistic={statistic}>{
-    ({id, setModal, update}) => {
+  return <Page schema={statistic}>{
+    ({id, update}) => {
       const setResult = async({key, value}, ref) => {
         const values = value.filter(({_id}) => !!_id)
         try {
@@ -28,32 +29,38 @@ const TextPage =  () => {
           console.log(e);
         }    
       }
-      return <Layout id={id}
+
+      return <Layout
       api={(props) => api.get(`/text/${id}`, props)}
-      schema={({values, obj, mark}, updateState) => {
-        return values.map((item, index) => <TooltipSpan
-        key={index} mark={mark === index} item={item}
-        onClick={() => {
-          setModal({ index, value: item, 
-            save: ({value: modal}) => {
-              setResult(modal, item.key)
-              .then((value) => updateState({obj: Object.assign(obj, value)}))
-            }
-          })
-          updateState({mark: index})
-        }}/>)
-      }}
-      footer={({total, mark, limit}, updatePage) => {
-        return [
-          { title: 'Prev', action: () => updatePage(mark - limit)},
-          { title: `Current ${Math.floor(mark / limit) + 1}`},
-          { title: `Total ${Math.floor(total / limit) + 1}`},
-          { title: 'Next', action: () => {
-            console.log(total, mark, limit);
-            
-            updatePage(mark + limit)
-          }},
-        ]
+      schema={({obj, mark, total, limit, font, setModal}) => {
+        return {
+          modal: Modal,
+          header: (update) => Range({
+            values: [font], 
+            setValues: ([value]) => update(value),
+            settings: {step: 0.1, min: 10, max: 40}
+          }),
+          content: (update) => (item, index) => <TooltipSpan
+          key={index} mark={mark === index} item={item}
+          onClick={() => {
+            setModal({ index, value: item, 
+              save: ({value: modal}) => {
+                setResult(modal, item.key)
+                .then((value) => {
+                  update({obj: Object.assign(obj, value)})
+                  setModal(false)
+                })
+              }
+            })
+            update({mark: index})
+          }}/>,
+          footer: (update) => [
+            { title: 'Prev', action: () => update(mark - limit)},
+            { title: `Current ${Math.floor(mark / limit) + 1}`},
+            { title: `Total ${Math.floor(total / limit) + 1}`},
+            { title: 'Next', action: () => update(mark + limit)}
+          ]
+        }
       }}
       />
     }

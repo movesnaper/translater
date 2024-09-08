@@ -21,23 +21,20 @@ export const schema = ({ total }) => {
   ]
 }
 
-const Statistic = ({ id, api, schema, children }) => {
-  const [value, setValue] = useState(null)
-  const [loading, setLoading] = useState(false)
+const Statistic = ({ api, schema, children }) => {
+  const [state, setState] = useState(null)
 
   const update = async () => {
-    if (loading) return
     try {
-      setLoading(true)
-      const info = await api.get(`/info/${id}`)
-      setValue({...info, min: 25, id })
-    }catch (e) {}
-    finally {
-      setLoading(false)
+      setState(await api())
+    }catch (err) {
+      console.log(err);
     }
+
   }
 
   useEffect(() => { update() }, [])
+
   const render = ({id, title, keys, color, total}) => [
     ...schema({ id, title }),
     { xs: 2, value: `keys: ${keys}`},
@@ -49,14 +46,14 @@ const Statistic = ({ id, api, schema, children }) => {
 
   return <>
     <CRow className={style.statistic}>
-        { value && render(value).map((item, index) => {
+        { state && render(state).map((item, index) => {
           const { xs, value } = item || {}
           return <CCol xs={xs} key={index}>
             {value}
         </CCol>
         })}
     </CRow>
-    { children(value, update) }
+    { children({...state, update}) }
   </>
 }
 
