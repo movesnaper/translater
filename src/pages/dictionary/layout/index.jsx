@@ -8,10 +8,12 @@ const DictionaryTable = ({ api, schema }) => {
   const [values, setValues] = useState([])
   const [modal, setModal] = useState(false)
 
-  const {modal: modalSchema, content} = schema({setModal})
+  const {modal: modalSchema, table} = schema({values, setModal})
 
   return <div className={style.pages__dictionary__layout}>
-    <Table api={api} schema={{
+      <Table api={api} schema={{...table, setItems: (items) => setValues([...values, ...items])}}/>
+
+    {/* <Table api={api} schema={{
         setItems: (items) => setValues([...values, ...items]),
         header: ['#', 'id', 'Distanation', 'Result'],
         items: values.map((value, index) => {
@@ -21,7 +23,7 @@ const DictionaryTable = ({ api, schema }) => {
           setModal(false)
         })
       })
-      }}/>
+      }}/> */}
     { Modal({ schema: modalSchema, modal, setModal })}
   </div>
 }

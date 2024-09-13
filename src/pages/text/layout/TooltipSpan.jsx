@@ -3,19 +3,17 @@ import { CTooltip, CLink } from '@coreui/react'
 import style from './style.module.css'
 const dst = (cur, {dst = ''}) => cur += (dst + ' ')
 const fontStyle = (v) => {
-  // console.log(v, v.length);
-  
 return !v?.length && 'oblique'
 }
-const TooltipSpan = ({ item, onClick, mark }) => {
-    const { str, key, value, index } = item || {}
+const TooltipSpan = ({ item, onClick, mark, index }) => {
+    const { str, key, value } = item || {}
       const tooltip = value?.reduce && <CTooltip content={ value.reduce(dst, '') }>
       <CLink >{str}</CLink>
       </CTooltip>
-      return key && <span key={index} style={{fontStyle: fontStyle(value)}}
+      return key && <span data-index={index} key={index} style={{fontStyle: fontStyle(value)}}
       className={[style.text__tooltip, mark && style.text__book_mark].join(' ')}
-      onDoubleClick={onClick}>{ tooltip || str }</span> || str
-
+      onDoubleClick={onClick}>{ tooltip || str }</span> ||
+      <span data-index={index}>{str}</span>
 }
 
 export default TooltipSpan

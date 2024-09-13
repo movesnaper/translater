@@ -27,30 +27,41 @@ const Dictionary =  () => {
         }
         return <Layout 
         api={({skip = 0, limit = 100}) => api.get(`/dictionary/${id}`, { skip, limit })}
-        schema={({setModal}) => {
+        schema={({values, setModal}) => {
           return {
             modal: Modal,
-            content: (value, index, update) => {
-              const { _id, dst } = value || {}
-              return { 
-                onClick: () => setModal({ 
-                  value, 
-                  save: ({value}) => {
-                    setResult({value}).then(() => update(index, value))
-                  },
-                  remove: (value) => {
-                    setResult({value: {...value, _id: false}}).then(() => update(index))
-                  }
-                }), 
-                cells: [
-                { value: index + 1},
-                { value: _id},
-                { value: dst},
-                { value: dst && <Result value={value} addResult={(value) => {
+            table: {
+              header: [
+                {value: '#', getValue: (_, index) => index + 1},
+                {value: 'value', getValue: ({_id}) => _id},
+                {value: 'dst', getValue: ({dst}) => dst},
+                {value: 'result', getValue: (v, index) => v.dst && <Result value={v} addResult={(value) => {
                   setResult({value}).then(() => update(index, value))
-                }}/>}
-              ] }
-            }
+                }}/>},
+              ],
+              items: values.map((value, index) => ({value, onClick: () => setModal({value, index})}))
+            },
+            // content: (value, index, update) => {
+            //   const { _id, dst } = value || {}
+            //   return { 
+            //     onClick: () => setModal({ 
+            //       value, 
+            //       save: ({value}) => {
+            //         setResult({value}).then(() => update(index, value))
+            //       },
+            //       remove: (value) => {
+            //         setResult({value: {...value, _id: false}}).then(() => update(index))
+            //       }
+            //     }), 
+            //     cells: [
+            //     { value: index + 1},
+            //     { value: _id},
+            //     { value: dst},
+                // { value: dst && <Result value={value} addResult={(value) => {
+                //   setResult({value}).then(() => update(index, value))
+                // }}/>}
+            //   ] }
+            // }
           }
         }}
         />

@@ -7,9 +7,9 @@ const Modal =  ({schema, modal, setModal}) => {
   return <CModal className={style.modal}
    backdrop="static" visible={!!modal} 
    onClose={() => setModal(false)}>
-    <CModalHeader>{ header && header(modal, setModal) }</CModalHeader>
-    <CModalBody > { content && content(modal, setModal) } </CModalBody>
-    <CModalFooter> { footer && footer(modal, setModal)} </CModalFooter>  
+    <CModalHeader>{ header && header(modal || {}, setModal) }</CModalHeader>
+    <CModalBody > { content && content(modal || {}, setModal) } </CModalBody>
+    <CModalFooter> { footer && footer(modal || {}, setModal)} </CModalFooter>  
   </CModal>
 }
 

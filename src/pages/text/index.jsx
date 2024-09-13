@@ -11,6 +11,8 @@ const api = db(`/documents`)
 
 const TextPage =  () => {
 
+
+  
   const statistic = ({ id, title }) => [
     { value: DocTitle({title, menu: [
       {title: 'praxis', href: `/praxis/${id}`},
@@ -20,6 +22,13 @@ const TextPage =  () => {
 
   return <Page schema={statistic}>{
     ({id, update}) => {
+      const textEdit = async ({values, mark, limit}) => {
+        try {
+          await api.post(`/text/edit/${id}`, {values, mark, limit})
+          update()
+        } catch (e) { console.error(e) }
+      }
+
       const setResult = async({key, value}, ref) => {
         const values = value.filter(({_id}) => !!_id)
         try {
@@ -33,7 +42,8 @@ const TextPage =  () => {
       return <Layout
       id={id}
       api={(props) => api.get(`/text/${id}`, props)}
-      schema={({obj, mark, total, limit, font, setModal}) => {
+      schema={({values, obj, mark, total, limit, font, setModal}) => {
+
         return {
           modal: Modal,
           header: (update) => Range({
@@ -42,7 +52,7 @@ const TextPage =  () => {
             settings: {step: 0.1, min: 10, max: 40}
           }),
           content: (update) => (item, index) => <TooltipSpan
-          key={index} mark={mark === index} item={item}
+          key={index} index={index} mark={mark === index} item={item}
           onClick={() => {
             setModal({ index, value: item, 
               save: ({value: modal}) => {
@@ -60,6 +70,12 @@ const TextPage =  () => {
             { title: `Current ${Math.floor(mark / limit) + 1}`},
             { title: `Total ${Math.floor(total / limit) + 1}`},
             { title: 'Next', action: () => update(mark + limit)}
+          ],
+          context: (update) => [
+            { title: 'remove', action: async ([start, end]) => {
+              values.splice(start, end - start + 1 )
+              return textEdit({ values, mark, limit }).then(update)
+            }},
           ]
         }
       }}

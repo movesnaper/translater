@@ -5,6 +5,8 @@ import Layout from './components/Layout'
 
 
 function App() {
+  // window.oncontextmenu = () => false
+
   return <Routes>
         <Route path="/" element={<Layout/>}>
         <Route index element={<Home/>}></Route>
