@@ -35,18 +35,15 @@
 .text__html__footer > div > button {
   color: white;
 }
-.pages__text__context_menu {
-  background-color: white;
-  width: 200px;
-  height: 50px;
-  color: black;
+.pages__text__context__header {
+  display: flex;
+  justify-content: flex-end;
 }
-.pages__text__context_menu ul {
-  position: relative;
+.pages__text__context__spiner {
+  display: flex;
+  justify-content: center;
 }
-.pages__text__context_menu li {
-  cursor: pointer;
-}
+
 @media (min-width : 200px) {  
   .text__html__body {
     height: 70vh;

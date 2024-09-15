@@ -2,3 +2,7 @@
 .pages__home__layout {
   margin: 5%;
 }
+.home__layout__header {
+  display: flex;
+  justify-content: flex-end;
+}

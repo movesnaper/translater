@@ -1,10 +1,10 @@
 import React, {useState} from "react";
-import { CSpinner } from '@coreui/react'
+import { CSpinner, CDropdown, CDropdownMenu, CDropdownItem } from '@coreui/react'
 
 import style from './style.module.css'
 
 
-const ContextMenu = ({schema, context}) => {
+const ContextMenu = ({schema, context, onClose}) => {
   const [loading, setLoading] = useState(false)
   const { x, y, range } = context || {}
   const contextStyle = {
@@ -14,18 +14,29 @@ const ContextMenu = ({schema, context}) => {
     left: x,
     zIndex: 200
   }
-  return <div style={contextStyle} className={style.pages__text__context_menu}>
-    <ul >
-    {loading && <CSpinner component="span" size="sm" aria-hidden="true"/>}
-      {schema.map(({title, action}, index) => 
-        <li key={index} onClick={async() => {
-          setLoading(true)
-          await action(range)
-          setLoading(false)
-          
-        }}>{title}</li>)}
-    </ul>
+
+  const getSelectedNodes  = ({startContainer, endContainer}) => {
+    const nextNode = (node) => node.localName === 'span' ? node 
+      : nextNode(node.parentNode)
+    return [startContainer, endContainer].map(({parentNode}) => 
+      + nextNode(parentNode).getAttribute('data-index'))
+  }
+
+
+  return  <CDropdown style={contextStyle}  visible={true} className={style.pages__text__context}>
+  <CDropdownMenu>
+  {loading ? <div className={style.pages__text__context__spiner}>
+    <CSpinner component="span" size="sm" aria-hidden="true"/>
   </div>
+  : schema.map(({title, action}, index) => 
+        <CDropdownItem key={index}  href="#" onClick={() => {
+          setLoading(true)
+          action(getSelectedNodes(range)).then(() => setLoading(false))
+        }}>{title}</CDropdownItem>)}  
+
+  </CDropdownMenu>
+</CDropdown>
+
 }
 
 export default ContextMenu

@@ -27,7 +27,7 @@ const Dictionary =  () => {
         }
         return <Layout 
         api={({skip = 0, limit = 100}) => api.get(`/dictionary/${id}`, { skip, limit })}
-        schema={({values, setModal}) => {
+        schema={({values, setModal}, update) => {
           return {
             modal: Modal,
             table: {
@@ -39,19 +39,21 @@ const Dictionary =  () => {
                   setResult({value}).then(() => update(index, value))
                 }}/>},
               ],
-              items: values.map((value, index) => ({value, onClick: () => setModal({value, index})}))
+              items: values.map((value, index) => ({value, onClick: () => 
+                setModal({
+                  value, 
+                  index, 
+                  save: ({value}) => setResult({value}).then(() => update(index, value)),
+                  remove: (value) => setResult({value: {...value, _id: false}}).then(() => update(index))
+              })}))
             },
             // content: (value, index, update) => {
             //   const { _id, dst } = value || {}
             //   return { 
             //     onClick: () => setModal({ 
             //       value, 
-            //       save: ({value}) => {
-            //         setResult({value}).then(() => update(index, value))
-            //       },
-            //       remove: (value) => {
-            //         setResult({value: {...value, _id: false}}).then(() => update(index))
-            //       }
+                  
+                  
             //     }), 
             //     cells: [
             //     { value: index + 1},

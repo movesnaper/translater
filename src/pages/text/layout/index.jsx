@@ -22,17 +22,9 @@ const TextLayout = ({ id, api, schema }) => {
     } catch (e) { console.error(e) }
   }
 
- const setContext = (context) => {
-  setState({...state, context})
- }
+ const setContext = (context) => setState({...state, context})
 
-
-function getSelectedNodes({startContainer, endContainer}) {
-  const nextNode = (node) => node.localName === 'span' ? node 
-    : nextNode(node.parentNode)
-  return [startContainer, endContainer].map(({parentNode}) => 
-    + nextNode(parentNode).getAttribute('data-index'))
-}
+const getContextMenu = ({pageX: x, pageY: y}) => setContext({ x, y, range: window.getSelection().getRangeAt(0)})
 
   useEffect(() => { update({limit, mark}) }, [mark])
 
@@ -42,10 +34,9 @@ function getSelectedNodes({startContainer, endContainer}) {
     <div className={style.text__html__header}>
       {header((font) => setPage({font, mark}))}
     </div>
-    <div className={style.text__html__body} style={{fontSize: font}} onContextMenu={(e) => {
-      const {pageX: x, pageY: y} = e
+    <div className={style.text__html__body} style={{fontSize: font}} onClick={() => setContext(false)} onContextMenu={(e) => {
       e.preventDefault()
-      setContext({ x, y, range: getSelectedNodes(window.getSelection().getRangeAt(0))})
+      state.context ? setContext(false) : getContextMenu(e)
     }}>
       {values.map(content((value) => setState(Object.assign(state, value))))}
     </div>
@@ -57,7 +48,7 @@ function getSelectedNodes({startContainer, endContainer}) {
       )}
     </div>
     { Modal({ schema: modalSchema, modal, setModal })}
-    <ContextMenu context={state.context} schema={context(() => {
+    <ContextMenu context={state.context} onClose={setContext} schema={context(() => {
       update({limit, mark})
     })}/>
   </div>

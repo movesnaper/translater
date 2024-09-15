@@ -14,9 +14,7 @@ const HomeLayout = ({ api, schema }) => {
 
 
   return <div className={style.pages__home__layout}>
-    <div className={style.home__layout__header}>
-      {header}
-    </div>
+    <div className={style.home__layout__header}>{header}</div>
     <div className={style.home__layout__table}>
       <Table api={api} schema={{...table, setItems: (items) => setValues([...values, ...items])}}/>
     </div>

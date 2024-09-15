@@ -1,45 +1,28 @@
-import React, {useRef, useState, useEffect, useContext} from "react"
-// import style from './style.module.css'
-// import { CRow, CCol } from '@coreui/react'
+import React, {useRef} from "react"
 import { db } from '../../db/index.js'
 import { NavLink } from "react-router-dom"
 import { CFormCheck, CButton } from '@coreui/react'
 import CardBtn from './card/CardBtn.jsx'
-
-
-// import DocumentCard from './card/index.jsx'
-// import { Context } from "../../components/Provider"
-// import Info from './info'
-// import CheckInput from '../../components/checkInputs'
 import DropDownBtn from '../../components/dropDownBtn'
 import Layout from './layout'
 import Modal from './modal'
 import style from './style.module.css'
 
 const HomePage =  () => {
-  // const [{user}] = useContext(Context)
 
   const inpFile = useRef()
-
-
 
 
   const upload =  async (file) => {
     if (!file) return
     try {
-      // setLoading(true)
       const formData = new FormData()
       formData.append('pdfFile', file)
       return db('/documents/upload').upload(formData)
-      // setDocs([...docs, await db('/documents/upload').upload(formData)])
     } catch(e) {
-      console.log(e)
-    } finally {
-      // setLoading(false)
-    }
+      console.error(e)
+    } 
   }
-
-
 
   const save = async (value) => {
     try {
@@ -70,7 +53,7 @@ const HomePage =  () => {
       }
 
       return {
-        header: <CardBtn schema={{title: 'Add', onClick: () => inpFile.current.click()}}>
+        header: <CardBtn schema={{title: 'Add', color: 'dark', onClick: () => inpFile.current.click()}}>
           <input type="file" ref={inpFile} hidden onChange={({target}) => 
             upload(...target.files).then((doc) => setValues([doc, ...values]))}/>
           </CardBtn>,
