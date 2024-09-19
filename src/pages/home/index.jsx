@@ -1,5 +1,6 @@
 import React, {useRef} from "react"
 import { db } from '../../db/index.js'
+import DocTitle from '../../components/docTitle'
 import { NavLink } from "react-router-dom"
 import { CFormCheck, CButton } from '@coreui/react'
 import CardBtn from './card/CardBtn.jsx'
@@ -14,7 +15,7 @@ const HomePage =  () => {
 
 
   const upload =  async (file) => {
-    if (!file) return
+    // if (!file) return
     try {
       const formData = new FormData()
       formData.append('pdfFile', file)
@@ -24,9 +25,9 @@ const HomePage =  () => {
     } 
   }
 
-  const save = async (value) => {
+  const save = async ({id, title, desc}) => {
     try {
-      return db('/documents').post('/', value)
+      return db('/documents').post(`/${id}`, {title, desc})
     } catch (e) {
       console.error(e);
     }
@@ -53,15 +54,36 @@ const HomePage =  () => {
       }
 
       return {
-        header: <CardBtn schema={{title: 'Add', color: 'dark', onClick: () => inpFile.current.click()}}>
-          <input type="file" ref={inpFile} hidden onChange={({target}) => 
-            upload(...target.files).then((doc) => setValues([doc, ...values]))}/>
+        header: <CardBtn schema={({setLoading}) => {
+          return {
+            title: 'Add', 
+            color: 'dark', 
+            onClick: () => inpFile.current.click(),
+            prepend: <input type="file" ref={inpFile} hidden onChange={({target}) => {
+              setLoading(true)
+              upload(...target.files)
+                .then((doc) => setValues([doc, ...values]))
+                  .then(() => setLoading(false))
+            }}/>
+          }
+        }}>
+          
           </CardBtn>,
         table: {
           header: [
-            {value: '#', getValue: (v, index) => index + 1},
-            {value: 'title', getValue: ({id, title}) => 
-              <NavLink className={style.pages__home__link} to={`/text/${id}`}>{title}</NavLink>
+            {value: '#', getValue: (_, index) => index + 1},
+            {value: 'title', getValue: (value, index) => {
+              const {id, title} = value
+              return DocTitle({
+                title: <NavLink className={style.pages__home__link} to={`/text/${id}`} >{title}</NavLink>,
+                menu: [
+                  {title: 'praxis', href: `/praxis/${id}`},
+                  {title: 'dictionary', href: `/dictionary/${id}`},
+                  {title: 'edit', action: () => setModal({value, index})}
+                ]
+              })
+            }
+              
             },
             {value: 'desc', getValue: (({desc, user}) => desc || user)},
             { value: DropDownBtn({schema: [
@@ -77,7 +99,7 @@ const HomePage =  () => {
               <CFormCheck
             defaultChecked={checked >= 0 }/> </CButton>)}
           ],
-          items: values.map((value, index) => ({value, onClick: () => setModal({value, index})}))
+          items: values.map((value, index) => ({ value }))
         },
         modal: Modal({save: ({value, index}) => 
           save(value).then(() => {
@@ -89,29 +111,6 @@ const HomePage =  () => {
     }}
   />
 
-  // const cards = user &&  <CRow>
-  //   <CCol>
-  //     <CRow className="gap-5">
-  //       {[ ...docs, { upload: () => inpFile.current.click() } ].map((doc, index) => {
-  //         return <CCol sm={3} key={index}>
-  //         {doc.id && <CheckInput checked={!!doc.checked}
-  //            onCheck={() => check(index)}/>}
-  //         <DocumentCard doc={{...doc, save }} loading={loading}/>
-  //       </CCol>
-
-  //       })}
-  //     </CRow>
-  //   </CCol>
-  //   <CCol xs={1}><DropDownBtn schema={[
-  //       { value: checked.length, menu: [
-  //         { title: 'Remove', action: remove },
-  //       ] }
-  //     ]}/></CCol>
-  // </CRow>
-
-  // return <div className={style.home__page}>{cards || <Info/>}
-  //   <input type="file" ref={inpFile} hidden onChange={upload}/>
-  // </div>
 }
 
 export default HomePage

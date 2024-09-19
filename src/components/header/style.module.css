@@ -8,8 +8,13 @@
   align-items: center;
   color: white;
 }
+.header__menu {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+}
 
-.App-header {
+/* .App-header {
   background-color: #1a1b1b;
   min-height: 100vh;
   display: flex;
@@ -24,10 +29,7 @@
 
 .auth {
   color: white;
-  /* display: flex;
-  flex-direction: column;
-  justify-content: center; */
-}
+} */
 
 
 

@@ -1,17 +1,44 @@
-import React from "react"
-import { useParams } from 'react-router-dom'
+import React, {useContext, useState, useEffect} from "react"
+import Header from './header'
+import { Context } from "../Provider"
 import { db } from '../../db/index.js'
 import style from './style.module.css'
-import Statistic from '../statistic'
 const api = db(`/documents`)
 
-const ComponentPage =  ({ children, schema }) => {
-  const { id = '' } = useParams()
+const ComponentPage =  ({ schema, menu }) => {
 
-  return <div className={style.component__page}>
-    <Statistic api={() => api.get(`/info/${id}`)} schema={(state) => schema({...state, id})}>
-        { ({update}) => children({ id, update }) }
-    </Statistic>
+  const [state, setState] = useState({})
+
+  const [{ doc_id: id, user }, { menu: setMenu }] = useContext(Context)
+
+  const merge = async() => {
+    try {
+        await api.get(`/merge/${id}`)
+        // window.location.reload()
+    } catch (error) { console.error(error) }
+}
+
+  const update = async () => {
+    try {
+      const info = await api.get(`/info/${id}`)
+      setState({...info, id})
+      setMenu({...info, menu: menu(id)})
+    }catch (err) {
+      console.error(err);
+    }
+  }
+  useEffect(() => { id && update() }, [id])
+
+  const {content, settings} = schema({...state, update})
+
+  return state && <div className={style.component__page}>
+    <div className={style.component__page__header}>
+      <Header schema={{...state, menu: [
+        ...settings,
+        {title: 'merge', action: merge, disabled: state.user_id === user.email }
+      ]}}/>
+    </div>
+    <div className={style.component__page__content}>{content}</div>
   </div>
 }
 

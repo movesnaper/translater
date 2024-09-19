@@ -11,7 +11,7 @@ axios.interceptors.response.use((response) => {
   return response
 }, async (error) => {
   if (error.response && error.response.status === 401) {
-    window.location = '/auth/login';
+    window.location = '/auth/logout';
   }
   if (error.response && error.response.data) {
     return Promise.reject(error.response.data)
@@ -46,8 +46,8 @@ export const user = {
 }
 
 export const db = (name = '') => {
-  const baseUrl = 'http://94.241.143.112:5000' + name
-  // const baseUrl = 'http://localhost:5000' + name
+  // const baseUrl = 'http://94.241.143.112:5000' + name
+  const baseUrl = 'http://localhost:5000' + name
   return {
     get: (url = '', params) => query('get', `${baseUrl}${url}`, {params}),
     post: (url, body) => query('post', `${baseUrl}${url}`, body),
@@ -55,4 +55,4 @@ export const db = (name = '') => {
     remove: (url, data) => query('delete', `${baseUrl}${url}`, {data}),
     upload: async (formData) => (await axios.post(baseUrl, formData)).data,
   }
-}
+} 

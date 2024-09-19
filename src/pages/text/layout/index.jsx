@@ -1,7 +1,9 @@
 import React, { useEffect, useContext, useState } from "react";
 import { CButton } from '@coreui/react'
 import { Context } from "../../../components/Provider"
-import Modal from '../../../components/modal'
+import ShowModal from '../../../components/modal'
+import Modal from '../modal'
+
 import ContextMenu from './ContextMenu'
 import style from './style.module.css'
 
@@ -16,9 +18,9 @@ const TextLayout = ({ id, api, schema }) => {
     return {mark, font, limit}
   }
 
-  const update = async ({limit, mark}) => {
+  const update = async (props = {limit, mark}) => {
     try {
-      setState(await api({ limit, skip: mark }))
+      setState(await api(props))
     } catch (e) { console.error(e) }
   }
 
@@ -26,10 +28,12 @@ const TextLayout = ({ id, api, schema }) => {
 
 const getContextMenu = ({pageX: x, pageY: y}) => setContext({ x, y, range: window.getSelection().getRangeAt(0)})
 
-  useEffect(() => { update({limit, mark}) }, [mark])
+  useEffect(() => { id && update() }, [id])
 
   const values = state.values.map((item) => ({...item, value: state.obj[item.key]}))
-  const {header, content, footer, modal: modalSchema, context} = schema({...state, mark, limit, font, setModal})
+
+  const {header, content, footer, context} = schema({...state, mark, limit, font, setModal})
+  
   return <div className={style.pages__text__layout}>
     <div className={style.text__html__header}>
       {header((font) => setPage({font, mark}))}
@@ -47,7 +51,7 @@ const getContextMenu = ({pageX: x, pageY: y}) => setContext({ x, y, range: windo
         </div>
       )}
     </div>
-    { Modal({ schema: modalSchema, modal, setModal })}
+    { ShowModal({ schema: Modal, modal, setModal })}
     <ContextMenu context={state.context} onClose={setContext} schema={context(() => {
       update({limit, mark})
     })}/>

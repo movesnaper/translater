@@ -24,7 +24,7 @@ import style from './style.module.css'
   const logout = () => {
     localStorage.removeItem('user_jwt')
     setUser()
-    navigate('/')
+    navigate('/auth/login')
   }
 
   useEffect(() => {

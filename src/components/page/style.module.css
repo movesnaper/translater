@@ -3,3 +3,8 @@
   height: 100vh;
   overflow: auto;
 }
+.component__page__header {
+  display: flex;
+  justify-content: space-around;
+  padding: 2%;
+}

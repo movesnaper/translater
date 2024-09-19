@@ -22,8 +22,8 @@ const DropDownBtn  = ({ schema }) => {
         }</CButton> }
         { menu && <> 
           <CDropdownToggle className={style.dropDownBtn__toggle} variant="ghost" split  onClick={toggle}/>
-          <CDropdownMenu> { menu.map(({title, action, href}, index) => 
-            <CDropdownItem key={index} href={href} disabled={loading} 
+          <CDropdownMenu> { menu.map(({title, disabled, action, href}, index) => 
+            <CDropdownItem className={style.dropDownBtn__item} key={index} href={href} disabled={loading || disabled} 
               onClick={action}>{ title }</CDropdownItem>)} 
           </CDropdownMenu> </>}
       </CDropdown>
