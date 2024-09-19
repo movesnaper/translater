@@ -12,7 +12,6 @@ import style from './style.module.css'
 const Card = ({ api, footer, addResult }) => {
   const [card, setCard] = useState({})
   const { value, item, items, history } = card || {}
-  const { _id, result } = value || {}
   
   const mathRandom= () => 0.5 - Math.random()
   const getDst = ({dst} = {}) => dst ? dst.split(/,|;/).sort(mathRandom) : []
@@ -40,15 +39,15 @@ const Card = ({ api, footer, addResult }) => {
 
   return <div className={style.praxis__card}>
     {Layout({
-      header: <div className={style.card__header}>
-        {value && <CardHeader value={value}/>}
+      header: value && <div className={style.card__header}>
+        { <CardHeader value={value}/>}
         <Timer disabled={!!item} reset={items} next={() => setResult(-1).then(next)}/>
       </div>,
       body: () => {
-        const ResultComponent = <Result value={ value } success={item === _id}/>
+        const ResultComponent = <Result value={ value } success={item === value?._id}/>
         const ItemsComponent = <Items items={items} checked={item} disabled={history >=0}
         addResult = {(item) => setResult(item).then(next)}/>
-        return <div className={style.card__body}>
+        return value && <div className={style.card__body}>
           {!item ? ItemsComponent : history >=0 ? 
         CardHistory({schema:() => [
           {title: '<', component: () => ResultComponent},
@@ -56,7 +55,7 @@ const Card = ({ api, footer, addResult }) => {
         ]}) : ResultComponent }
         </div>
       },
-      footer: <div className={style.card__footer}>
+      footer: value && <div className={style.card__footer}>
         {footer({card: {...card, resolve: card.resolve || next }}).map(({title, action, disabled, schema}) => {
         return <div key={title} >
           <CButton variant='ghost'  disabled={disabled} onClick={action}>

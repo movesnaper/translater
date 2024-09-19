@@ -46,17 +46,27 @@
 
 @media (min-width : 200px) {  
   .text__html__body {
-    height: 70vh;
+    height: 78vh;
   }
 }
-@media (min-width:600px) {
+
+/* @media (min-width:600px) {
   .text__html__body {
     height: 75vh;
   }
-}
+} */
+
+
+
 @media (min-width:1025px) {
   .text__html__body {
-    height: 80vh;
+    height: 72vh;
+  }
+}
+
+@media only screen and (max-height : 600px) and (orientation: landscape) {
+  .text__html__body {
+    height: 50vh;
   }
 }
 

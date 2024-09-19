@@ -14,7 +14,7 @@ const TextPage =  () => {
     {title: 'praxis', href: `/praxis/${id}`}, 
     {title: 'dictionary', href: `/dictionary/${id}`}
   ]} 
-  schema={({id, update}) => {
+  schema={({id, header, update}, setState) => {
     const textEdit = async ({values, mark, limit}) => {
       try {
         await api.post(`/text/edit/${id}`, {values, mark, limit})
@@ -32,16 +32,13 @@ const TextPage =  () => {
     }
     return {
       settings: [
-        {title: 'test', action: () => {console.log('test'); }}
+        {title: 'test', action: () => setState('header', !header)}
       ],
       content: <Layout id={id} api={(props) => api.get(`/text/${id}`, props)}
       schema={({values, obj, mark, total, limit, font, setModal}) => {
         return {
-          header: (update) => Range({
-            values: [font], 
-            setValues: ([value]) => update(value),
-            settings: {step: 0.1, min: 10, max: 40}
-          }),
+          header: (update) => header && Range({ values: [font], settings: {step: 0.1, min: 10, max: 40},
+            setValues: ([value]) => update(value) }),
           content: (update) => (item, index) => <TooltipSpan
           key={index} index={index} mark={mark === index} item={item}
           onClick={() => {

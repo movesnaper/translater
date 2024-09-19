@@ -46,8 +46,8 @@ export const user = {
 }
 
 export const db = (name = '') => {
-  // const baseUrl = 'http://94.241.143.112:5000' + name
-  const baseUrl = 'http://localhost:5000' + name
+  const baseUrl = 'http://94.241.143.112:5000' + name
+  // const baseUrl = 'http://localhost:5000' + name
   return {
     get: (url = '', params) => query('get', `${baseUrl}${url}`, {params}),
     post: (url, body) => query('post', `${baseUrl}${url}`, body),

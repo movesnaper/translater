@@ -3,7 +3,7 @@ import { db } from '../../db/index.js'
 import DocTitle from '../../components/docTitle'
 import { NavLink } from "react-router-dom"
 import { CFormCheck, CButton } from '@coreui/react'
-import CardBtn from './card/CardBtn.jsx'
+import CardBtn from '../../components/CardBtn.jsx'
 import DropDownBtn from '../../components/dropDownBtn'
 import Layout from './layout'
 import Modal from './modal'
@@ -66,9 +66,7 @@ const HomePage =  () => {
                   .then(() => setLoading(false))
             }}/>
           }
-        }}>
-          
-          </CardBtn>,
+        }}/>,
         table: {
           header: [
             {value: '#', getValue: (_, index) => index + 1},

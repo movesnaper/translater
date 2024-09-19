@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import style from './style.module.css'
-import Modal from '../../../components/modal'
+import ShowModal from '../../../components/modal'
+import Modal from '../../modal'
 
 
 const PraxisLayout =  ({schema}) => {
@@ -30,7 +31,7 @@ const PraxisLayout =  ({schema}) => {
     const sum = (result || 0) + (value || -1)
     return inRange(sum, 0, 10) ? sum : (result || 0)
   } 
-  const {content, modal: modalSchema} = schema({
+  const {content} = schema({
     history, 
     update, 
     setModal, 
@@ -41,7 +42,7 @@ const PraxisLayout =  ({schema}) => {
   <div className={style.praxis__layout__content}>
     {content}
   </div>
-  { Modal({ schema: modalSchema, modal, setModal })}
+  { ShowModal({ schema: Modal, modal, setModal })}
 
   </div>
 }

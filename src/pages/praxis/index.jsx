@@ -1,7 +1,6 @@
 import Page from '../../components/page'
 import Header from '../../components/page/header'
 
-import Modal from '../modal'
 import { db } from '../../db'
 import Card from './Card'
 import Layout from './layout'
@@ -29,7 +28,6 @@ const PraxisPage =  () => {
       header: Header({keys, color, total}),
       content: <Layout schema={({history = [], update, setModal, getResult}) => {
         return {
-          modal: Modal,
           content: <Card
             api={() => api.get(`/card/${id}`)} 
             addResult={(card) => setResult({...card, value: getResult(card)}).then(update)}
