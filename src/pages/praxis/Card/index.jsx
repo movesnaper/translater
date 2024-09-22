@@ -5,11 +5,10 @@ import CardHistory from './CardHistory'
 import Layout from './CardLayout'
 import Items from './CardItems'
 import Result from "./CardResult"
-import CardHeader from "../../../components/cardHeader"
-import Timer from "./CardTimer"
+
 import style from './style.module.css'
 
-const Card = ({ api, footer, addResult }) => {
+const Card = ({ api, header, footer, addResult }) => {
   const [card, setCard] = useState({})
   const { value, item, items, history } = card || {}
   
@@ -40,8 +39,7 @@ const Card = ({ api, footer, addResult }) => {
   return <div className={style.praxis__card}>
     {Layout({
       header: value && <div className={style.card__header}>
-        { <CardHeader value={value}/>}
-        <Timer disabled={!!item} reset={items} next={() => setResult(-1).then(next)}/>
+        {header(card, (value) => setResult(value).then(next))}
       </div>,
       body: () => {
         const ResultComponent = <Result value={ value } success={item === value?._id}/>
@@ -61,10 +59,7 @@ const Card = ({ api, footer, addResult }) => {
           <CButton variant='ghost'  disabled={disabled} onClick={action}>
           {title}
         </CButton>
-        {schema && <DropDownBtn schema={[
-          // { value: <span ></span> },
-          { menu: schema}
-        ]}/>}
+        {schema && <DropDownBtn schema={[ { menu: schema} ]}/>}
         </div>
       })}
       </div>

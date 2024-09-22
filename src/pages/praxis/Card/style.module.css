@@ -108,13 +108,13 @@
 .card__footer > div {
   display: flex;
 }
-.card__random__values__form_check {
+/* .card__random__values__form_check {
   display: flex;
   flex-direction: row-reverse;
 }
 .card__random__values__form_check > label {
   margin-right: 2rem;
-}
+} */
 
 
 

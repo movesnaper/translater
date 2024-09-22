@@ -1,27 +1,27 @@
 import React, { useEffect, useContext, useState } from "react";
-// import { CButton } from '@coreui/react'
 import DropDownBtn from '../../../components/dropDownBtn'
-
 import { Context } from "../../../components/Provider"
 import ShowModal from '../../../components/modal'
 import Modal from '../modal'
-
 import ContextMenu from './ContextMenu'
 import style from './style.module.css'
 
 const TextLayout = ({ id, api, schema }) => {
-  const [state, setState ] = useState({ values: [], obj: {}, total: 0})
-  const [modal, setModal] = useState(false)
+  const [state, setState ] = useState({ values: [], obj: {}, total: 0, loading: false, modal: false})
   const [{ pageText = {} }, { pageText: updatePage }] = useContext(Context)
   const { limit = 200, mark = 0, font = 14  } = (pageText || {})[id] || {}
 
   const setPage = ({mark, font}) => {
     updatePage({...pageText, [id]: { mark, font }})
-    // return {mark, font, limit}
+  }
+
+  const setModal = (value = false) => {
+    setState({...state, modal: value})
   }
 
   const update = async (props = {limit, mark}) => {
     try {
+      setState({...state, loading: true})
       setState(await api(props))
     } catch (e) { console.error(e) }
   }
@@ -37,9 +37,7 @@ const getContextMenu = ({pageX: x, pageY: y}) => setContext({ x, y, range: windo
   const {content, footer, context} = schema({...state, mark, limit, font, setModal})
   
   return <div className={style.pages__text__layout}>
-    {/* { header && <div className={style.text__html__header}>
-      {header((font) => setPage({font, mark}))}
-    </div>} */}
+
     <div className={style.text__html__body} style={{fontSize: font}} onClick={() => setContext(false)} onContextMenu={(e) => {
       e.preventDefault()
       state.context ? setContext(false) : getContextMenu(e)
@@ -48,14 +46,12 @@ const getContextMenu = ({pageX: x, pageY: y}) => setContext({ x, y, range: windo
     </div>
     <div className={style.text__html__footer}>
       {footer((key, value) => setPage({mark, font, [key]: value}))
-      // {footer((mark) => setPage({mark, font}))
       .map(({title, action, menu}) => <div key={title}>
-        <DropDownBtn schema={[{ title, action, menu }]}/>
-        {/* <CButton variant='ghost' onClick={action}>{title}</CButton> */}
+        <DropDownBtn schema={[{ title, menu, action, disabled: state.loading }]}/>
         </div>
       )}
     </div>
-    { ShowModal({ schema: Modal, modal, setModal })}
+    { ShowModal({ schema: Modal, modal: state.modal, setModal })}
     <ContextMenu context={state.context} onClose={setContext} schema={context(() => {
       update({limit, mark})
     })}/>

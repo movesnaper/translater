@@ -15,19 +15,11 @@ const CardItems = ({ checked, items, addResult, disabled }) => {
     const { select, label, checked } = schema(value)
     return  <div className={style.FormCheckItem} key={index}>
       <CButton style={{width: '100%'}}  variant='ghost' disabled={disabled} onClick={select}>
-      <CFormCheck id={`form_check_${index}`} label={label}
-      className={ style.card__random__values__form_check }
+      <CFormCheck id={`form_check_${index}`} label={label} reverse 
       defaultChecked={checked }
       disabled={disabled || !!checked}/>
         </CButton>
     </div>
-    // <div className={ style.FormCheckItem } key={index} 
-    // onClick={select}>
-      // {<CFormCheck id={`form_check_${index}`} label={label} 
-      // className={ style.card__random__values__form_check }
-      // defaultChecked={checked }
-      // disabled={disabled || !!checked}/>}
-    // </div>
   })    }
   </div>
 

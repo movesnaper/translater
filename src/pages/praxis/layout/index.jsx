@@ -1,13 +1,24 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import style from './style.module.css'
 import ShowModal from '../../../components/modal'
 import Modal from '../../modal'
+import { Context } from "../../../components/Provider"
 
 
-const PraxisLayout =  ({schema}) => {
-  const [history, setHistory] = useState([])
-  const [modal, setModal] = useState(false)
-
+const PraxisLayout =  ({id, schema}) => {
+  const [state, setState] = useState({history: [], modal: false})
+  const [{ pagePraxis = {} }, { pagePraxis: updatePage }] = useContext(Context)
+  const { sound = false } = (pagePraxis || {})[id] || {}
+  const {history, modal} = state
+  const setPage = ({sound}) => {
+    updatePage({...pagePraxis, [id]: { sound }})
+  }
+  const setHistory = (history) => {
+    setState({...state, history})
+  }
+  const setModal = (modal) => {
+    setState({...state, modal})
+  }
   const update = (card, index) => {
     const {length} = history
     history.splice(index >=0 || length + 1, 1, card)
@@ -32,10 +43,12 @@ const PraxisLayout =  ({schema}) => {
     return inRange(sum, 0, 10) ? sum : (result || 0)
   } 
   const {content} = schema({
-    history, 
+    history,
+    sound,
     update, 
     setModal, 
-    getResult: ({value, item}) => ({...value, result: getResult(value, item)})
+    getResult: ({value, item}) => ({...value, result: getResult(value, item)}),
+    setPage
   })
 
   return <div className={style.praxis__layout}>

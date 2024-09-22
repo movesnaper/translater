@@ -18,6 +18,15 @@ const CardTimer = ({ disabled, reset, next }) => {
   const toggleTimer = ({ stop, reset }) => {
     setTimer({ stop, reset, active: !active})
   }
+
+  // {title: <CFormSelect 
+  //   options={[
+  //     'timer',
+  //     { value: '10' },
+  //     { value: '8' },
+  //     { value: '5' },
+  //   ]}
+  // />}
  
   return <div className={style.card__timer}>
     <Timer seconds={5}> 
