@@ -9,8 +9,6 @@ const api = db(`/documents`)
 
 const PraxisPage =  () => {
 
-
-
   return <Page menu={(id) => [
     {title: 'text', href: `/text/${id}`},
     {title: 'dictionary', href: `/dictionary/${id}`}   
@@ -26,7 +24,7 @@ const PraxisPage =  () => {
     }
     return {
       header: Header({keys, color, total}),
-      content: <Layout schema={({history = [], update, setModal, getResult}) => {
+      content: keys && <Layout schema={({history = [], update, setModal, getResult}) => {
         return {
           content: <Card
             api={() => api.get(`/card/${id}`)} 

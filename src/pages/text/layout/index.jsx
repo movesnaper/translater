@@ -1,5 +1,7 @@
 import React, { useEffect, useContext, useState } from "react";
-import { CButton } from '@coreui/react'
+// import { CButton } from '@coreui/react'
+import DropDownBtn from '../../../components/dropDownBtn'
+
 import { Context } from "../../../components/Provider"
 import ShowModal from '../../../components/modal'
 import Modal from '../modal'
@@ -13,9 +15,9 @@ const TextLayout = ({ id, api, schema }) => {
   const [{ pageText = {} }, { pageText: updatePage }] = useContext(Context)
   const { limit = 200, mark = 0, font = 14  } = (pageText || {})[id] || {}
 
-  const setPage = async({mark, font}) => {
+  const setPage = ({mark, font}) => {
     updatePage({...pageText, [id]: { mark, font }})
-    return {mark, font, limit}
+    // return {mark, font, limit}
   }
 
   const update = async (props = {limit, mark}) => {
@@ -32,12 +34,12 @@ const getContextMenu = ({pageX: x, pageY: y}) => setContext({ x, y, range: windo
 
   const values = state.values.map((item) => ({...item, value: state.obj[item.key]}))
 
-  const {header, content, footer, context} = schema({...state, mark, limit, font, setModal})
+  const {content, footer, context} = schema({...state, mark, limit, font, setModal})
   
   return <div className={style.pages__text__layout}>
-    { header && <div className={style.text__html__header}>
+    {/* { header && <div className={style.text__html__header}>
       {header((font) => setPage({font, mark}))}
-    </div>}
+    </div>} */}
     <div className={style.text__html__body} style={{fontSize: font}} onClick={() => setContext(false)} onContextMenu={(e) => {
       e.preventDefault()
       state.context ? setContext(false) : getContextMenu(e)
@@ -45,9 +47,11 @@ const getContextMenu = ({pageX: x, pageY: y}) => setContext({ x, y, range: windo
       {values.map(content((value) => setState(Object.assign(state, value))))}
     </div>
     <div className={style.text__html__footer}>
-      {footer((mark) => setPage({mark, font}))
-      .map(({title, action}) => <div key={title}>
-        <CButton variant='ghost' onClick={action}>{title}</CButton>
+      {footer((key, value) => setPage({mark, font, [key]: value}))
+      // {footer((mark) => setPage({mark, font}))
+      .map(({title, action, menu}) => <div key={title}>
+        <DropDownBtn schema={[{ title, action, menu }]}/>
+        {/* <CButton variant='ghost' onClick={action}>{title}</CButton> */}
         </div>
       )}
     </div>

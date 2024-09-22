@@ -62,7 +62,7 @@ const Card = ({ api, footer, addResult }) => {
           {title}
         </CButton>
         {schema && <DropDownBtn schema={[
-          { value: <span ></span> },
+          // { value: <span ></span> },
           { menu: schema}
         ]}/>}
         </div>

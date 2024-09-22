@@ -2,7 +2,7 @@ import React from "react";
 import style from './style.module.css'
 import { Range } from "react-range";
 
-const ComponentRange = ({values, setValues, settings}) => {
+const ComponentRange = ({values, settings, setValues = () => {}}) => {
   const {label = '', step, min, max} = settings
   return <div className={style.text__html__range}>
 <Range

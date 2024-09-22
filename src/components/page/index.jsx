@@ -11,12 +11,7 @@ const ComponentPage =  ({ schema, menu = () => {} }) => {
 
   const [{ doc_id: id, user }, { menu: setMenu }] = useContext(Context)
 
-  const merge = async() => {
-    try {
-        await api.get(`/merge/${id}`)
-        window.location.reload()
-    } catch (error) { console.error(error) }
-}
+
 
   const update = async () => {
     try {
@@ -33,13 +28,7 @@ const ComponentPage =  ({ schema, menu = () => {} }) => {
 
   return state && <div className={style.component__page}>
     <div className={style.component__page__header}>
-      <Header schema={{...state, menu: [
-        ...settings,
-        {title: 'merge',  disabled: state.user_id === user.email, action: (_, setLoading) => {
-          setLoading(true)
-          merge()
-        }, }
-      ]}}/>
+      <Header schema={{...state }}/>
     </div>
     <div className={style.component__page__content}>{content}</div>
   </div>

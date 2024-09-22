@@ -7,7 +7,7 @@ import DropDownBtn from '../../dropDownBtn'
 const Menu = ({title, menu}) => {
     return [
         <div key='header__menu__title'>{title}</div>,
-        <div key='header__menu__drop_down_btn'><DropDownBtn schema={[{ xs: 1, menu }]}/></div>
+        <div key='header__menu__drop_down_btn'><DropDownBtn schema={[{ title, menu }]}/></div>
     ]
 }
 

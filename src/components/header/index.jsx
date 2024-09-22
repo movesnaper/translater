@@ -3,16 +3,19 @@ import style from './style.module.css'
 import { Context } from "../Provider"
 import Logo from './logo'
 import User from './user'
-import Menu from './menu'
+// import Menu from './menu'
+import DropDownBtn from '../dropDownBtn'
+import {CNavLink} from '@coreui/react'
+import { NavLink } from "react-router-dom"
 
 const Header = () => {
-  const [{menu, user }] = useContext(Context)
-
+  const [{menu: value, user }] = useContext(Context)
+  const {title, menu} = value || {}
 
 
   return <div className={style.header}>
-      <div className={style.header__logo}>{Logo()}</div>
-      {menu && <div className={style.header__menu}>{Menu(menu)}</div>}
+      {menu ? <DropDownBtn schema={[{ title: <NavLink to="/" >{title}</NavLink>, menu}]}/>
+      : Logo()}
       <div className={style.header__user}>{User(user || {})}</div>
     </div>
 }

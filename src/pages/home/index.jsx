@@ -20,17 +20,13 @@ const HomePage =  () => {
       const formData = new FormData()
       formData.append('pdfFile', file)
       return db('/documents/upload').upload(formData)
-    } catch(e) {
-      console.error(e)
-    } 
+    } catch(error) { console.error(error) } 
   }
 
   const save = async ({id, title, desc}) => {
     try {
       return db('/documents').post(`/${id}`, {title, desc})
-    } catch (e) {
-      console.error(e);
-    }
+    } catch (error) { console.error(error) }
   }
 
   const remove = async (checked) => {
@@ -38,10 +34,14 @@ const HomePage =  () => {
     try {
       await db().remove('/documents', {docs})
       return docs
-    } catch(err) {
-      console.log(err);
-    }
+    } catch(error) { console.error(error) }
   }
+
+  const merge = async(id) => {
+    try {
+        await db('/documents').get(`/merge/${id}`)
+    } catch (error) { console.error(error) }
+}
 
   return <Layout
     api={() => db('/documents').get()}
@@ -77,7 +77,11 @@ const HomePage =  () => {
                 menu: [
                   {title: 'praxis', href: `/praxis/${id}`},
                   {title: 'dictionary', href: `/dictionary/${id}`},
-                  {title: 'edit', action: () => setModal({value, index})}
+                  {title: 'edit', action: () => setModal({value, index})},
+                  {title: 'merge', action: (_, setLoading) => {
+                    setLoading(true)
+                    merge(id).then(() => setLoading(false))
+                  }}
                 ]
               })
             }
