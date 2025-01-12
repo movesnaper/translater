@@ -3,10 +3,9 @@ import style from './style.module.css'
 import { Range } from "react-range";
 
 const ComponentRange = ({values, settings, setValues = () => {}}) => {
-  const {label = '', step, min, max} = settings
+  const {label = '', total, step, min, max} = settings
   return <div className={style.text__html__range}>
-<Range
-      label={label}
+    <Range label={label}
       step={step}
       min={min}
       max={max}
@@ -37,9 +36,12 @@ const ComponentRange = ({values, settings, setValues = () => {}}) => {
             width: "15px",
             backgroundColor: "#999",
           }}
-        />
+        >
+          { label && <span>{label}</span>}
+        </div>
       )}
     />
+    {total && <div>{total}</div>}
   </div>
 }
 

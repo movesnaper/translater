@@ -46,6 +46,9 @@
 
 @media only screen and (max-width:767px) {
   /*style for mobile*/
+  .carousel-control-next {
+    display: none;
+  }
   .text__html__body {
     height: 75vh;
   }
@@ -59,25 +62,6 @@
 }
 }
 
-/* @media (min-width : 200px) {  
-  .text__html__body {
-    height: 70vh;
-  }
-}
-
-@media (min-width:600px) {
-  .text__html__body {
-    height: 75vh;
-  }
-} */
-
-
-
-/* @media (min-width:1025px) {
-  .text__html__body {
-    height: 72vh;
-  }
-} */
 
 @media (max-width:600px) and (orientation: landscape) {
   .text__html__body {

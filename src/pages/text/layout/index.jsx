@@ -38,7 +38,8 @@ const getContextMenu = ({pageX: x, pageY: y}) => setContext({ x, y, range: windo
   
   return <div className={style.pages__text__layout}>
 
-    <div className={style.text__html__body} style={{fontSize: font}} onClick={() => setContext(false)} onContextMenu={(e) => {
+    <div className={style.text__html__body} style={{fontSize: font}} onClick={() => setContext(false)} 
+    onContextMenu={(e) => {
       e.preventDefault()
       state.context ? setContext(false) : getContextMenu(e)
     }}>

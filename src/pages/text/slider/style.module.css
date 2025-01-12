@@ -1,0 +1,16 @@
+.text__slider__page_item {
+    display: flex;
+    justify-content: center;
+}
+.text__slider__page_item_content {
+    width: 90%;
+    white-space: break-spaces;
+    overflow: auto;
+    font-size: 14px;
+}
+/* .text__html__body {
+    padding: 2%;
+    white-space: break-spaces;
+    overflow: auto;
+    font-size: 14px;
+  } */

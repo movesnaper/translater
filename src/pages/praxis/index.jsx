@@ -24,8 +24,8 @@ const PraxisPage =  () => {
       }
     }
     return {
-      header: Header({keys, color, total}),
-      content: keys && <Layout id={id} schema={({history, sound, update, setModal, getResult, setPage}) => {
+      // header: Header({keys, color, total}),
+      content: <Layout id={id} schema={({history, sound, update, setModal, getResult, setPage}) => {
         return {
           content: <Card
             api={() => api.get(`/card/${id}`)} 

@@ -28,6 +28,22 @@ a {
   /* grid-template-rows: 120px 1fr 120px; */
 }
 
+/* @media only screen and (max-width:767px) { */
+  /*style for mobile*/
+
+  .carousel {
+    height: 100%;
+  }
+
+  .carousel-control-next, .carousel-control-prev {
+    width: 5%;
+  }
+  .carousel-control-next-icon, .carousel-control-prev-icon {
+    display: none;
+  }
+
+/* } */
+
 
 
 

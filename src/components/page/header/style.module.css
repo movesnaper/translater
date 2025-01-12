@@ -2,7 +2,8 @@
 .page__header__range {
   width: 50%;
 }
-/* .page__header__keys {
-  width: 50%;
-
-} */
+.page__header__keys, .page__header__range, .page__header__settings {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

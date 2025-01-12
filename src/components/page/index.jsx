@@ -12,11 +12,10 @@ const ComponentPage =  ({ schema, menu = () => {} }) => {
   const [{ doc_id: id, user }, { menu: setMenu }] = useContext(Context)
 
 
-
   const update = async () => {
     try {
       const info = await api.get(`/info/${id}`)
-      setState({...info, id})
+      setState({...state, info, id})
       setMenu({...info, menu: menu(id)})
     }catch (err) {
       console.error(err);
@@ -24,13 +23,17 @@ const ComponentPage =  ({ schema, menu = () => {} }) => {
   }
   useEffect(() => { id && update() }, [id])
 
-  const {content, settings = []} = schema({...state, id, update}, (key, value) => setState({...state, [key]: value}))
-
-  return state && <div className={style.component__page}>
+  const {header, content, footer} = schema({...state, id, update}, (value) => {
+    // setState({...state, [key]: value})
+    setState(Object.assign(state, value))
+  })
+  
+  return <div className={style.component__page}>
     <div className={style.component__page__header}>
-      <Header schema={{...state }}/>
+      {state.info && <Header schema={{...state.info }} settings={header}/>}
     </div>
     <div className={style.component__page__content}>{content}</div>
+    <div className={style.component__page__footer}>{footer}</div>
   </div>
 }
 
