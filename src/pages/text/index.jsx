@@ -1,6 +1,5 @@
 import React, {useContext}  from "react"
 import Page from '../../components/page'
-// import Layout from './layout'
 import Range from '../../components/range'
 import Layout from "./slider"
 import Footer from "./footer"
@@ -29,8 +28,7 @@ const TextPage =  () => {
         })
         }
       ],
-      content: info && <Layout setPage={setPage}
-      info={info}
+      content: <Layout setPage={setPage}
       page={page} api={() => {
         return api.get(`/text/${id}`, {font, limit, mark})
       }}
@@ -40,10 +38,11 @@ const TextPage =  () => {
           update()
         } catch (e) { console.error(e) }
       }}
-      setResult={async(key, values, ref) => {
+      setResult={async({ ref, key, value = []}) => {
+        const values = value.filter(({uid, active}) => uid || active !== undefined)
+        .map((v) => ({...v, _id: key || ref}))
         try {
-          api.post(`/text/${id}`, { key, ref, values }).then(update)
-          return { [key]: values, [ref]: values }
+          return api.post(`/text/${id}`, { key: ref, value: key, values }).then(update)
         } catch(e) {
           console.error(e);
         }    
@@ -51,10 +50,10 @@ const TextPage =  () => {
 
       footer: info && <Footer schema={() => {
         const current = Math.floor(mark  / limit)
-        const total =  Math.floor(info.totalKeys / limit) 
+        const total =  Math.floor(info.totalKeys / limit)
         return [
           {title: current + 1, menu: [
-            {title: Range({ values: [current], settings: {step: 1, min: 0, max: total, total: total + 1},
+            {title: Range({ values: [current], settings: {step: 1, min: 0, max: total + 1, total: total + 1},
               setValues: ([current]) => setPage({mark: current * limit})
             })
             }

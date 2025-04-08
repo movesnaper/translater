@@ -9,6 +9,9 @@ import style from './style.module.css'
 const DocumentCard =  ({ doc, loading }) => {
   const [title, setTitle] = useState('')
   const { id, info, upload, save } = doc || {}
+  // const { id, info, upload, save } = doc || {}
+  console.log(id);
+  
   const titleLinck = id &&
     <NavLink className={style.document__card__title} to={`/text/${id}`}>{title}</NavLink>
   

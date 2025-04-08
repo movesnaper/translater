@@ -11,6 +11,7 @@ export const Provider = ({ children }) => {
   const [ menu, setMenu ] = useState(null)
   const [ pageText, setPageText ] = useState(null)
   const [ pagePraxis, setPagePraxis ] = useState(null)
+  const [ pageDictionary, setPageDictionary ] = useState(null)
 
 
   const update = {
@@ -28,15 +29,27 @@ export const Provider = ({ children }) => {
     pagePraxis: async (pagePraxis = JSON.parse(localStorage.getItem('page-praxis') || '{}')) => {
       if (pagePraxis) localStorage.setItem('page-praxis', JSON.stringify(pagePraxis))
       setPagePraxis(pagePraxis)
-    }
+    },
+    pageDictionary: async (pageDictionary = JSON.parse(localStorage.getItem('page-dictionary') || '{}')) => {
+      if (pageDictionary) localStorage.setItem('page-dictionary', JSON.stringify(pageDictionary))
+      setPageDictionary(pageDictionary)
+    },
   }
 
   useEffect(() => {
     update.user()
     update.pageText()
     update.pagePraxis()
+    update.pageDictionary()
   }, [])
 
 
-  return <Context.Provider value={[{ doc_id, user, menu: doc_id && menu, pageText, pagePraxis }, update]}>{ children }</Context.Provider>
+  return <Context.Provider value={[{
+      doc_id,
+      user,
+      menu: doc_id && menu, 
+      pageText, 
+      pagePraxis,
+      pageDictionary,
+      }, update]}>{ children }</Context.Provider>
 }

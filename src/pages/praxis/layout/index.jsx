@@ -27,27 +27,12 @@ const PraxisLayout =  ({id, schema}) => {
     setHistory(items)
     return card
   }
-  const inRange = (x, min, max) => x >= min &&  x <= max
 
-  const getResult = ({_id, result}, item) => {
-    const value = _id === item
-    if (value) {
-      if (result === undefined) return 5
-      if (result === 5) return 8
-    }
-    if (!value) {
-      if (result === 5) return 2
-      if (inRange(result, 8, 10)) return 6
-    }
-    const sum = (result || 0) + (value || -1)
-    return inRange(sum, 0, 10) ? sum : (result || 0)
-  } 
   const {content} = schema({
     history,
     sound,
     update, 
     setModal, 
-    getResult: ({value, item}) => ({...value, result: getResult(value, item)}),
     setPage
   })
 

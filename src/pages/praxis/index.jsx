@@ -1,5 +1,5 @@
 import Page from '../../components/page'
-import Header from '../../components/page/header'
+// import Header from '../../components/page/header'
 import { CFormCheck } from '@coreui/react'
 import { db } from '../../db'
 import Card from './Card'
@@ -9,47 +9,74 @@ import Timer from "./Card/CardTimer"
 const api = db(`/documents`)
 
 const PraxisPage =  () => {
+  const inRange = (x, min, max) => x >= min &&  x <= max
 
+  const getResult = ({_id, result}, item) => {
+    const value = _id === item
+    if (value) {
+      if (result === undefined) return 5
+      if (result === 5) return 8
+    }
+    if (!value) {
+      if (result === 5) return 2
+      if (inRange(result, 8, 10)) return 6
+    }
+    const sum = (result || 0) + (value || -1)
+    return inRange(sum, 0, 10) ? sum : (result || 0)
+  } 
   return <Page menu={(id) => [
     {title: 'text', href: `/text/${id}`},
     {title: 'dictionary', href: `/dictionary/${id}`}   
-  ]} schema={({id, keys, color, total, update }) => {
-    const setResult = async (card) => {
-      const { value } = card || {}
+  ]} schema={({id, update }) => {
+
+    const setResult = async ({ key, values }) => {
+      // const { _id: key } = value
       try {
-        api.post(`/results/${id}`, {value}).then(update)
-        return card
+        api.post(`/text/${id}`, { key, values }).then(update)
+        // return values
       } catch(e) {
         console.error(e);
       }
     }
     return {
       // header: Header({keys, color, total}),
-      content: <Layout id={id} schema={({history, sound, update, setModal, getResult, setPage}) => {
+      content: <Layout id={id} schema={({history, sound, update, setModal, setPage}) => {
         return {
           content: <Card
-            api={() => api.get(`/card/${id}`)} 
-            addResult={(card) => setResult({...card, value: getResult(card)}).then(update)}
+            api={({result = 0}) => api.get(`/card/${id}/${result}`)} 
+            addResult={({value, items, item}) => {
+              const {_id: key } = value
+              const resultValue = {...value, result: getResult(value, item)}
+              return setResult({ key, values: [resultValue] })
+                .then(() => update({value: resultValue, items, item}))
+            }}
             header={({value, item, items}, setResult) => [
               <CardHeader key='card_header' value={value} sound={sound}/>,
               <Timer key='card_timer' disabled={!!item} reset={items} next={() => setResult(-1)} setPage={setPage}/>
             ]}
             footer={({card = {}}) => {
-              const {item,  history: index = history.length, resolve = () => {} } = card
+              const {value, item, history: index = history.length, resolve = () => {} } = card
               return [
-                  {title: 'Prev', disabled: !index, action: () => resolve(history[index - 1])},
-                  {title: 'Next', action: () => resolve(history[index + 1]), schema: item ? [
+                  {title: 'Prev', disabled: !index, action: () => {
+                    resolve({history: history[index - 1]})}
+                  },
+                  {title: 'Next', action: () => {
+                    resolve({...card, history: history[index + 1]})
+                  }, 
+                    schema: item ? [
                     { title: 'edit',  action: () => {
-                      setModal({...card, save: ({value}) => {
-                        setResult({value}).then(() => {
-                          resolve(update({...card, value}, index))
+                      setModal({...card, save: (value) => {
+                        const {_id: key } = value
+                        setResult({key, values: [value]}).then(() => {
+                          resolve({history: update({...card, value}, index)})
                           setModal(false)
                         })
                       } })
                     }},
                     {title: 'remove', action: () => {
-                      const value = {...card.value, _id: false}
-                      return setResult({...card, value }).then(() => resolve())
+                      const {_id: key } = value
+                      return setResult({key, values: [{...value, active: false}]})
+                        .then(() => resolve())
                     }}
                     
                   ] : [

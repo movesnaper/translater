@@ -9,7 +9,7 @@ const PageItem = ({edit, font, value, onClick, context}) => {
 
     const {values = [], obj = {}} = value
     const objValue = Object.assign(obj, edit)
-    const items = values.map(({str, key}) => ({str, key, value: objValue[key]}))
+    const items = values.map((v) => ({...v, value: objValue[v._id]}))
     const setContext = (context) => setState({...state, context})
     const getContextMenu = ({pageX: x, pageY: y}) => setContext({ x, y, range: window.getSelection().getRangeAt(0)})
     

@@ -1,4 +1,5 @@
 import { CRow, CCol } from '@coreui/react'
+import React from "react";
 
 const Content = ({ schema }) => {
 

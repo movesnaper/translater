@@ -4,7 +4,3 @@
   height: calc(100vh - 100px);
 }
 
-.pages__home__link:hover {
-  text-decoration: underline;
-  color: blue;
-}

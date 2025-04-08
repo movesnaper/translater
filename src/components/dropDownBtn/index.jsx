@@ -2,7 +2,7 @@ import React, {useState} from "react"
 import { CRow, CCol, CButton, CSpinner } from '@coreui/react'
 import { CDropdownItem, CDropdownToggle, CDropdown, CDropdownMenu } from '@coreui/react'
 import style from './style.module.css'
-const DropDownBtn  = ({ schema }) => {
+const DropDownBtn  = ({ schema, style: elStyle }) => {
   const [active, setActive] = useState(false)
   const [loading, setLoading] = useState(false)
 
@@ -11,10 +11,10 @@ const DropDownBtn  = ({ schema }) => {
     setActive(!active)
   }
 
-  return <CRow className={style.dropDownBtn}>{
+  return <CRow className={style.dropDownBtn} >{
     schema.map((item, index) => {
       const { xs, title, ref, color, action, menu, variant = 'ghost', disabled } = item || {}
-      return <CCol xs={xs} key={index}>
+      return <CCol xs={xs} key={index} style={elStyle}>
       <CDropdown className={style.dropDownBtn__group} variant="btn-group" visible={active}>
         { <CButton variant={variant}
         className={style.dropDownBtn__group__btn}

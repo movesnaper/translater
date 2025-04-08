@@ -32,8 +32,8 @@ const ComponentPage =  ({ schema, menu = () => {} }) => {
     <div className={style.component__page__header}>
       {state.info && <Header schema={{...state.info }} settings={header}/>}
     </div>
-    <div className={style.component__page__content}>{content}</div>
-    <div className={style.component__page__footer}>{footer}</div>
+    <div className={style.component__page__content}>{state.info && content}</div>
+    <div className={style.component__page__footer}>{state.info && footer}</div>
   </div>
 }
 

@@ -1,19 +1,9 @@
-import React, { useState, useEffect } from "react"
+import React from "react"
 import style from './style.module.css'
 
 import { CFormInput, CDropdownItem, CDropdown, CDropdownMenu, CDropdownToggle, CInputGroup } from '@coreui/react'
 
-const Autocomplete  = ({ api, value = '', setValue, schema, name, footer }) => {
-  const [items = [], setItems] = useState([])
-  const update = async () => {
-    try {
-      value && setItems(await api.get(value) )
-    } catch(e) {
-      console.log(e);
-    }
-  }
-  useEffect(() => { update() }, [])
-
+const Autocomplete  = ({ items = [], value = '', setValue, schema, name }) => {
   return <CInputGroup>
     <CFormInput name={name} value={ value } onInput={({target}) => setValue(target)}/>
     <CDropdown variant="input-group">
@@ -24,7 +14,6 @@ const Autocomplete  = ({ api, value = '', setValue, schema, name, footer }) => {
         })}
       </CDropdownMenu>
   </CDropdown>
-  {/* {footer} */}
 </CInputGroup>
 }
 

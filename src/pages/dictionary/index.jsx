@@ -1,10 +1,12 @@
-import React from "react"
+import React, {} from "react"
 import Page from '../../components/page'
 import Layout from './layout'
 import Result from './layout/TableResult'
 import { db } from '../../db'
-const api = db(`/documents`)
+import DropDownBtn from '../../components/dropDownBtn'
+import SearchInput from '../../components/searchInput'
 
+const api = db(`/documents`)
 
 const Dictionary =  () => {
   return <Page menu={(id) => [
@@ -12,37 +14,55 @@ const Dictionary =  () => {
     {title: 'praxis', href: `/praxis/${id}`}
   ]}
   schema={({ id, update }) => {
-    
-    const setResult = async (card) => {
-      const { value } = card || {}
+ 
+    const setResult = async ({ ref, key, value = []}) => {
+      const values = value.filter(({ uid, active }) => uid || active !== undefined)
+        .map((v) => ({...v, _id: key || ref}))
       try {
-        api.post(`/results/${id}`, {value}).then(update)
-        return card
+        await api.post(`/text/${id}`, {key: ref, value: key, values})
+        update()
       } catch(e) {
         console.error(e);
       }
     }
+  
   return {
     content: <Layout 
-    api={({skip = 0, limit = 100}) => api.get(`/dictionary/${id}`, { skip, limit })}
-    schema={({values, setModal}, update) => {
+    id={id}
+    api={({skip = 0, limit= 20, filter}) => api.get(`/dictionary/${id}`, {skip, limit, filter})}
+    schema={({ filter, total, setFilter, setModal }, update) => {
       return {
         table: {
           header: [
-            {value: '#', getValue: (_, index) => index + 1},
-            {value: 'value', getValue: ({_id}) => _id},
-            {value: 'dst', getValue: ({dst}) => dst},
-            {value: 'result', getValue: (v, index) => v.dst && <Result value={v} addResult={(value) => {
-              setResult({value}).then(() => update(index, value))
-            }}/>},
+            {value: total, getValue: ({index}) => index + 1},
+            { getValue: ({_id, key} = {}) => _id || key},
+            {value: SearchInput({style: {position: 'absolute', top: 0, right: '25%', width: '50%'}}), 
+            getValue: ({dst} = {}) => dst},
+            {value: DropDownBtn({ style: {position: 'absolute', top: 0, right: 0, width: '25%'},
+              schema: [
+              { title: !filter ? 'all' : filter, menu: [
+                filter && {title: 'all', action: () => setFilter(false) },
+                filter !== 'hasValue' && {title: 'hasValue', action: () => setFilter('hasValue') },
+                filter !== 'hasNoValue' && {title: 'hasNoValue', action: () => setFilter('hasNoValue') },
+                filter !== 'isExclude' && {title: 'isExclude', action: () => setFilter('isExclude') }
+              ].filter((v) => v)}
+            ]}), getValue: (value = {}, index) => {
+              return <Result value={value} addResult={(value) => {
+                const { _id: ref } = value
+              return setResult({ ref, value: [value]})
+              .then(() => update(index))
+            }}/>
+            }},
           ],
-          items: values.map((value, index) => ({value, onClick: () => 
-            setModal({
-              value, 
-              index, 
-              save: ({value}) => setResult({value}).then(() => update(index, value)),
-              remove: (value) => setResult({value: {...value, _id: false}}).then(() => update(index))
-          })}))
+          onClickRow: (value, index) => {
+            const { _id: ref, exclude } = value
+            !exclude && setModal({
+              value: { _id: ref, key: ref },
+              save: ({key, value}) => {
+                return setResult({ ref, key, value}).then(() => update(index))
+              },
+            })
+          }
         }
       }
     }}

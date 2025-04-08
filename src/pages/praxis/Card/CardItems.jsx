@@ -2,7 +2,6 @@ import React from "react";
 import style from './style.module.css'
 import { CFormCheck, CButton } from '@coreui/react'
 const CardItems = ({ checked, items, addResult, disabled }) => {
-
   const schema = ({ _id, dst }) => {
     return {
       label: dst,

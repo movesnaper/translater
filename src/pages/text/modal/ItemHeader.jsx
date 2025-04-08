@@ -1,16 +1,19 @@
-import React from "react";
+import React from 'react'
 import { CFormCheck } from '@coreui/react'
 import Content from '../../modal/Content'
 import Transcription from '../../../components/cardHeader/CardTranscription'
 
 const ItemHeader = ({value, setValue}) => {
-  const {_id, dst} = value || {}
+  const { uid, active, dst} = value || {}
+  const defaultChecked = active === undefined ? !!uid : active
+
   const onClick = (evt) => {
     evt.stopPropagation()
-    setValue(!_id)
+    setValue(!defaultChecked)
   }
+  
   const schema = [
-    { component:   <CFormCheck label={dst} defaultChecked={!!_id} onClick={onClick}/> },
+    { component:   <CFormCheck label={dst} defaultChecked={defaultChecked} onClick={onClick}/> },
     { component: <Transcription value={value}/>}
   ]
 

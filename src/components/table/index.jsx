@@ -1,38 +1,38 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell } from '@coreui/react'
 import style from './style.module.css'
 
 
-const Table = ({ api, schema }) => {
-  const [mark, setMark] = useState({})
-  const { items, setItems, header } = schema|| {}
+const Table = ({ items, schema, update}) => {
+  const { onClickRow, header } = schema|| {}
+  const scrollableDiv = useRef(null);
+  const getHeight = () => {
+  // const height = (items?.length / total * 100)
+  // return height >= 80 ? 80 : height
+  return 80
 
-  const handelScroll = ({target}) => {
-    const { scrollHeight, scrollTop } = target
-    scrollHeight * 79 / 100 < scrollTop   &&  update()
   }
-
-  const update = async () => {
-    try {
-      const { values, skip } = await api({skip: mark})
-      setMark(skip)
-      setItems(values)
-    } catch (e) {
-      console.error(e);
+  const handelScroll = ({ scrollHeight, scrollTop }) => {
+    
+    // if (items.length >= 100) return scrollableDiv.current.scroll({top: 0, behavior: "smooth"})
+    if (scrollTop <= 0) {
+      update('top')
+    }
+    if (scrollHeight < scrollTop + window.innerHeight) {
+      update('bottom')
     }
   }
 
-  useEffect(() => { api && update() }, [])
-
-  return <div className={style.table__scroll} style={{ height: `80vh` }} onScroll={handelScroll}>
+  return <div ref={scrollableDiv} className={style.table__scroll} style={{ height: `${getHeight()}vh` }} 
+  onScroll={({target}) => handelScroll(target)}>
     <CTable hover small style={{ width: '100%'}}>
-    <CTableHead style={{ position: "sticky", top: 0 }}>
+    <CTableHead style={{ position: "sticky", top: 0, height: '51px', verticalAlign: 'baseline' }}>
       <CTableRow>{header.map(({value, style}, index) => 
         <CTableHeaderCell style={style} key={index}>{value}</CTableHeaderCell>)}
       </CTableRow>
     </CTableHead>
-    <CTableBody>{ items.map(({value, style, onClick}, index) => {
-      return <CTableRow key={index} style={style} onClick={onClick}>
+    <CTableBody>{ items && items.map((value, index) => {
+      return <CTableRow key={index} onClick={() => onClickRow && onClickRow(value, index)}>
         { header.map(({getValue, style}, indexHeader) => 
         <CTableDataCell style={style} key={indexHeader}>
           {getValue(value, index)}
@@ -40,13 +40,6 @@ const Table = ({ api, schema }) => {
     </CTableRow>
     })}
     </CTableBody>
-    {/* <CTableBody>{ items.map(({onClick, height = '50px', cells = []}, index) => {
-      return <CTableRow key={index} style={{ height }} onClick={onClick}>
-        { cells.map(({ style, value }, index) => 
-        <CTableDataCell style={style} key={index}>{value}</CTableDataCell>)}
-    </CTableRow>
-    })}
-    </CTableBody> */}
   </CTable>
 </div>
 }

@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { CSpinner, CListGroup, CListGroupItem } from '@coreui/react'
 import style from './style.module.css'
 
-const TranslateItems = ({ api, url, schema }) => {
-  const [items, setItems] = useState([])
-  const [loading, setLoading] = useState(false)
-  const update = async () => {
-    try {
-      setLoading(true)
-      setItems(await api.get(url))
-    } catch(e) {
-      console.log(e);
-    } finally {
-      setLoading(false)
-    }
-  }
-  useEffect(() => { update() }, [url])
+const TranslateItems = ({ items, loading, schema }) => {
+  // const [items, setItems] = useState([])
+  // const [loading, setLoading] = useState(false)
+  // const update = async () => {
+  //   try {
+  //     setLoading(true)
+  //     setItems(await api.get(url))
+  //   } catch(e) {
+  //     console.log(e);
+  //   } finally {
+  //     setLoading(false)
+  //   }
+  // }
+  // useEffect(() => { update() }, [url])
 
   return loading ? <CSpinner/> :
  <CListGroup className={style.ListGroupe}>

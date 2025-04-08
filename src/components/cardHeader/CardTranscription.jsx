@@ -23,13 +23,12 @@ import style from './style.module.css'
 
   return trc && <div>
 
-    <CButton className={style.card__transcription_btn}
-    variant="ghost" onClick={play}>
+    <div onClick={play}>
       <span className={ style.card__transcription }> { `[ ${trc} ]` } </span>
       { loading ? <CSpinner color="primary" as="span" size="sm" aria-hidden="true"/>
       : snd && <CIcon className="text-primary" icon={cilVolumeHigh} />}
       
-    </CButton>  
+    </div>  
   </div>
 
 

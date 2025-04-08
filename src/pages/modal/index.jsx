@@ -18,21 +18,19 @@ import style from './style.module.css'
               setValue({...card, value: {...value, dst: target.value}})
             }}/>},
             { component: Tabs({ schema: ({active}) => {
-                const props = {value, setValue: (value) => {
-                  setValue({...card, value})
-                }}
                 return [
-                  { title: 'Example', component: () => Example(props) },
-                  { title: 'lingvo', component: () => active ===1 && Translate('lingvo')(props)},
-                  // { title: 'yandex', component: () => Translate('yandex')}
+                  { title: 'Example', component: () => 
+                  <Example value={value} setValue={(value) => setValue({...card, value})}/>},
+                  { title: 'lingvo', component: () => active ===1 && 
+                    <Translate value={value} setValue={(value) => setValue({...card, value})}/>}
                 ]
               }
             })}
           ]})
         },
-        footer: ({key, index, value, save}) => {
+        footer: ({ value, save }) => {
           return <div className={style.card__modal__footer}>
-          <CButton variant='ghost' onClick={() => save({key, index, value})}>{
+          <CButton variant='ghost' onClick={() => save(value)}>{
           // loading ? <CSpinner component="span" size="sm" aria-hidden="true"/> : 
           'Save'
         }</CButton>

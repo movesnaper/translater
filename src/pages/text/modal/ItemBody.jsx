@@ -1,10 +1,12 @@
 import React, {useState} from "react";
 import { CNav, CNavItem, CNavLink, CTabContent, CTabPane } from '@coreui/react'
 import Translate from './Translate'
+import Transcript from './Transcript'
 import Example from './Example'
 
 const schema = [
   { title: 'Translate', component: Translate },
+  { title: 'Transcript', component: Transcript },
   { title: 'Example', component: Example },
 ]
 

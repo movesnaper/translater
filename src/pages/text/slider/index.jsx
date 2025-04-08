@@ -5,9 +5,10 @@ import ShowModal from '../../../components/modal'
 import Modal from '../modal'
 import style from './style.module.css'
 
-const Layout = ({ page, setPage, api, setResult, textEdit, info }) => {
+const Layout = ({ page, setPage, api, setResult, textEdit }) => {
   const [state, setState ] = useState({ values: [] })
   const {mark = 0, limit = 200, font} = page
+
   const setModal = (modal = false, edit) => {
     setState({...state, modal, edit})
   }
@@ -18,7 +19,7 @@ const Layout = ({ page, setPage, api, setResult, textEdit, info }) => {
       state.values.splice(index, 1, await api())
       setState({ ...state, values: state.values, loading: false })
 
-    } catch (e) { console.error(e) }
+    } catch (e) { console.error(e) } 
   }
   useEffect(() => {
     update(state?.index)
@@ -39,12 +40,14 @@ const Layout = ({ page, setPage, api, setResult, textEdit, info }) => {
         }}
       ]}
       onClick={(value) => {
-        setModal({ index, value: value, 
-          save: ({value: modal}) => {
-            const {key, value: values = []} = modal
-            setResult(key, values.filter(({_id}) => !!_id), value.key)
-            .then(async(value) => {
-              setModal(false, value)
+        const { key: ref, _id} = value
+        setModal({ 
+          value: { _id: _id || ref, key: _id || ref }, 
+          save: ({ key, value}) => {
+            return setResult({ ref, key,  value})
+            .then(() => {
+              update(state.index)
+              setModal(false)
             })
           }
         })            

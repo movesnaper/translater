@@ -8,7 +8,7 @@
   margin: 0 auto;
 }
 .card__body {
-  height: 50vh;
+  max-height: 60vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -83,11 +83,11 @@
   flex-direction: column;
   justify-content: center;
   overflow: auto;
-  height: 50vh;
+  max-height: 60vh;
   gap: 5px;
 }
 .card__items > div {
-  padding: 4px;
+  padding: 0 4px;
 }
 .card__items > div, label, input {
   cursor: pointer;
