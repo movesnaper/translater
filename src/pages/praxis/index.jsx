@@ -25,24 +25,14 @@ const PraxisPage =  () => {
     return inRange(sum, 0, 10) ? sum : (result || 0)
   } 
   return <Page 
-  // menu={(id) => [
-  //   {title: 'text', href: `/text/${id}`},
-  //   {title: 'dictionary', href: `/dictionary/${id}`}   
-  // ]} 
-  schema={({info = {}, page = {}, update, setPage: updatePage }) => {
+  schema={({info = {}, page = {}, setResult, setPage: updatePage }) => {
     const {sound} = page['praxis'] || {}
 
     const setPage = (value) => {
       updatePage('praxis', { sound, ...value})
     }
 
-    const setResult = async ({ key, values }) => {
-      try {
-        api.post(`/text/${info.id}`, { key, values }).then(update)
-      } catch(e) {
-        console.error(e);
-      }
-    }
+
     return {
       menu: (id) =>  [
         {title: 'text', href: `/text/${id}`},
@@ -55,8 +45,10 @@ const PraxisPage =  () => {
             addResult={({value, items, item}) => {
               const {_id: key } = value
               const resultValue = {...value, result: getResult(value, item)}
-              return setResult({ key, values: [resultValue] })
-                .then(() => update({value: resultValue, items, item}))
+              setResult({ key, values: [resultValue] })
+              return update({value: resultValue, items, item})
+               
+                // .then(() => update({value: resultValue, items, item}))
             }}
             header={({value, item, items}, setResult) => [
               <CardHeader key='card_header' value={value} sound={sound}/>,
@@ -75,8 +67,8 @@ const PraxisPage =  () => {
                       { getValue: () => {
                         return <div onClick={() => {
                           setModal({...card, save: (value) => {
-                            const {_id: key } = value
-                            setResult({key, values: [value]}).then(() => {
+                            const {_id: key, value: values} = value
+                            setResult({ key, values }).then(() => {
                             resolve({history: update({...card, value}, index)})
                             setModal(false)
                             })

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react"
+import React, { useState } from "react"
 import style from './style.module.css'
 import Modal from '../../../pages/modal'
 import ShowModal from '../../../components/modal'

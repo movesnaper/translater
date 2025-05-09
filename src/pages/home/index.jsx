@@ -61,7 +61,7 @@ const HomePage =  () => {
             {value: '#', getValue: (_, index) => index + 1},
             { getValue: ((doc, index) => {
               return <Info doc={doc} 
-              // api={({id}) => db('/documents').get(`/${id}`)} 
+              api={({id}) => db('/documents').get(`/${id}`)} 
               setModal={(value) => setModal({value, index})}/>
             })},
             { value: DropDownBtn({schema: () => {

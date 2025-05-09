@@ -4,17 +4,17 @@ import { CBadge, CAvatar  } from '@coreui/react'
 
 import style from './style.module.css'
 
-const PageInfo = ({doc, setModal}) => {
+const PageInfo = ({doc, setModal, api}) => {
   const [state, setState ] = useState({})
   const {id, title, info, user_id} = doc || {}
   const {keys, color} = info || {}
 
 
-  // const update = async (doc) => {
-  //   setState(doc.title ? doc : await api(doc))
-  // }
+  const update = async (doc) => {
+    setState(doc.title ? doc : await api(doc))
+  }
 
-  // useEffect(() => { update(doc) }, [doc])
+  useEffect(() => { update(doc) }, [doc])
   return  <div className={style.info__content}>
     {DocTitle({
       title: <div className={style.info__title}>{title}</div>,

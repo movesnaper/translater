@@ -33,7 +33,19 @@ const ComponentPage =  ({ schema }) => {
       console.error(err);
     } 
   }
-  const {header, content, footer, menu} = schema({...state, page, update, setModal, setPage: (key, value) => {
+  const setResult = async ({ key, ref: value, values }) => {
+      const activeUid = values.filter(({ uid, active }) => uid || active !== undefined)
+        .map((v) => ({...v, _id: value || key}))
+    try {
+      return api.post(`/text/${id}`, { key, value, values:  activeUid})
+      .then(update)
+    } catch(e) {
+      console.error(e);
+    }
+  }
+
+
+  const {header, content, footer, menu} = schema({...state, page, setResult, setModal, setPage: (key, value) => {
     return setPage(id, {...page, [key]: value})
     
   } })

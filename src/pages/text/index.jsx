@@ -10,7 +10,7 @@ const api = db(`/documents`)
 const TextPage =  () => {
   
   return <Page 
-  schema={({ info = {}, page = {}, setModal, setPage: updatePage}) => {
+  schema={({ info = {}, page = {}, setModal, setResult, setPage: updatePage}) => {
   const {mark = 0, font = 14, limit = 200} = page['text'] || {}
 
   const setPage = (value) => {
@@ -32,6 +32,7 @@ const TextPage =  () => {
         return {
           setModal,
           setPage,
+          setResult,
           api: ({mark, limit}) => api.get(`/text/${info.id}`, {mark, limit}),
           // onSlide: (index, key) => {
             // console.log(index, key);

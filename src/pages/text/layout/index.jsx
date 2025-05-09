@@ -1,15 +1,13 @@
 import React, {useState, useEffect} from "react";
 import { CCarousel,  CCarouselItem} from '@coreui/react'
 import PageItem from './PageItem'
-// import ShowModal from '../../../components/modal'
-// import Modal from '../modal'
 import style from './style.module.css'
 
 const Layout = ({ page, schema }) => {
   const [state, setState ] = useState({ values: [] })
   const {mark = 0, limit = 200, font} = page || {}
 
-  const {setModal, setPage, api} = schema()
+  const {setModal, setPage, setResult, api} = schema()
 
   const update = async (index = 0, page) => {
     try {
@@ -53,16 +51,15 @@ const Layout = ({ page, schema }) => {
       //   }}
       // ]}
       onClick={(value) => {
-        const { key: ref, _id} = value
-        setModal({ value: { _id: _id || ref, key: _id || ref }, 
-          // save: () => 
-          // save: ({ key, value}) => {
-          //   return setResult({ ref, key,  value})
-          //   .then(() => {
-          //     update(state.index)
-          //     setModal(false)
-          //   })
-          // }
+        const { key, _id} = value
+        setModal({ value: { _id: _id || key, key: _id || key }, 
+          save: ({ key: ref, value}) => {
+            return setResult({ ref, key,  values: value})
+            .then(() => {
+              update(state.index, page)
+              setModal(false)
+            })
+          }
         })            
       }}/>
     </div>

@@ -3,7 +3,7 @@
   overflow: auto;
 }
 .table__header {
-  z-index: 1000;
+  /* z-index: 1000; */
   position: sticky;
   top: 0px;
   height: 51px;

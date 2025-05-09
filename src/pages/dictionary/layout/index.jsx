@@ -37,18 +37,19 @@ const Layout = ({ page, api, schema }) => {
   const { table, setPage } = schema({api, values, filter, total, setModal, setFilter, setValues}, update)
 
 const getSkip = (scroll) => {
-  switch(scroll) {
-    case 'top': {
-      const {index} = values[0] || {}
-      const skip = index - 5 > 0 ? index - 5 : 0
-      return {skip, limit: 5, getValues: (items) => {
-        return [...items.filter(({index: v}) => v < index), ...values]
-      }}
-    }
-    case 'bottom': return {skip: values[values.length - 1]?.index + 1, getValues: (items) => {
-      return [...values, ...items].filter((v, index) => index >= limit / 2)
+  // switch(scroll) {
+    // case 'top': {
+    //   const {index} = values[0] || {}
+    //   const skip = index - 5 > 0 ? index - 5 : 0
+    //   return {skip, limit: 5, getValues: (items) => {
+    //     return [...items.filter(({index: v}) => v < index), ...values]
+    //   }}
+    // }
+   return {skip: values[values.length - 1]?.index + 1, getValues: (items) => {
+      return [...values, ...items]
+      // .filter((v, index) => index >= limit / 2)
     }}
-  }
+  // }
 }
 
   return <div className={style.pages__dictionary__layout}>

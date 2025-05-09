@@ -10,23 +10,23 @@ const api = db(`/documents`)
 
 const Dictionary =  () => {
   return <Page 
-  schema={({ info = {}, page = {}, update, setPage: updatePage}) => {
+  schema={({ info = {}, page = {}, setResult, setPage: updatePage}) => {
     const {filter, [page?.filter]: skip = 0, limit = 20} = page['dictionary'] || {}
     // const {mark = 0, font = 14, limit = 200} = page['dictionary'] || {}
     const setPage = (value) => {
 
       updatePage('dictionary', {filter, limit, [page?.filter]: skip, ...value})
     }
-    const setResult = async ({ ref, key, value = []}) => {
-      const values = value.filter(({ uid, active }) => uid || active !== undefined)
-        .map((v) => ({...v, _id: key || ref}))
-      try {
-        await api.post(`/text/${info.id}`, {key: ref, value: key, values})
-        update()
-      } catch(e) {
-        console.error(e);
-      }
-    }
+    // const setResult = async ({ ref, key, value = []}) => {
+    //   const values = value.filter(({ uid, active }) => uid || active !== undefined)
+    //     .map((v) => ({...v, _id: key || ref}))
+    //   try {
+    //     await api.post(`/text/${info.id}`, {key: ref, value: key, values})
+    //     update()
+    //   } catch(e) {
+    //     console.error(e);
+    //   }
+    // }
   
   return {
     menu: (id) => [
@@ -69,7 +69,7 @@ const Dictionary =  () => {
             { value: false, getValue: (value = {}, index) => {
               return <Result value={value} addResult={(value) => {
                 const { _id: ref } = value
-              return setResult({ ref, value: [value]})
+              return setResult({ ref, values: [value]})
               .then(() => updateValues(index))
             }}/>
             },
@@ -77,11 +77,11 @@ const Dictionary =  () => {
           },
           ],
           onClickRow: (value, index) => {
-            const { _id: ref, exclude } = value
+            const { _id, exclude } = value
             !exclude && setModal({
-              value: { _id: ref, key: ref },
-              save: ({key, value}) => {
-                return setResult({ ref, key, value}).then(() => updateValues(index))
+              value: { _id: _id, key: _id },
+              save: ({key: ref, value}) => {
+                return setResult({ ref, key: _id, values: value}).then(() => updateValues(index))
               },
             })
           }

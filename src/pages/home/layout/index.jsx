@@ -26,6 +26,10 @@ const HomeLayout = ({ api, schema }) => {
   useEffect(() => { 
     api && update()
    }, [api])
+  //  useEffect(() => { 
+  //   console.log(values);
+    
+  //  }, [values])
   return <div className={style.pages__home__layout}>
     <div className={style.home__layout__header}>{header}</div>
     <div className={style.home__layout__table}>
