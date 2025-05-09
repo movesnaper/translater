@@ -12,3 +12,8 @@
   overflow: auto;
 
 }
+.component__spiner {
+  /* height: 80vh; */
+  display: flex;
+  justify-content: center;
+}

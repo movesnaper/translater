@@ -2,3 +2,7 @@
   display: flex;
   gap: 2px;
 }
+.content__doc__info {
+  display: flex;
+  justify-content: space-around;
+}

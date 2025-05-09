@@ -1,54 +1,70 @@
-import React, {useContext}  from "react"
+import React from "react"
 import Page from '../../components/page'
 import Range from '../../components/range'
-import Layout from "./slider"
+import Layout from "./layout"
 import Footer from "./footer"
-import { Context } from "../../components/Provider"
 
 import { db } from '../../db'
 const api = db(`/documents`)
 
 const TextPage =  () => {
-  const [{ pageText }, { pageText: updatePage }] = useContext(Context)
-  return <Page menu={(id) => [
-    {title: 'praxis', href: `/praxis/${id}`}, 
-    {title: 'dictionary', href: `/dictionary/${id}`}
-  ]}
-  schema={({id, info, update}, setState) => {
-  const page = (pageText || {})[id] || {mark: 0, font: 14}
-  const {font = 18, mark = 0, limit = 200} = page
+  
+  return <Page 
+  schema={({ info = {}, page = {}, setModal, setPage: updatePage}) => {
+  const {mark = 0, font = 14, limit = 200} = page['text'] || {}
+
   const setPage = (value) => {
-    updatePage({...pageText, [id]: Object.assign(page || {}, value)})
+    updatePage('text', {mark, limit, font, ...value})
   }
  
     return {
+      menu: (id) => [
+        {title: 'praxis', href: `/praxis/${id}`},
+        {title: 'dictionary', href: `/dictionary/${id}`}
+      ],
       header: [
         {title: Range({ values: [font], settings: {step: 0.1, min: 10, max: 40},
           setValues: ([font]) => setPage({font})
         })
         }
       ],
-      content: <Layout setPage={setPage}
-      page={page} api={() => {
-        return api.get(`/text/${id}`, {font, limit, mark})
+      content: <Layout page={{mark, limit, font}} schema={() => {
+        return {
+          setModal,
+          setPage,
+          api: ({mark, limit}) => api.get(`/text/${info.id}`, {mark, limit}),
+          // onSlide: (index, key) => {
+            // console.log(index, key);
+            
+            // const keyMark = key === 'next' ? mark + limit : mark - limit
+            // setState({...state, index})
+            // setPage({ limit, mark:  keyMark })
+          // }
+        }
       }}
-      textEdit = {async (props) => {
-        try {
-          await api.post(`/text/edit/${id}`, props)
-          update()
-        } catch (e) { console.error(e) }
-      }}
-      setResult={async({ ref, key, value = []}) => {
-        const values = value.filter(({uid, active}) => uid || active !== undefined)
-        .map((v) => ({...v, _id: key || ref}))
-        try {
-          return api.post(`/text/${id}`, { key: ref, value: key, values }).then(update)
-        } catch(e) {
-          console.error(e);
-        }    
-      }}/>,
+      // setPage={setPage}
+      // page={page} api={() => {
+      //   return api.get(`/text/${id}`, {font, limit, mark})
+      // }}
+      // textEdit = {async (props) => {
+      //   try {
+      //     await api.post(`/text/edit/${id}`, props)
+      //     update()
+      //   } catch (e) { console.error(e) }
+      // }}
+      // setResult={ async({ ref, key, value = []}) => {
+      //   const values = value.filter(({uid, active}) => uid || active !== undefined)
+      //   .map((v) => ({...v, _id: key || ref}))
+      //   try {
+      //     return api.post(`/text/${id}`, { key: ref, value: key, values }).then(update)
+      //   } catch(e) {
+      //     console.error(e);
+      //   }    
+      // }}
+      />,
 
       footer: info && <Footer schema={() => {
+        // const {mark, limit} = pageText
         const current = Math.floor(mark  / limit)
         const total =  Math.floor(info.totalKeys / limit)
         return [

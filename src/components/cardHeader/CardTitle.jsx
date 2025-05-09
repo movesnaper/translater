@@ -1,14 +1,13 @@
 import React from "react";
-import style from './style.module.css'
 import Badge from "./Badge"
+import style from './style.module.css'
 
   const CardTitle = ({ value }) => {
     const { key, _id } = value || {}
-    
 
   return <div className={style.card__title}>
-    <h3>{key || _id}</h3>
-    {value && Badge({value})}
+    <div >{key || _id}</div>
+    {value && <Badge  value={value}></Badge>}
   </div>
 
 }

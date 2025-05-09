@@ -1,21 +1,27 @@
-import React, { useState, useContext, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { CForm, CFormInput, CButton } from '@coreui/react'
 import { useParams } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
 import { AiOutlineClose } from "react-icons/ai"
 import { db } from '../../db/index.js'
-import { Context } from "../../components/Provider"
+import { useOutletContext } from "react-router-dom";
+import jwt_decode from "jwt-decode"
+
+// import { Context } from "../../components/Provider"
 import style from './style.module.css'
 
  const Login = () => {
-  const [{}, { user: setUser }] = useContext(Context)
+  // const [{}, { user: setUser }] = useContext(Context)
+  const [{}, setState ] = useOutletContext()
   const {action = 'login'} = useParams()
   const navigate  = useNavigate()
   const [data, setData] = useState({})
 
   const login = async () => {
     try {
-      setUser(await db('/auth').post(`/${action}`, data))
+      const jwt = await db('/auth').post(`/${action}`, data)
+      if (jwt) localStorage.setItem('user_jwt', jwt)
+      setState({user: jwt_decode(jwt)})
     } catch(e) {
       console.log(e);
     }
@@ -23,9 +29,13 @@ import style from './style.module.css'
 
   const logout = () => {
     localStorage.removeItem('user_jwt')
-    setUser()
+    setState({ user: false })
     navigate('/auth/login')
   }
+
+
+
+
 
   useEffect(() => {
     action === 'logout' && logout()

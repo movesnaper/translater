@@ -2,21 +2,32 @@
 
 .card__header__left {
   display: flex;
-  align-items: center;
-  width: 100%;
+  
   gap: 5%;
+  /* width: auto; */
+  position: relative;
 }
 
 .card__title {
   width: auto;
   position: relative;
+  font-size: 25px;
 }
-.card__title > span {
+/* .card__title > span {
+
+} */
+.card__header__bage {
   position: absolute;
   top: -15px;
   right: -25px;
+  font-size: 15px;
 }
 .card__transcription {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.card__transcription__title {
   font-size: 16px;
   color: #1d9bf5;
 }
@@ -27,11 +38,16 @@
 @media (min-width : 320px) {  
   .card__header__left {
     flex-direction: column;
+    width: auto;
+    align-items: baseline;
   }
 }
 @media (min-width:600px) {
   .card__header__left {
     flex-direction: initial;
+    width: 100%;
+    align-items: center;
+
   }
 }
 

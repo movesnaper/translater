@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import CIcon from '@coreui/icons-react'
-import { CSpinner, CButton  } from '@coreui/react'
+import { CSpinner } from '@coreui/react'
 import { cilVolumeHigh } from '@coreui/icons'
 
 import style from './style.module.css'
@@ -21,19 +21,14 @@ import style from './style.module.css'
       }
     }
 
-  return trc && <div>
-
-    <div onClick={play}>
-      <span className={ style.card__transcription }> { `[ ${trc} ]` } </span>
+  return trc && <div className={ style.card__transcription } onClick={play}>
+      <div className={ style.card__transcription__title }> { `[ ${trc} ]` } </div>
       { loading ? <CSpinner color="primary" as="span" size="sm" aria-hidden="true"/>
-      : snd && <CIcon className="text-primary" icon={cilVolumeHigh} />}
-      
+      : snd && <div>
+        <CIcon className="text-primary" icon={cilVolumeHigh} />
+      </div>}
     </div>  
-  </div>
-
-
   
 }
-
 
 export default CardTranscription

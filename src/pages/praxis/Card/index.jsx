@@ -48,7 +48,7 @@ const Card = ({ api, header, footer, addResult }) => {
         addResult = {(item) => setResult(item).then((v) => next(v))}/>
         return value && <div className={style.card__body}>
           {!item ? ItemsComponent : history >=0 ? 
-        CardHistory({schema:() => [
+        CardHistory({schema: () => [
           {title: '<', component: () => ResultComponent},
           {title: '>', component: () => ItemsComponent}          
         ]}) : ResultComponent }
@@ -60,7 +60,9 @@ const Card = ({ api, header, footer, addResult }) => {
           <CButton variant='ghost'  disabled={disabled} onClick={action}>
           {title}
         </CButton>
-        {schema && <DropDownBtn schema={[ { menu: schema} ]}/>}
+        {schema && <DropDownBtn schema={() => {
+          return { menu: schema}
+        }}/>}
         </div>
       })}
       </div>

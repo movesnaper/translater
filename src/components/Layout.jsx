@@ -1,16 +1,20 @@
+import React, { useState } from "react"
+
 import Header from './header'
 import { Outlet } from "react-router-dom"
-import { Provider } from './Provider'
 
 const Lauout = () => {
+  const [state, setState] = useState({})
+
   return <div className="App">
-    <Provider>
-      <Header/>
+      <Header state={state} setState={setState}></Header>
       <div className='app-content'>
-        <Outlet></Outlet>
+        <Outlet context={[state, (value) => {
+          setState(state => {
+            return {...state, ...value}
+          })
+        }]}></Outlet>
       </div>
-    </Provider>
-    
   </div>
 }
 

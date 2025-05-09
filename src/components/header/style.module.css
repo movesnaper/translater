@@ -13,6 +13,12 @@
   align-items: baseline;
   justify-content: flex-end;
 }
+.header__title {
+  max-width: 150px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 
 /* .App-header {
   background-color: #1a1b1b;

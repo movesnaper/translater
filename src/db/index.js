@@ -13,6 +13,9 @@ axios.interceptors.response.use((response) => {
   if (error.response && error.response.status === 401) {
     window.location = '/auth/logout';
   }
+  if (error.response && error.response.status === 404) {
+    window.location = '/';
+  }
   if (error.response && error.response.data) {
     return Promise.reject(error.response.data)
   }

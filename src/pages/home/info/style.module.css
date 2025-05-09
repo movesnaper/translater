@@ -1,4 +1,11 @@
-.pages__home__link:hover {
-    text-decoration: underline;
-    color: blue;
-  }
+.info__content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.info__title {
+  max-width: 150px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

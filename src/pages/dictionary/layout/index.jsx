@@ -1,41 +1,28 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import Table from '../../../components/table'
-import Modal from '../../text/modal'
-import { Context } from "../../../components/Provider"
+import Modal from '../../../pages/modal'
 import ShowModal from '../../../components/modal'
 import style from './style.module.css'
 
-const DictionaryTable = ({ id, api, schema }) => {
-  const [{ pageDictionary = {}}, { pageDictionary: updatePage }] = useContext(Context)
-  // const { skip = 0, limit = 20 } = pageDictionary[id] || {}
-  const page = pageDictionary[id]
-  const {filter, [page?.filter || false]: skip = 0, limit = 20} = page || {}
+const Layout = ({ page, api, schema }) => {
+  const {filter, skip, limit } = page || {}
   const [values, setValues] = useState(false)
   const [modal, setModal] = useState(false)
   const [loading, setLoading] = useState(false)
   const [total, setTotal] = useState(0)
-  // const [filter, setFilter] = useState(false)
-
-  const setPage = (value) => {
-    updatePage({...pageDictionary, [id]: {...page, ...value}})
-  }
 
   const setFilter = (filter) => {
     setPage({filter})
   }
 
-  // useEffect(() => {
-  //   if (!values) update({skip, limit})
-  //  }, [values])
-
    useEffect(() => {
     update({skip})
    }, [filter])
 
-  const update = async ({skip, limit}, getValues = (v) => v) => {
+  const update = async ({skip, limit, search}, getValues = (v) => v) => {
     try {
       setLoading(true)
-      const { values: items, total } = await api({skip, limit, filter})
+      const { values: items, total } = await api({skip, limit, filter, search})
       const values = getValues(items)
       setValues(values)
       values.length && setPage({ [filter]: values[0].index })
@@ -47,13 +34,7 @@ const DictionaryTable = ({ id, api, schema }) => {
     }
   }
 
-  const {table} = schema({filter, total, setModal, setFilter}, async (index)=> {
-    const {index: skip} = values[index] || {}
-    update({skip, limit: values.length - index}, (items) => {
-      return [...values.filter((v, i) =>  i < index), ...items]
-    })
-    setModal(false)
-  })
+  const { table, setPage } = schema({api, values, filter, total, setModal, setFilter, setValues}, update)
 
 const getSkip = (scroll) => {
   switch(scroll) {
@@ -71,7 +52,7 @@ const getSkip = (scroll) => {
 }
 
   return <div className={style.pages__dictionary__layout}>
-      <Table total={total} items={values} schema={table}
+      <Table  total={total} items={values} schema={table}
         update={(scroll) => {
           if (loading) return
           const {skip, limit, getValues} = getSkip(scroll)
@@ -81,4 +62,4 @@ const getSkip = (scroll) => {
   </div>
 }
 
-export default DictionaryTable
+export default Layout

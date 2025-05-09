@@ -5,10 +5,12 @@ import DropDownBtn from '../dropDownBtn'
 import StatisticProgress from "./StatisticProgress"
 
 export const dropDowvNavs = ({ id, xs, title }, ...menu) => {
-  return { xs, value: <DropDownBtn schema={[
-    { value: <span style={{fontSize: '13px'}}>{title}</span> },
-    { xs: 1, menu: menu.map((url) => ({ title: url, href: `/${url}/${id}`})) }
-    ]}/>
+  return { xs, value: <DropDownBtn schema={() => {
+    return { xs: 1, menu: menu.map((url) => ({ title: url, href: `/${url}/${id}`})) }
+    // { value: <span style={{fontSize: '13px'}}>{title}</span> },
+    // { xs: 1, menu: menu.map((url) => ({ title: url, href: `/${url}/${id}`})) }
+    
+  }}/>
   }
 }
 

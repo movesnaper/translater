@@ -3,7 +3,7 @@ import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableData
 import style from './style.module.css'
 
 
-const Table = ({ items, schema, update}) => {
+const Table = ({ items, schema, update= () => {}}) => {
   const { onClickRow, header } = schema|| {}
   const scrollableDiv = useRef(null);
   const getHeight = () => {
@@ -22,20 +22,23 @@ const Table = ({ items, schema, update}) => {
       update('bottom')
     }
   }
-
   return <div ref={scrollableDiv} className={style.table__scroll} style={{ height: `${getHeight()}vh` }} 
   onScroll={({target}) => handelScroll(target)}>
     <CTable hover small style={{ width: '100%'}}>
-    <CTableHead style={{ position: "sticky", top: 0, height: '51px', verticalAlign: 'baseline' }}>
-      <CTableRow>{header.map(({value, style}, index) => 
-        <CTableHeaderCell style={style} key={index}>{value}</CTableHeaderCell>)}
+    {/* style={{ position: "sticky", top: 0, height: '51px', verticalAlign: 'baseline' }} */}
+    <CTableHead className={style.table__header}>
+      <CTableRow>
+      {/* <CTableHeaderCell colspan='2' style={style} >{'value'}</CTableHeaderCell>
+      <CTableHeaderCell style={style} >{'value'}</CTableHeaderCell> */}
+        {header.filter(({value}) => value !== false).map(({value, colSpan, style}, index) => 
+        <CTableHeaderCell colSpan={colSpan} style={style} key={index}>{value}</CTableHeaderCell>)}
       </CTableRow>
     </CTableHead>
     <CTableBody>{ items && items.map((value, index) => {
       return <CTableRow key={index} onClick={() => onClickRow && onClickRow(value, index)}>
         { header.map(({getValue, style}, indexHeader) => 
         <CTableDataCell style={style} key={indexHeader}>
-          {getValue(value, index)}
+          {getValue && getValue(value, index)}
         </CTableDataCell>)}
     </CTableRow>
     })}

@@ -6,7 +6,7 @@ import style from './style.module.css'
 
 const PageItem = ({edit, font, value, onClick, context}) => {
   const [state, setState ] = useState({ values: [], obj: {}, total: 0, loading: false, modal: false})
-
+    
     const {values = [], obj = {}} = value
     const objValue = Object.assign(obj, edit)
     const items = values.map((v) => ({...v, value: objValue[v._id]}))
@@ -26,13 +26,13 @@ const PageItem = ({edit, font, value, onClick, context}) => {
           index={index}
           onClick={() => onClick(item)}
       />)}
-    <ContextMenu context={state.context} onClose={setContext}
+    {/* <ContextMenu context={state.context} onClose={setContext}
     schema={context(() => {
       console.log(state);
       
       // update({limit, mark})
     })}
-    />
+    /> */}
     </div>
 }
 

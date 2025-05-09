@@ -9,16 +9,16 @@ const AddItemBtn = (value, setModal) => {
   const setValue = (values) => {
     setModal({...value, value: values})
   }
-  return  <DropDownBtn schema={
-    [ {xs: 1, title: 'add', action: () => {
+  return  <DropDownBtn schema={() => {
+    return  {xs: 1, title: 'add', action: () => {
       setValue([...values, {}])
     }, menu: [
       { title: 'load', action: async() => {
         setValue([...values, ...await api.get(`id/${key}`)])
       } },
     ]}, {}
-    ]
-  }/>
+    
+  }}/>
 }
 
 export default AddItemBtn

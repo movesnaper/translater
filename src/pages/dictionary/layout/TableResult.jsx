@@ -21,9 +21,9 @@ const TableResult = ({ value, addResult }) => {
   }
   const label = dst ? result + "" : 'ex'
   
-  return <div className={style.table__result} onClick={handleClick}>
+  return <span className={style.table__result} onClick={handleClick}>
     <CFormCheck disabled={loading} button={button} label={label} defaultChecked={checked}/>      
-  </div> 
+  </span> 
 
 }
 

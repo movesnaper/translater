@@ -3,12 +3,13 @@
   width: 100%;
 } */
 .dropDownBtn__group {
-  display: flex;
-  align-items: center;
+  /* display: flex;
+  align-items: center; */
 }
 .dropDownBtn__toggle {
   color: inherit;
-  max-width: fit-content;
+  display: flex;
+  align-items: center;
 }
 .dropDownBtn__group__btn {
   border: none;

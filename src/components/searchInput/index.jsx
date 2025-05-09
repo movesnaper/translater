@@ -1,21 +1,40 @@
-import React, {useState} from "react"
-import { CForm, CFormInput, CRow, CCol, CButton, CSpinner } from '@coreui/react'
-import { CDropdownItem, CDropdownToggle, CDropdown, CDropdownMenu } from '@coreui/react'
+import React, { useState, useEffect } from "react"
+import Autocomplete from '../autocomplite/index.jsx'
+import { CCloseButton } from '@coreui/react'
 import style from './style.module.css'
 
-const SearchInput  = ({ schema, style: elStyle }) => {
-  const [active, setActive] = useState(false)
-  const [loading, setLoading] = useState(false)
+const SearchInput  = ({ schema }) => {
+  const [items, setItems] = useState([])
 
+  const { api, update } = schema({ items})
 
+  const unic =  (v, index, array) => v && array.indexOf(v) === index
 
- return <CFormInput
-    style={elStyle}
-    type="email"
-    id="exampleFormControlInput1"
-    placeholder="name@example.com"
-    aria-describedby="exampleFormControlInputHelpInline"
-  />
+ return <Autocomplete name="search" items={items.map(({_id}) => _id).filter(unic)} 
+  schema={({ value, setValue }) => {
+
+  return {
+    children: () => <CCloseButton onClick={() => {
+      setValue('')
+      update()
+    }} className={style.autocomplete__close_btn} />,
+    // api: (search = '') => {
+    //   try {
+    //     api({search}).then(({values}) => setItems(values))
+    //   }catch(e) {
+    //     console.error(e);
+        
+    //   }
+    // },
+    getValue: () => {
+      return <div onClick={async() => {
+        setValue(value)
+        // update(value)
+      }}> { value } </div> 
+    }
+
+  }
+}}/>
 
 }
 

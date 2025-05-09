@@ -1,16 +1,18 @@
 import React, {useRef} from "react"
 import { db } from '../../db/index.js'
-
+import { useOutletContext } from "react-router-dom";
 import { CFormCheck, CButton } from '@coreui/react'
 import CardBtn from '../../components/CardBtn.jsx'
 import DropDownBtn from '../../components/dropDownBtn'
 import Layout from './layout'
 import Info from './info'
 import Modal from './modal'
-import style from './style.module.css'
+// import style from './style.module.css'
 
 const HomePage =  () => {
-
+  // const [name] = useOutletContext();
+  // console.log(name);
+  
   const inpFile = useRef()
 
 
@@ -23,12 +25,6 @@ const HomePage =  () => {
     } catch(error) { console.error(error) } 
   }
 
-  // const save = async ({id, title, desc}) => {
-  //   try {
-  //     return db('/documents').post(`/${id}`, {title, desc})
-  //   } catch (error) { console.error(error) }
-  // }
-
   const remove = async (checked) => {
     try {
       return db().remove('/documents', {docs: checked.map(({id}) => id)})
@@ -39,7 +35,7 @@ const HomePage =  () => {
 
   return <Layout
     api={() => db('/documents').get()}
-    schema={({values, setModal, setValues}) => {
+    schema={({values, setModal, setValues}, update) => {
       const checked = values ? values.filter(({checked}) => checked >= 0) : []
 
       const select = (index, checked) => {
@@ -53,25 +49,30 @@ const HomePage =  () => {
             title: 'Add', 
             color: 'dark', 
             onClick: () => inpFile.current.click(),
-            prepend: <input type="file" ref={inpFile} hidden onChange={({target}) => {
+            prepend: <input type="file" ref={inpFile} hidden onChange={async ({target}) => {
               setLoading(true)
-              upload(...target.files).then(() => setValues(false)).then(() => setLoading(false))
+              await upload(...target.files).then(update)
+              setLoading(false)
             }}/>
           }
         }}/>,
         table: {
           header: [
             {value: '#', getValue: (_, index) => index + 1},
-
-            {value: 'desc', getValue: ((doc, index) => {
-              return <Info doc={doc} api={({id}) => db('/documents').get(`/${id}`)} 
+            { getValue: ((doc, index) => {
+              return <Info doc={doc} 
+              // api={({id}) => db('/documents').get(`/${id}`)} 
               setModal={(value) => setModal({value, index})}/>
             })},
-            { value: DropDownBtn({schema: [
-              { title: checked.length || '', menu: [
-                {title: 'remove', action: () => remove(checked).then(() => setValues(false)) }
+            { value: DropDownBtn({schema: () => {
+              return { title: checked.length || '', menu: [
+                { getValue: () => {
+                  return <div onClick={() => {
+                    remove(checked).then(update)
+                  }}>{'remove'}</div>
+                }}
               ]}
-            ]}), 
+            }}), 
             getValue: (({checked}, index) => <CButton style={{width: '100%'}}  variant='ghost' onClick={(e) => {
               e.stopPropagation()
               select(index, !(checked >= 0) )
@@ -79,11 +80,11 @@ const HomePage =  () => {
           ],
           items: values && values.map((value, index) => ({ value }))
         },
-        modal: (update) => Modal({
-          save: async ({value, index}) => {
+        modal: () => Modal({
+          save: async ({value}) => {
             const {id, title, desc} = value
             try {
-              await db('/documents').post(`/${id}`, {title}).then(() => update(value, index))
+              await db('/documents').post(`/${id}`, {title, desc}).then(update)
               setModal(false)
             } catch (error) { console.error(error) }
           }

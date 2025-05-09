@@ -1,0 +1,71 @@
+.text__tooltip {
+  cursor: pointer;
+}
+
+.text__tooltip:hover {
+  color: rgb(230, 183, 183);
+}
+.text__exclude {
+  color: red;
+}
+.text__html__body {
+  padding: 2%;
+  white-space: break-spaces;
+  overflow: auto;
+  font-size: 14px;
+}
+.text__book_mark {
+  color: blue;
+}
+
+.text__html__header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px;
+}
+.text__html__footer {
+  /* position: absolute;
+  bottom: 0; */
+  width: 100%;
+  display: flex;
+  background-color: black;
+  display: flex;
+  justify-content: space-around;
+}
+.text__html__footer > div > button {
+  color: white;
+}
+.pages__text__context__header {
+  display: flex;
+  justify-content: flex-end;
+}
+.pages__text__context__spiner {
+  display: flex;
+  justify-content: center;
+}
+
+@media only screen and (max-width:767px) {
+  /*style for mobile*/
+  .carousel-control-next {
+    display: none;
+  }
+  .text__html__body {
+    height: 75vh;
+  }
+}
+
+
+@media only screen and (min-width:768px) {
+/*style for desktop and tablet*/
+.text__html__body {
+  height: 80vh;
+}
+}
+
+
+@media (max-width:600px) and (orientation: landscape) {
+  .text__html__body {
+    height: 60vh;
+  }
+}
+

@@ -1,19 +1,10 @@
 
-/* .dropDownBtn {
-  width: 100%;
-} */
-.dropDownBtn__group {
-  display: flex;
-  align-items: center;
+.search__input__component {
+  position: relative;
 }
-.dropDownBtn__toggle {
-  color: inherit;
-  max-width: fit-content;
-}
-.dropDownBtn__group__btn {
-  border: none;
-  color: inherit;
-}
-.dropDownBtn__item {
-  cursor: pointer;
+.autocomplete__close_btn {
+  position: absolute;
+  top: 8px;
+  right: 35px;
+  z-index: 1000;
 }
