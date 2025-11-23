@@ -11,7 +11,7 @@ const Header = ({ value, setValue }) => {
 
 
   return <div className={style.card__header__left}>
-    <Autocomplete name="id" items={items} defaultValue={value?._id} schema={({ setValue: update}) => {
+    <Autocomplete name="id" items={items} defaultValue={value?._id.trim()} schema={({ setValue: update}) => {
       return {
         onShow: (value) => {
           if(loading) return

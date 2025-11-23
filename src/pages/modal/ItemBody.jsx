@@ -1,13 +1,13 @@
 import React, {useState} from "react";
 import { CNav, CNavItem, CNavLink, CTabContent, CTabPane } from '@coreui/react'
 import Translate from './Translate.jsx'
-import Transcript from './Transcript.jsx'
 import Example from './Example.jsx'
+import Transcript from './Transcript.jsx'
 
 const schema = [
   { title: 'Translate', component: Translate },
-  { title: 'Transcript', component: Transcript },
   { title: 'Example', component: Example },
+  { title: 'Transcript', component: Transcript }
 ]
 
 const ItemBody = ({value, setValue}) => {

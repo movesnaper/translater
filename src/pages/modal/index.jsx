@@ -7,15 +7,15 @@ import DropDownBtn from '../../components/dropDownBtn'
 
 import style from './style.module.css'
 
-const save = (api) => async(ref, key, items = []) => {
-  const values = items.filter(({uid, active}) => uid || active !== undefined)
-  .map((v) => ({...v, _id: key || ref}))
-  try {
-    return api({ key: ref, value: key, values })
-  } catch(e) {
-    console.error(e);
-  }    
-}
+// const save = (api) => async(ref, key, items = []) => {
+//   const values = items.filter(({uid, active}) => uid || active !== undefined)
+//   .map((v) => ({...v, _id: key || ref}))
+//   try {
+//     return api({ key: ref, value: key, values })
+//   } catch(e) {
+//     console.error(e);
+//   }    
+// }
 
   const Modal = { 
         header: (card, setValue) => Header({value: card.value, setValue: (value) => setValue({...card, value })}),

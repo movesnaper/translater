@@ -45,7 +45,7 @@
 }
 
 @media only screen and (max-width:767px) {
-  /*style for mobile*/
+/*style for mobile*/
   .carousel-control-next {
     display: none;
   }
@@ -57,9 +57,9 @@
 
 @media only screen and (min-width:768px) {
 /*style for desktop and tablet*/
-.text__html__body {
-  height: 80vh;
-}
+  .text__html__body {
+    height: 80vh;
+  }
 }
 
 

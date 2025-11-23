@@ -10,12 +10,7 @@ import Modal from './modal'
 // import style from './style.module.css'
 
 const HomePage =  () => {
-  // const [name] = useOutletContext();
-  // console.log(name);
-  
   const inpFile = useRef()
-
-
   const upload =  async (file) => {
     if (!file) return
     try {
@@ -30,8 +25,6 @@ const HomePage =  () => {
       return db().remove('/documents', {docs: checked.map(({id}) => id)})
     } catch(error) { console.error(error) }
   }
-
-
 
   return <Layout
     api={() => db('/documents').get()}
@@ -61,7 +54,7 @@ const HomePage =  () => {
             {value: '#', getValue: (_, index) => index + 1},
             { getValue: ((doc, index) => {
               return <Info doc={doc} 
-              api={({id}) => db('/documents').get(`/${id}`)} 
+              // api={({id}) => db('/documents').get(`/${id}`)} 
               setModal={(value) => setModal({value, index})}/>
             })},
             { value: DropDownBtn({schema: () => {

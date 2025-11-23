@@ -40,7 +40,7 @@ const Autocomplete  = ({ items = [], defaultValue, schema, name }) => {
     <CInputGroup>
     <CFormInput name={name} 
     delay={1000}
-    value={ value }
+    value={value}
     onChange={onChange}
     onInput={({target}) => setValue(target.value)}
     />
@@ -48,7 +48,7 @@ const Autocomplete  = ({ items = [], defaultValue, schema, name }) => {
     <CDropdown  variant="input-group" onShow={() => onShow && onShow(value)}>
       <CDropdownToggle color="secondary" variant="outline" />
       <CDropdownMenu className={style.autocomplete__dropdown_menu}>
-        { items.map((item, index) => {
+        { items && items.map((item, index) => {
           return <CDropdownItem key={index} href="#">{getValue(item)}</CDropdownItem>
         })}
       </CDropdownMenu>

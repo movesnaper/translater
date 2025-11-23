@@ -59,7 +59,7 @@ const ComponentPage =  ({ schema }) => {
   
   return <div className={style.component__page}>
     <div className={style.component__page__header}>
-      {!state.loading && <Header schema={state.info} settings={header}/>}
+      { state.info && <Header schema={state.info} settings={header}/>}
     </div>
     <div className={style.component__page__content}>{
     state.info ? content : <div className={style.component__spiner}>

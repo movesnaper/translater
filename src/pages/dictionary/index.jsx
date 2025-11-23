@@ -61,7 +61,7 @@ const Dictionary =  () => {
               schema: () => {
                 return {
                   title: <AiOutlineFilter size={25}/>,
-                  menu: ['all', 'hasValue', 'hasNoValue', 'isExclude'].map((key) => {
+                  menu: ['all', 'hasValue', 'hasNoValue', 'isExclude', 'noExm', 'noSnd'].map((key) => {
                     return { getValue: () => <div onClick={() => setFilter(key)}>{key}</div>}
                   }),
                 }
